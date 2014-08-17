@@ -18,6 +18,12 @@ i.chunkybutton.search {
 	border-radius: 0.5em;
 }
 
+.ui.expanding.header{
+	font-size: 6vmin;
+	margin-top: 2em;
+	margin-bottom: 1.5em;
+}
+
 div.chunkybuttontext {
 	font-size: 2.5em;
 }
