@@ -18,6 +18,11 @@ i.chunkybutton.search {
 	border-radius: 0.5em;
 }
 
+.ui.huge.button{
+	font-size: 2vmin;
+	border-radius: 0.3em;
+}
+
 .ui.expanding.header{
 	font-size: 6vmin;
 	margin-top: 2em;
@@ -26,5 +31,13 @@ i.chunkybutton.search {
 
 div.chunkybuttontext {
 	font-size: 2.5em;
+}
+
+.ui.row.equal.height > .ui.column > .ui.button{
+	min-height: 95%
+}
+
+.ui.row.equal.height > .ui.column{
+	height: 100%;
 }
 
