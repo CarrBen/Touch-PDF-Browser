@@ -41,3 +41,11 @@ div.chunkybuttontext {
 	height: 100%;
 }
 
+.ui.button.massive{
+	margin-bottom: 2em;
+}
+
+.ui.button.invisible{
+	visibility: hidden;
+}
+
