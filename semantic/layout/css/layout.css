@@ -1,0 +1,24 @@
+body{
+font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif/*rtl:prepend:"Droid Arabic Kufi","Droid Sans", */;
+}
+
+i.chunkybutton {
+	margin: 0 0 0 0 !important;
+	margin-right: 0 !important;
+	margin-left: 0 !important;
+}
+
+i.chunkybutton.search {
+	padding-left: 0.195em;
+	padding-right: 0.195em;
+}
+
+.ui.jumbo.button {
+	font-size: 3vmin;
+	border-radius: 0.5em;
+}
+
+div.chunkybuttontext {
+	font-size: 2.5em;
+}
+
