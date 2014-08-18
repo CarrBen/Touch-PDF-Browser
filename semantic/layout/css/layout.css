@@ -1,5 +1,7 @@
 body{
-font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif/*rtl:prepend:"Droid Arabic Kufi","Droid Sans", */;
+	font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif/*rtl:prepend:"Droid Arabic Kufi","Droid Sans", */;
+	margin: 0;
+	padding:0;
 }
 
 i.chunkybutton {
@@ -47,5 +49,33 @@ div.chunkybuttontext {
 
 .ui.button.invisible{
 	visibility: hidden;
+}
+
+.ui.button#back{
+	position: fixed;
+	top: 16px;
+	left: 16px;
+}
+
+.ui.button#help{
+	position: fixed;
+	bottom: 16px;
+	right: 97px;
+}
+
+.ui.button#help > .question.icon{
+	margin-left: -4.133px;
+	margin-right: -4.133px;
+}
+
+.ui.button#info{
+	position: fixed;
+	bottom: 16px;
+	right: 16px;
+}
+
+.ui.button#info > .info.letter.icon{
+	margin-left: -4.133px;
+	margin-right: -4.133px;
 }
 
