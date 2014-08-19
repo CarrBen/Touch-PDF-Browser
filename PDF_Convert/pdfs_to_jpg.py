@@ -36,3 +36,5 @@ for path, dir, files in PDFs:
     subprocess.call(CONVERT_CMD % (CONVERT, JPG_QUALITY, pdf_in, jpg_out),
                     startupinfo=STARTUP_INFO)
     os.chdir('..')
+
+print("Done")
