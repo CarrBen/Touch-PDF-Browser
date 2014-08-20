@@ -174,15 +174,21 @@
 					<div class='ui center middle aligned five column row'>
 					{{#each}}
 						<div class='ui column'>
+						{{#link-to 'view' id}}
 							<div {{bind-attr class=':ui :purple :massive invisible :button'}}>
 								{{name}}
 							</div>
+						{{/link-to}}
 						</div>
 					{{/each}}
 					</div>
 				</div>
 			</div>
 		</div>
+	</script>	
+	
+	<script type='text/x-handlebars' id='view'>
+
 	</script>	
 
 	<script src="js/libs/jquery-1.10.2.js"></script>

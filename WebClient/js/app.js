@@ -14,7 +14,11 @@ App.Router.map(function() {
 	this.resource('pub');
 	this.resource('year', {path: '/pub/:pub_initials/year'}, function(){
 		this.resource('month', {path: '/:year_num/month'}, function(){
-			this.resource('issue', {path: '/:month_id/issue'});
+			this.resource('issue', {path: '/:month_id/issue'}, function(){
+				this.resource('view', {path: '/:issue_id/page'}, function(){
+					this.resource('page', {path: '/:page_id'});
+				});
+			});
 		});
 	});
 });
@@ -65,7 +69,6 @@ App.YearRoute = Ember.Route.extend({
 App.MonthRoute = Ember.Route.extend({
 	backButton: true,
 	model: function(params){
-		console.log(params);
 		return [{'id':'jan',
 				'name':'January'},
 				{'id':'feb',
@@ -82,7 +85,6 @@ App.MonthRoute = Ember.Route.extend({
 App.IssueRoute = Ember.Route.extend({
 	backButton: true,
 	model: function(params){
-		console.log(params);
 		return [{'id':'0',
 				'name':'12th'},
 				{'id':'1',
@@ -93,6 +95,34 @@ App.IssueRoute = Ember.Route.extend({
 		},
 	renderTemplate: function(cont, mod){
 		this.render('issue', {into: 'application'});
+	}
+});
+
+App.ViewRoute = Ember.Route.extend({
+	backButton: true,
+	model: function(params){
+		return {'src':'',
+				'id':0,
+				'next':1,
+				'prev':null
+			}
+		},
+	renderTemplate: function(cont, mod){
+		this.render('view', {into: 'application'});
+	}
+});
+
+App.PageRoute = Ember.Route.extend({
+	backButton: true,
+	model: function(params){
+		return {'src':'',
+				'id':1,
+				'next':2,
+				'prev':1
+			}
+		},
+	renderTemplate: function(cont, mod){
+		this.render('view', {into: 'application'});
 	}
 });
 
