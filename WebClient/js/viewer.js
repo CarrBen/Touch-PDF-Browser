@@ -64,16 +64,18 @@ hammertime.on('pinchstart', viewImage.pinchstart());
 viewImage.pinch = function(){
 	var that = this;
 	return function(ev){
-		console.log(ev);
 		that.scale = that.startScale * ev.scale;
+		
+		that.scale = Math.max(that.scale, 0.2); //TODO Calculate these base on image size
+		that.scale = Math.min(that.scale, 4);
 		
 		that.height = that.scale * that.naturalHeight;
 		that.width = that.scale * that.naturalWidth;
 
-		var leftDiff = (ev.center.x - that.startLeft) * ev.scale;
+		var leftDiff = (ev.center.x - that.startLeft) * that.scale / that.startScale;
 		that.JQ.css('left', ev.center.x - leftDiff);
 		
-		var topDiff = (ev.center.y - that.startTop) * ev.scale;
+		var topDiff = (ev.center.y - that.startTop) * that.scale / that.startScale;
 		that.JQ.css('top', ev.center.y - topDiff);
 	}
 }
