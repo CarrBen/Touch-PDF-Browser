@@ -13,6 +13,7 @@ $(document).on('click', '.ui.button#help', openHelpModal);
 App.Router.map(function() {
 	this.resource('pub');
 	this.resource('year', {path: '/pub/:pub_initials'});
+	this.resource('month', {path: '/pub/:pub_initial/year/:year_num/month'});
 });
 
 App.PubRoute = Ember.Route.extend({
@@ -58,3 +59,17 @@ App.YearRoute = Ember.Route.extend({
 	}
 });
 
+/*
+App.MonthRoute = Ember.Route.extend({
+	backButton: true,
+	model: function(params){
+		return [{'id':'jan',
+				'name':'January'},
+				{'id':'feb',
+				'name':'February'},
+				{'id':'mar',
+				'name':'March'}
+				]
+		}
+});
+*/
