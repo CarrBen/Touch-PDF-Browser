@@ -35,7 +35,6 @@ viewImage.panstart = function(){
 	return function(ev){
 		that.startTop = parseInt(that.JQ.css('top'));
 		that.startLeft = parseInt(that.JQ.css('left'));
-		console.log(that.startTop);
 	}
 }
 
@@ -55,6 +54,8 @@ viewImage.pinchstart = function(){
 	var that = this;
 	return function(ev){
 		that.startScale = that.scale;
+		that.startTop = parseInt(that.JQ.css('top'));
+		that.startLeft = parseInt(that.JQ.css('left'));
 	}
 }
 
@@ -68,6 +69,12 @@ viewImage.pinch = function(){
 		
 		that.height = that.scale * that.naturalHeight;
 		that.width = that.scale * that.naturalWidth;
+
+		var leftDiff = (ev.center.x - that.startLeft) * ev.scale;
+		that.JQ.css('left', ev.center.x - leftDiff);
+		
+		var topDiff = (ev.center.y - that.startTop) * ev.scale;
+		that.JQ.css('top', ev.center.y - topDiff);
 	}
 }
 
