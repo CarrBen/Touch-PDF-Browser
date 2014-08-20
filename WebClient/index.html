@@ -80,15 +80,17 @@
 				</div>
 			</div>
 			<div class='ui center aligned equal height three column row' style='height:30vmin'>
+			{{#each}}
 				<div class='ui column'>
-				{{#link-to 'year'}}
+				{{#link-to 'year' id class='heightButton'}}
 					<div class='ui purple fluid huge button'>
 						<i class='huge bookmark icon chunkybutton'></i>
-						<div class='chunkybuttontext'>John O Gauntlet</div>
+						<div class='chunkybuttontext'>{{name}}</div>
 					</div>
 				{{/link-to}}
 				</div>
-				<div class='ui column'>
+			{{/each}}
+				<!-- <div class='ui column'>
 					<div class='ui purple fluid huge disabled button'>
 						<i class='huge bookmark icon chunkybutton'></i>
 						<div class='chunkybuttontext'>Carolynne</div>
@@ -99,7 +101,7 @@
 						<i class='huge bookmark icon chunkybutton'></i>
 						<div class='chunkybuttontext'>STEPS</div>
 					</div>
-				</div>
+				</div>  -->
 			</div>
 		</div>
 	</script>
@@ -116,106 +118,13 @@
 			<div class='ui center aligned one column row'>
 				<div class='ui five column doubling grid'>
 					<div class='ui center middle aligned five column row'>
+					{{#each}}
 						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1965
+							<div {{bind-attr class=':ui :purple :massive invisible :button'}}>
+								{{id}}
 							</div>
 						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1966
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1967
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1968
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1969
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1970
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1971
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1972
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1973
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1974
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1975
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1976
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1977
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1978
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1979
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1980
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1981
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui purple massive button'>
-								1982
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui invisible massive button'>
-								1982
-							</div>
-						</div>
-						<div class='ui column'>
-							<div class='ui invisible massive button'>
-								1982
-							</div>
-						</div>
+					{{/each}}
 					</div>
 				</div>
 			</div>
