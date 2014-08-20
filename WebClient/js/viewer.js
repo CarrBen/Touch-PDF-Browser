@@ -1,5 +1,6 @@
 var viewImageJQ = $('#viewImage')
 var viewImage = viewImageJQ[0]
+viewImage.JQ = viewImageJQ;
 var hammertime = Hammer(viewImage, {})
 
 var winWidth = window.innerWidth;
@@ -26,6 +27,23 @@ if(widthRatio >= heightRatio){
 
 hammertime.get('pan').set({direction: Hammer.DIRECTION_ALL});
 
-hammertime.on('pan', function(ev){
-	console.log(ev);
-});
+viewImage.panstart = function(){
+	var that = this;
+	return function(ev){
+		that.startTop = parseInt(that.JQ.css('top'));
+		that.startLeft = parseInt(that.JQ.css('left'));
+		console.log(that.startTop);
+	}
+}
+
+hammertime.on('panstart', viewImage.panstart());
+
+viewImage.pan = function(){
+	var that = this;
+	return function(ev){
+		that.JQ.css('top', that.startTop + ev.deltaY);
+		that.JQ.css('left', that.startLeft + ev.deltaX);
+	}
+}
+
+hammertime.on('pan', viewImage.pan());
