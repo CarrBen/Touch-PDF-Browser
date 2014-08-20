@@ -147,6 +147,33 @@
 					<div class='ui center middle aligned five column row'>
 					{{#each}}
 						<div class='ui column'>
+						{{#link-to 'issue' id}}
+							<div {{bind-attr class=':ui :purple :massive invisible :button'}}>
+								{{name}}
+							</div>
+						{{/link-to}}
+						</div>
+					{{/each}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
+	
+	<script type='text/x-handlebars' id='issue'>
+		<div class='ui middle aligned page grid'>
+			<div class='ui center aligned one column row'>
+				<div class='ui column'>
+					<div class='ui huge purple expanding header'>
+						Logo and title
+					</div>
+				</div>
+			</div>
+			<div class='ui center aligned one column row'>
+				<div class='ui five column doubling grid'>
+					<div class='ui center middle aligned five column row'>
+					{{#each}}
+						<div class='ui column'>
 							<div {{bind-attr class=':ui :purple :massive invisible :button'}}>
 								{{name}}
 							</div>
@@ -156,7 +183,7 @@
 				</div>
 			</div>
 		</div>
-	</script>
+	</script>	
 
 	<script src="js/libs/jquery-1.10.2.js"></script>
 	<script src='js/libs/semantic.js'></script>

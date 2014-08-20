@@ -12,8 +12,11 @@ $(document).on('click', '.ui.button#help', openHelpModal);
 
 App.Router.map(function() {
 	this.resource('pub');
-	this.resource('year', {path: '/pub/:pub_initials'});
-	this.resource('month', {path: '/pub/:pub_initial/year/:year_num/month'});
+	this.resource('year', {path: '/pub/:pub_initials/year'}, function(){
+		this.resource('month', {path: '/:year_num/month'}, function(){
+			this.resource('issue', {path: '/:month_id/issue'});
+		});
+	});
 });
 
 App.PubRoute = Ember.Route.extend({
@@ -59,10 +62,10 @@ App.YearRoute = Ember.Route.extend({
 	}
 });
 
-/*
 App.MonthRoute = Ember.Route.extend({
 	backButton: true,
 	model: function(params){
+		console.log(params);
 		return [{'id':'jan',
 				'name':'January'},
 				{'id':'feb',
@@ -70,6 +73,26 @@ App.MonthRoute = Ember.Route.extend({
 				{'id':'mar',
 				'name':'March'}
 				]
-		}
+		},
+	renderTemplate: function(cont, mod){
+		this.render('month', {into: 'application'});
+	}
 });
-*/
+
+App.IssueRoute = Ember.Route.extend({
+	backButton: true,
+	model: function(params){
+		console.log(params);
+		return [{'id':'0',
+				'name':'12th'},
+				{'id':'1',
+				'name':'21st'},
+				{'id':'2',
+				'name':'23rd'}
+				]
+		},
+	renderTemplate: function(cont, mod){
+		this.render('issue', {into: 'application'});
+	}
+});
+
