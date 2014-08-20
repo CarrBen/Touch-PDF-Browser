@@ -2,26 +2,228 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Ember Starter Kit</title>
-	<link rel="stylesheet" href="css/normalize.css">
-	<link rel="stylesheet" href="css/style.css">
+	<title>Touch Publication Viewer by Ben</title>
+	<meta name="viewport" content="width=device-width">
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700' rel='stylesheet' type='text/css'>
+	<link rel='stylesheet' type='text/css' href='css/semantic.css' />
+	<link rel='stylesheet' type='text/css' href='css/layout.css' />
 </head>
 <body>
 	<script type="text/x-handlebars">
-		Hello there
+		{{#if backButton}}
+		<div class='ui large purple icon button' id='back'>
+			<i class='big left icon'></i>
+		</div>
+		{{/if}}
+		<div class='ui modal info'>
+			<i class='ui close icon'></i>
+			<div class='ui purple header'><i class='ui info icon'></i>Information</div>
+			<div class='content'>
+			Made by Ben, authorised for use with pictures of old newspapers and kittens
+			</div>
+		</div>
+		<div class='ui modal help'>
+			<i class='ui close icon'></i>
+			<div class='ui purple header'><i class='ui help icon'></i>Help</div>
+			<div class='content'>
+			This is the help modal so help me
+			</div>
+		</div>
+		<div class='ui large circular purple icon button' id='info'>
+			<i class='big info letter icon'></i>
+		</div>
+		<div class='ui large circular purple icon button' id='help'>
+			<i class='big question icon'></i>
+		</div>
 		{{outlet}}
 	</script>
 	
 	<script type='text/x-handlebars' id='index'>
-		{{#link-to 'about'}}About{{/link-to}}	
+		<div class='ui middle aligned stackable page grid'>
+			<div class='ui center aligned row'>
+				<div class='four wide column'>
+				</div>
+				<div class='eight wide column'>
+					<div class='ui huge purple expanding header'>
+						Logo and title
+					</div>
+				</div>
+				<div class='four wide column'>
+				</div>
+			</div>
+			<div class='ui center aligned two column row'>
+				<div class='ui column'>
+				{{#link-to 'pub'}}
+					<div class='ui jumbo purple button'>
+						<i class='massive browser icon chunkybutton'></i>
+						<div class='chunkybuttontext'>Browse</div>
+					</div>
+				{{/link-to}}
+				</div>
+				<div class='ui column'>
+					<div class='ui disabled jumbo purple button'>
+						<i class='massive search icon chunkybutton'></i>
+						<div class='chunkybuttontext'>Search</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</script>
 
-	<script type='text/x-handlebars' id='about'>
-		This is the about section
+	<script type='text/x-handlebars' id='pub'>
+		<div class='ui middle aligned stackable page grid'>
+			<div class='ui center aligned one column row'>
+				<div class='ui column'>
+					<div class='ui huge purple expanding header'>
+						Logo and title
+					</div>
+				</div>
+			</div>
+			<div class='ui center aligned equal height three column row' style='height:30vmin'>
+				<div class='ui column'>
+				{{#link-to 'year'}}
+					<div class='ui purple fluid huge button'>
+						<i class='huge bookmark icon chunkybutton'></i>
+						<div class='chunkybuttontext'>John O Gauntlet</div>
+					</div>
+				{{/link-to}}
+				</div>
+				<div class='ui column'>
+					<div class='ui purple fluid huge disabled button'>
+						<i class='huge bookmark icon chunkybutton'></i>
+						<div class='chunkybuttontext'>Carolynne</div>
+					</div>
+				</div>
+				<div class='ui column'>
+					<div class='ui purple fluid huge disabled button'>
+						<i class='huge bookmark icon chunkybutton'></i>
+						<div class='chunkybuttontext'>STEPS</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</script>
-
+	
+	<script type='text/x-handlebars' id='year'>
+		<div class='ui middle aligned page grid'>
+			<div class='ui center aligned one column row'>
+				<div class='ui column'>
+					<div class='ui huge purple expanding header'>
+						Logo and title
+					</div>
+				</div>
+			</div>
+			<div class='ui center aligned one column row'>
+				<div class='ui five column doubling grid'>
+					<div class='ui center middle aligned five column row'>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1965
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1966
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1967
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1968
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1969
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1970
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1971
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1972
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1973
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1974
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1975
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1976
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1977
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1978
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1979
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1980
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1981
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui purple massive button'>
+								1982
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui invisible massive button'>
+								1982
+							</div>
+						</div>
+						<div class='ui column'>
+							<div class='ui invisible massive button'>
+								1982
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
 
 	<script src="js/libs/jquery-1.10.2.js"></script>
+	<script src='js/libs/semantic.js'></script>
 	<script src="js/libs/handlebars-1.1.2.js"></script>
 	<script src="js/libs/ember-1.6.1.js"></script>
 	<script src="js/app.js"></script>
