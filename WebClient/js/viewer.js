@@ -90,11 +90,17 @@ viewImage.pinch = function(){
 		that.height = that.scale * that.naturalHeight;
 		that.width = that.scale * that.naturalWidth;
 
-		var leftDiff = (ev.center.x - that.startLeft) * that.scale / that.startScale;
-		that.JQ.css('left', ev.center.x - leftDiff);
-		
 		var topDiff = (ev.center.y - that.startTop) * that.scale / that.startScale;
-		that.JQ.css('top', ev.center.y - topDiff);
+		var top = ev.center.y - topDiff;
+		top = Math.min(top, that.verticalLimit);
+		top = Math.max(top, -that.verticalLimit + winHeight - that.scale * that.naturalHeight)
+		that.JQ.css('top', top);
+		
+		var leftDiff = (ev.center.x - that.startLeft) * that.scale / that.startScale;
+		var left = ev.center.x - leftDiff;
+		left = Math.min(left, that.horizontalLimit);
+		left = Math.max(left, -that.horizontalLimit + winWidth - that.scale * that.naturalWidth)
+		that.JQ.css('left', left);
 	}
 }
 
