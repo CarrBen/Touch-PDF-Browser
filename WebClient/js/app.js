@@ -101,7 +101,7 @@ App.IssueRoute = Ember.Route.extend({
 App.ViewRoute = Ember.Route.extend({
 	backButton: true,
 	model: function(params){
-		return {'src':'',
+		return {'src':'John O Gauntlet 04-4.jpg',
 				'id':0,
 				'next':1,
 				'prev':null
@@ -109,6 +109,7 @@ App.ViewRoute = Ember.Route.extend({
 		},
 	renderTemplate: function(cont, mod){
 		this.render('view', {into: 'application'});
+		$('#viewImage').ready(startViewerSetup)
 	}
 });
 
@@ -123,6 +124,19 @@ App.PageRoute = Ember.Route.extend({
 		},
 	renderTemplate: function(cont, mod){
 		this.render('view', {into: 'application'});
+		$('#viewImage').on('load', startViewerSetup)
 	}
 });
+
+function startViewerSetup(ev){
+	window.requestAnimationFrame(waitViewerSetup);
+}
+
+function waitViewerSetup(ev){
+	window.requestAnimationFrame(doViewerSetup);
+}
+
+function doViewerSetup(ev){
+	setupViewer();
+}
 
