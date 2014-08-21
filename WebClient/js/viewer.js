@@ -83,4 +83,15 @@ viewImage.pinch = function(){
 }
 
 hammertime.on('pinch', viewImage.pinch());
+
+//This has not been tested at all
+viewImage.pinchmove = function(){
+	var that = this;
+	return function(ev){
+		that.pinch()(ev);
+		that.pan()(ev);
+	}
 }
+
+hammertime.on('pinchmove', viewImage.pinchmove());
+} //End of setupViewer function
