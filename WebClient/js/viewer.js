@@ -20,6 +20,9 @@ if(widthRatio >= heightRatio){
 	viewImage.minScale = ratio;
 	viewImageJQ.css('top', (winHeight - (viewImage.naturalHeight*ratio))/2);
 	viewImageJQ.css('left', 12)
+	
+	viewImage.verticalLimit = winHeight - viewImage.naturalHeight*viewImage.scale;
+	viewImage.horizontalLimit = 24;
 }else{
 	viewImage.removeAttribute('width');
 	var ratio = (winHeight - 24)/viewImage.naturalHeight;
@@ -29,6 +32,9 @@ if(widthRatio >= heightRatio){
 	viewImage.minScale = ratio;
 	viewImageJQ.css('top', 12);
 	viewImageJQ.css('left', (winWidth - (viewImage.naturalWidth*ratio))/2);
+	
+	viewImage.verticalLimit = 24;
+	viewImage.horizontalLimit = winWidth - viewImage.naturalWidth*viewImage.scale;
 }
 
 hammertime.get('pan').set({direction: Hammer.DIRECTION_ALL});
@@ -47,8 +53,16 @@ hammertime.on('panstart', viewImage.panstart());
 viewImage.pan = function(){
 	var that = this;
 	return function(ev){
-		that.JQ.css('top', that.startTop + ev.deltaY);
-		that.JQ.css('left', that.startLeft + ev.deltaX);
+		var top = that.startTop + ev.deltaY;
+		top = Math.min(top, that.verticalLimit);
+		top = Math.max(top, -that.verticalLimit + winHeight - that.scale * that.naturalHeight)
+		
+		var left = that.startLeft + ev.deltaX;
+		left = Math.min(left, that.horizontalLimit);
+		left = Math.max(left, -that.horizontalLimit + winWidth - that.scale * that.naturalWidth)
+		
+		that.JQ.css('top', top);
+		that.JQ.css('left', left);
 	}
 }
 
