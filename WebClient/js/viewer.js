@@ -17,6 +17,7 @@ if(widthRatio >= heightRatio){
 	viewImage.removeAttribute('height');
 	
 	viewImage.scale = ratio;
+	viewImage.minScale = ratio;
 	viewImageJQ.css('top', (winHeight - (viewImage.naturalHeight*ratio))/2);
 	viewImageJQ.css('left', 12)
 }else{
@@ -25,6 +26,7 @@ if(widthRatio >= heightRatio){
 	viewImage.height = winHeight - 24;
 	
 	viewImage.scale = ratio;
+	viewImage.minScale = ratio;
 	viewImageJQ.css('top', 12);
 	viewImageJQ.css('left', (winWidth - (viewImage.naturalWidth*ratio))/2);
 }
@@ -68,8 +70,8 @@ viewImage.pinch = function(){
 	return function(ev){
 		that.scale = that.startScale * ev.scale;
 		
-		that.scale = Math.max(that.scale, 0.2); //TODO Calculate these base on image size
-		that.scale = Math.min(that.scale, 4);
+		that.scale = Math.max(that.scale, that.minScale); 
+		that.scale = Math.min(that.scale, 3);
 		
 		that.height = that.scale * that.naturalHeight;
 		that.width = that.scale * that.naturalWidth;

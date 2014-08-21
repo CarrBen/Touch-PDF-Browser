@@ -101,7 +101,8 @@ App.IssueRoute = Ember.Route.extend({
 App.ViewRoute = Ember.Route.extend({
 	backButton: true,
 	model: function(params){
-		return {'src':'John O Gauntlet 04-4.jpg',
+		console.log(params);
+		return {'src':'John O Gauntlet 03-0.jpg',
 				'id':0,
 				'next':1,
 				'prev':null
@@ -116,7 +117,8 @@ App.ViewRoute = Ember.Route.extend({
 App.PageRoute = Ember.Route.extend({
 	backButton: true,
 	model: function(params){
-		return {'src':'',
+		console.log(params);
+		return {'src':'John O Gauntlet 04-4.jpg',
 				'id':1,
 				'next':2,
 				'prev':1
@@ -124,7 +126,7 @@ App.PageRoute = Ember.Route.extend({
 		},
 	renderTemplate: function(cont, mod){
 		this.render('view', {into: 'application'});
-		$('#viewImage').on('load', startViewerSetup)
+		$('#viewImage').ready(startViewerSetup)
 	}
 });
 
