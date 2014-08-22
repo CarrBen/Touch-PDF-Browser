@@ -42,6 +42,12 @@ App.PubController = Ember.ArrayController.extend({
 
 App.YearRoute = Ember.Route.extend({
 	'backButton': true,
+	beforeModel: function(trans){
+		if(!('pub' in trans.queryParams)){
+			trans.queryParams.type = 'browse';
+			this.transitionTo('pub', {queryParams: trans.queryParams});
+		}
+	},
 	model: function(params){
 		var data = [{
 			'year_id':1965
@@ -64,10 +70,7 @@ App.YearRoute = Ember.Route.extend({
 			data.push({'id':0, 'invisible':true})
 		}
 		return data;
-		},
-	renderTemplate: function(cont, mod){
-		this.render('year', {into: 'application'});
-	}
+		}
 });
 
 App.YearController = Ember.ArrayController.extend({
@@ -78,6 +81,11 @@ App.YearController = Ember.ArrayController.extend({
 
 App.MonthRoute = Ember.Route.extend({
 	backButton: true,
+	beforeModel: function(trans){
+		if(!('year' in trans.queryParams)){
+			this.transitionTo('year', {queryParams: trans.queryParams});
+		}
+	},
 	model: function(params){
 		return [{'month_id':'jan',
 				'name':'January'},
@@ -86,10 +94,7 @@ App.MonthRoute = Ember.Route.extend({
 				{'month_id':'mar',
 				'name':'March'}
 				]
-		},
-	renderTemplate: function(cont, mod){
-		this.render('month', {into: 'application'});
-	}
+		}
 });
 
 App.MonthController = Ember.ArrayController.extend({
@@ -101,6 +106,11 @@ App.MonthController = Ember.ArrayController.extend({
 
 App.IssueRoute = Ember.Route.extend({
 	backButton: true,
+	beforeModel: function(trans){
+		if(!('month' in trans.queryParams)){
+			this.transitionTo('month', {queryParams: trans.queryParams});
+		}
+	},
 	model: function(params){
 		return [{'issue_id':'0',
 				'name':'12th'},
@@ -109,10 +119,7 @@ App.IssueRoute = Ember.Route.extend({
 				{'issue_id':'2',
 				'name':'23rd'}
 				]
-		},
-	//renderTemplate: function(cont, mod){
-	//	this.render('issue', {into: 'application'});
-	//}
+		}
 });
 
 App.IssueController = Ember.ArrayController.extend({
@@ -125,6 +132,11 @@ App.IssueController = Ember.ArrayController.extend({
 
 App.ViewRoute = Ember.Route.extend({
 	backButton: true,
+	beforeModel: function(trans){
+		if(!('issue' in trans.queryParams)){
+			this.transitionTo('issue', {queryParams: trans.queryParams});
+		}
+	},
 	model: function(params){
 		return {'img_src':'John O Gauntlet 03-0.jpg',
 				'page_id':0,
@@ -148,20 +160,6 @@ App.ViewController = Ember.Controller.extend({
 	page:1
 });
 
-App.PageRoute = Ember.Route.extend({
-	backButton: true,
-	model: function(params){
-		return {'src':'John O Gauntlet 04-4.jpg',
-				'page_id':1,
-				'page_next':2,
-				'page_prev':1
-			}
-		},
-	renderTemplate: function(cont, mod){
-		this.render('view', {into: 'application'});
-		$('#viewImage').ready(startViewerSetup)
-	}
-});
 
 function startViewerSetup(ev){
 	window.requestAnimationFrame(waitViewerSetup);

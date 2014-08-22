@@ -127,7 +127,7 @@
 					<div class='ui center middle aligned five column row'>
 					{{#each}}
 						<div class='ui column'>
-						{{#link-to 'month' (query-params year=year_id)}}
+						{{#link-to 'month' (query-params pub=controller.pub year=year_id)}}
 							<div {{bind-attr class=':ui :purple :massive invisible :button'}}>
 								{{year_id}}
 							</div>
@@ -154,7 +154,7 @@
 					<div class='ui center middle aligned five column row'>
 					{{#each}}
 						<div class='ui column'>
-						{{#link-to 'issue' (query-params month=month_id)}}
+						{{#link-to 'issue' (query-params pub=controller.pub year=controller.year month=month_id)}}
 							<div {{bind-attr class=':ui :purple :massive invisible :button'}}>
 								{{name}}
 							</div>
@@ -181,7 +181,7 @@
 					<div class='ui center middle aligned five column row'>
 					{{#each}}
 						<div class='ui column'>
-						{{#link-to 'view' (query-params issue=issue_id)}}
+						{{#link-to 'view' (query-params pub=controller.pub year=controller.year month=controller.month issue=issue_id)}}
 							<div {{bind-attr class=':ui :purple :massive invisible :button'}}>
 								{{name}}
 							</div>
