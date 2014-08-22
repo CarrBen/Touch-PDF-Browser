@@ -37,6 +37,26 @@ if(widthRatio >= heightRatio){
 	viewImage.horizontalLimit = winWidth - viewImage.naturalWidth*viewImage.scale;
 }
 
+viewImage.doubletap = function(){
+	var that = this;
+	return function(ev){
+		that.pinchstart()(ev);
+		$({n:0}).animate({n:1}, {progress:
+			function(animate, n, ms){
+				obj = {
+					center:{x:ev.center.x, y:ev.center.y},
+					scale: 1 + n
+				}
+				console.log(obj)
+				that.pinch()(obj);
+			},
+		duration: 200,
+		easing: 'linear'});
+	}
+}
+
+hammertime.on('doubletap', viewImage.doubletap());
+
 hammertime.get('pan').set({direction: Hammer.DIRECTION_ALL});
 hammertime.get('pinch').set({enable: true});
 
