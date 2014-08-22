@@ -40,6 +40,9 @@
 	</script>
 	
 	<script type='text/x-handlebars' id='index'>
+		{{#if backButton}}
+			{{partial "backButton"}}
+		{{/if}}
 		<div class='ui middle aligned stackable page grid'>
 			<div class='ui center aligned row'>
 				<div class='four wide column'>
@@ -54,7 +57,7 @@
 			</div>
 			<div class='ui center aligned two column row'>
 				<div class='ui column'>
-				{{#link-to 'pub'}}
+				{{#link-to 'pub' (query-params type='browse')}}
 					<div class='ui jumbo purple button'>
 						<i class='massive browser icon chunkybutton'></i>
 						<div class='chunkybuttontext'>Browse</div>
@@ -72,6 +75,9 @@
 	</script>
 
 	<script type='text/x-handlebars' id='pub'>
+		{{#if backButton}}
+			{{partial "backButton"}}
+		{{/if}}
 		<div class='ui middle aligned stackable page grid'>
 			<div class='ui center aligned one column row'>
 				<div class='ui column'>
@@ -83,7 +89,7 @@
 			<div class='ui center aligned equal height three column row' style='height:30vmin'>
 			{{#each}}
 				<div class='ui column'>
-				{{#link-to 'year' id class='heightButton'}}
+				{{#link-to 'year' (query-params pub=pub_id) class='heightButton'}}
 					<div class='ui purple fluid huge button'>
 						<i class='huge bookmark icon chunkybutton'></i>
 						<div class='chunkybuttontext'>{{name}}</div>
@@ -121,9 +127,9 @@
 					<div class='ui center middle aligned five column row'>
 					{{#each}}
 						<div class='ui column'>
-						{{#link-to 'month' id}}
+						{{#link-to 'month' (query-params year=year_id)}}
 							<div {{bind-attr class=':ui :purple :massive invisible :button'}}>
-								{{id}}
+								{{year_id}}
 							</div>
 						{{/link-to}}
 						</div>
@@ -148,7 +154,7 @@
 					<div class='ui center middle aligned five column row'>
 					{{#each}}
 						<div class='ui column'>
-						{{#link-to 'issue' id}}
+						{{#link-to 'issue' (query-params month=month_id)}}
 							<div {{bind-attr class=':ui :purple :massive invisible :button'}}>
 								{{name}}
 							</div>
@@ -175,7 +181,7 @@
 					<div class='ui center middle aligned five column row'>
 					{{#each}}
 						<div class='ui column'>
-						{{#link-to 'view' id}}
+						{{#link-to 'view' (query-params issue=issue_id)}}
 							<div {{bind-attr class=':ui :purple :massive invisible :button'}}>
 								{{name}}
 							</div>
@@ -189,7 +195,7 @@
 	</script>	
 	
 	<script type='text/x-handlebars' id='view'>
-		<img {{bind-attr src=src}} id='viewImage'></img>
+		<img {{bind-attr src=model.img_src}} id='viewImage'></img>
 	</script>	
 	
 	<script src='js/libs/touch-emulator.js'></script>
@@ -214,10 +220,14 @@
 			position: fixed;
 			-webkit-transform: translateZ(0);
 		}
+		
+		a.heightButton{
+			min-height:100%;
+		}
 	</style>
 	
-	<script src="js/libs/handlebars-1.1.2.js"></script>
-	<script src="js/libs/ember-1.6.1.js"></script>
+	<script src="js/libs/handlebars-v1.3.0.js"></script>
+	<script src="js/libs/ember-1.7.0.js"></script>
 	<script src="js/app.js"></script>
 	<!-- to activate the test runner, add the "?test" query string parameter -->
 	<script src="tests/runner.js"></script>

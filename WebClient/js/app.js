@@ -11,69 +11,79 @@ openHelpModal = function(){
 $(document).on('click', '.ui.button#help', openHelpModal);
 
 App.Router.map(function() {
-	this.resource('pub');
-	this.resource('year', {path: '/pub/:pub_initials/year'}, function(){
-		this.resource('month', {path: '/:year_num/month'}, function(){
-			this.resource('issue', {path: '/:month_id/issue'}, function(){
-				this.resource('view', {path: '/:issue_id/page'}, function(){
-					this.resource('page', {path: '/:page_id'});
-				});
-			});
-		});
-	});
+	this.resource('pub', {path:'/pub'});
+	this.resource('year', {path: '/year'});
+	this.resource('month', {path: '/month'});
+	this.resource('issue', {path: '/issue'});
+	this.resource('view', {path: '/view'});
 });
 
 App.PubRoute = Ember.Route.extend({
-	backButton:true,
-	model: function(){
+	'backButton':true,
+	model: function(params){
 		return [{
 			'name':'John O Gauntlet',
-			'id':'JOG'
+			'pub_id':'JOG'
 			},{
 			'name':'Carolynne',
-			'id':'CAROL'
+			'pub_id':'CAROL'
 			},{
 			'name':'STEPS',
-			'id':'STEPS'
+			'pub_id':'STEPS'
 			}]
 	}
 });
 
+App.PubController = Ember.ArrayController.extend({
+	'backButton':true,
+	queryParams:['type'],
+	type:null
+});
+
 App.YearRoute = Ember.Route.extend({
-	backButton: true,
+	'backButton': true,
 	model: function(params){
 		var data = [{
-			'id':1965
+			'year_id':1965
 			},{
-			'id':1966
+			'year_id':1966
 			},{
-			'id':1967
+			'year_id':1967
 			},{
-			'id':1968
+			'year_id':1968
 			},{
-			'id':1969
+			'year_id':1969
 			},{
-			'id':1970
+			'year_id':1970
 			},{
-			'id':1971
+			'year_id':1971
 			},{
-			'id':1972
+			'year_id':1972
 			}]
 		while(data.length % 5 != 0){
 			data.push({'id':0, 'invisible':true})
 		}
 		return data;
+		},
+	renderTemplate: function(cont, mod){
+		this.render('year', {into: 'application'});
 	}
+});
+
+App.YearController = Ember.ArrayController.extend({
+	backButton: true,
+	queryParams:['pub'],
+	pub:null
 });
 
 App.MonthRoute = Ember.Route.extend({
 	backButton: true,
 	model: function(params){
-		return [{'id':'jan',
+		return [{'month_id':'jan',
 				'name':'January'},
-				{'id':'feb',
+				{'month_id':'feb',
 				'name':'February'},
-				{'id':'mar',
+				{'month_id':'mar',
 				'name':'March'}
 				]
 		},
@@ -82,30 +92,44 @@ App.MonthRoute = Ember.Route.extend({
 	}
 });
 
+App.MonthController = Ember.ArrayController.extend({
+	backButton:true,
+	queryParams:['pub', 'year'],
+	pub: null,
+	year: null
+});
+
 App.IssueRoute = Ember.Route.extend({
 	backButton: true,
 	model: function(params){
-		return [{'id':'0',
+		return [{'issue_id':'0',
 				'name':'12th'},
-				{'id':'1',
+				{'issue_id':'1',
 				'name':'21st'},
-				{'id':'2',
+				{'issue_id':'2',
 				'name':'23rd'}
 				]
 		},
-	renderTemplate: function(cont, mod){
-		this.render('issue', {into: 'application'});
-	}
+	//renderTemplate: function(cont, mod){
+	//	this.render('issue', {into: 'application'});
+	//}
+});
+
+App.IssueController = Ember.ArrayController.extend({
+	backButton:true,
+	queryParams:['pub', 'year', 'month'],
+	pub:null,
+	year:null,
+	month:null
 });
 
 App.ViewRoute = Ember.Route.extend({
 	backButton: true,
 	model: function(params){
-		console.log(params);
-		return {'src':'John O Gauntlet 03-0.jpg',
-				'id':0,
-				'next':1,
-				'prev':null
+		return {'img_src':'John O Gauntlet 03-0.jpg',
+				'page_id':0,
+				'page_next':1,
+				'page_prev':null
 			}
 		},
 	renderTemplate: function(cont, mod){
@@ -114,14 +138,23 @@ App.ViewRoute = Ember.Route.extend({
 	}
 });
 
+App.ViewController = Ember.Controller.extend({
+	backButton:true,
+	queryParams:['pub', 'year', 'month', 'issue', 'page'],
+	pub:null,
+	year:null,
+	month:null,
+	issue:null,
+	page:1
+});
+
 App.PageRoute = Ember.Route.extend({
 	backButton: true,
 	model: function(params){
-		console.log(params);
 		return {'src':'John O Gauntlet 04-4.jpg',
-				'id':1,
-				'next':2,
-				'prev':1
+				'page_id':1,
+				'page_next':2,
+				'page_prev':1
 			}
 		},
 	renderTemplate: function(cont, mod){
