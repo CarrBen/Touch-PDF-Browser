@@ -26,8 +26,10 @@ for path, dir, files in PDFs:
         continue
     pdf_in = os.path.join(path, files[0])
     relpath = os.path.relpath(path, INPUT_DIR)
+    issue_name = files[0].replace('.pdf', '')
+    relpath = os.path.join(relpath, issue_name.replace(' ','_'))
     jpg_out = os.path.join(OUTPUT_DIR, relpath,
-                           files[0].replace('.pdf', '.jpg'))
+                           '%d.jpg')
 
     #The directory we want to put the JPGs in
     needed_dir = os.path.join(OUTPUT_DIR, relpath)

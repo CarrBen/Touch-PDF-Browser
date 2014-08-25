@@ -40,13 +40,19 @@ for path, dir, files in os.walk(JPG_DIR):
             int(dir[0])
             id = 'year_id'
         except ValueError:
-            #Otherwise its a month
-            id = 'month_id'
+            #Otherwise its either a month or issue
+            if len(dir[0]) == 3:
+                id = 'month_id'
+            else:
+                id = 'issue_id'
         for d in dir:
             item_dict = {}
-            item_dict[id] = d
             if 'month' in id:
+                item_dict[id] = d
                 item_dict['name'] = MONTHS_DICT[d]
+            if 'issue' in id:
+                item_dict[id] = d.split('_')[-1]
+                item_dict['name'] = d.replace('_',' ')
             index_dict['data'].append(item_dict)
         with open(os.path.join(path, 'index.json'), 'w') as f:
             f.write('//Auto generated\n')
