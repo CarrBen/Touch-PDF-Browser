@@ -9,6 +9,20 @@ JPG_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/JPGs"
 MONTHS = calendar.month_name[1:]
 MONTHS_DICT = {mon[:3].lower():mon for mon in MONTHS}
 
+#Clean old auto generated index files
+for path, dir, files in os.walk(JPG_DIR):
+    remove = False
+    if len(files) > 0:
+        if 'index.json' in files:
+            with open(os.path.join(path, 'index.json'), 'r') as f:
+                line = f.readline()
+                if line == '//Auto generated\n':
+                    remove = True
+            if remove:
+                print('Removing %s' % os.path.join(path, 'index.json'))
+                os.remove(os.path.join(path, 'index.json'))
+
+#Write new index files
 for path, dir, files in os.walk(JPG_DIR):
     #If there are no files (only directories)
     #Or the only file present is expected (index.json or names.json)
@@ -34,7 +48,9 @@ for path, dir, files in os.walk(JPG_DIR):
             if 'month' in id:
                 item_dict['name'] = MONTHS_DICT[d]
             index_dict['data'].append(item_dict)
-        print(index_dict)
+        with open(os.path.join(path, 'index.json'), 'w') as f:
+            f.write('//Auto generated\n')
+            json.dump(index_dict, f)
             
         
         
