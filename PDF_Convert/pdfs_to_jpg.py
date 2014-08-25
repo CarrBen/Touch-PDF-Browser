@@ -1,11 +1,11 @@
 #Runs on Python 2.7.8, ImageMagick convert.exe on the System PATH
 #and Ghostscript with the bin and lib on the system path
 OUTPUT_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/JPGs"
-INPUT_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/PDFs"
+INPUT_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/PDFs_Sorted"
 
 IMAGE_MAGICK_PATH = "C:\Program Files\ImageMagick-6.8.9-Q16"
 
-JPG_QUALITY = 80
+JPG_QUALITY = 95
 CONVERT_CMD = "%s -density 300 -quality %d \"%s\" \"%s\""
 
 import subprocess
@@ -25,16 +25,30 @@ for path, dir, files in PDFs:
     if 'Image' in os.path.split(path)[1]:
         continue
     pdf_in = os.path.join(path, files[0])
-    jpg_out = os.path.join(OUTPUT_DIR, os.path.split(path)[1],
+    relpath = os.path.relpath(path, INPUT_DIR)
+    jpg_out = os.path.join(OUTPUT_DIR, relpath,
                            files[0].replace('.pdf', '.jpg'))
 
-    if not os.path.isdir(os.path.split(path)[1]):
-        os.mkdir(os.path.split(path)[1])
-    os.chdir(os.path.split(path)[1])
+    #The directory we want to put the JPGs in
+    needed_dir = os.path.join(OUTPUT_DIR, relpath)
+    #The directory we need to create next, this may be above the needed_dir
+    current_needed_dir = needed_dir
+    while not os.path.isdir(needed_dir):
+        try:
+            #Try and make the current_needed_dir and if we manage...
+            os.mkdir(current_needed_dir)
+            #Set the current_needed_dir to the needed_dir and try that
+            current_needed_dir = needed_dir
+        except:
+            #If we fail, its probably a windows error that means we need to
+            #create directories that come above the needed dir
+            current_needed_dir = os.path.split(current_needed_dir)[0]
+            
+    os.chdir(os.path.join(OUTPUT_DIR, relpath))
 
     print("Processing %s" % files[0])
     subprocess.call(CONVERT_CMD % (CONVERT, JPG_QUALITY, pdf_in, jpg_out),
                     startupinfo=STARTUP_INFO)
-    os.chdir('..')
+    os.chdir(OUTPUT_DIR)
 
 print("Done")

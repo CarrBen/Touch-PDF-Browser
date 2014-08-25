@@ -23,13 +23,13 @@ App.PubRoute = Ember.Route.extend({
 	model: function(params){
 		return [{
 			'name':'John O Gauntlet',
-			'pub_id':'JOG'
+			'pub_id':'jog'
 			},{
 			'name':'Carolynne',
-			'pub_id':'CAROL'
+			'pub_id':'carol'
 			},{
 			'name':'STEPS',
-			'pub_id':'STEPS'
+			'pub_id':'steps'
 			}]
 	}
 });
