@@ -49,28 +49,15 @@ App.YearRoute = Ember.Route.extend({
 		}
 	},
 	model: function(params){
-		var data = [{
-			'year_id':1965
-			},{
-			'year_id':1966
-			},{
-			'year_id':1967
-			},{
-			'year_id':1968
-			},{
-			'year_id':1969
-			},{
-			'year_id':1970
-			},{
-			'year_id':1971
-			},{
-			'year_id':1972
-			}]
-		while(data.length % 5 != 0){
-			data.push({'id':0, 'invisible':true})
-		}
-		return data;
-		}
+		return $.getJSON('../JPGs/'+params.pub+'/index.json').then(function(body){
+			console.log(body);
+			var data = body['data'];
+			while(data.length % 5 != 0){
+				data.push({'id':0, 'invisible':true})
+			}	
+			return data;
+		});
+	}
 });
 
 App.YearController = Ember.ArrayController.extend({
