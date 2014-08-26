@@ -180,7 +180,7 @@ App.ViewRoute = Ember.Route.extend({
 		},
 	renderTemplate: function(cont, mod){
 		this.render('view', {into: 'application'});
-		$('#viewImage').ready(startViewerSetup)
+		setTimeout(startViewerSetup, 250);
 	}
 });
 
