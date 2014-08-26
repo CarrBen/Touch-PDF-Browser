@@ -1,5 +1,7 @@
 App = Ember.Application.create();
 
+IMG_ROOT = '../JPGs/'
+
 openInfoModal = function(){
 	$('.modal.info').modal('show');
 };
@@ -49,8 +51,7 @@ App.YearRoute = Ember.Route.extend({
 		}
 	},
 	model: function(params){
-		return $.getJSON('../JPGs/'+params.pub+'/index.json').then(function(body){
-			console.log(body);
+		return $.getJSON(IMG_ROOT+params.pub+'/index.json').then(function(body){
 			var data = body['data'];
 			while(data.length % 5 != 0){
 				data.push({'id':0, 'invisible':true})
@@ -75,13 +76,9 @@ App.MonthRoute = Ember.Route.extend({
 		}
 	},
 	model: function(params){
-		return [{'month_id':'jan',
-				'name':'January'},
-				{'month_id':'feb',
-				'name':'February'},
-				{'month_id':'mar',
-				'name':'March'}
-				]
+		return $.getJSON(IMG_ROOT+params.pub+'/'+params.year+'/index.json').then(function(body){
+				return body['data'];
+			});
 		}
 });
 
