@@ -90,3 +90,7 @@ a.heightButton{
 	visibility: hidden;
 	-webkit-transform: translateZ(0);
 }
+
+.ui.month.button{
+	width: 210px;
+}

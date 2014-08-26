@@ -161,7 +161,7 @@
 					{{#each}}
 						<div class='ui column'>
 						{{#link-to 'issue' (query-params pub=controller.pub year=controller.year month=month_id)}}
-							<div {{bind-attr class=':ui :purple :massive invisible :button'}}>
+							<div {{bind-attr class=':ui :purple :massive invisible :month :button'}}>
 								{{name}}
 							</div>
 						{{/link-to}}
