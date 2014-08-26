@@ -77,7 +77,9 @@ App.MonthRoute = Ember.Route.extend({
 	},
 	model: function(params){
 		return $.getJSON(IMG_ROOT+params.pub+'/'+params.year+'/index.json').then(function(body){
-				return body['data'];
+				return body['data'].sort(function(a,b){
+					return a.order > b.order;
+				});
 			});
 		}
 });
