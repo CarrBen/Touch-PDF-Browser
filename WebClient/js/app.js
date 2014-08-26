@@ -4,7 +4,7 @@ IMG_ROOT = '../JPGs/'
 jsonIndexPath = function(params){
 	var url = IMG_ROOT;
 	for(param in params){
-		if(param == 'type'){
+		if(param == 'type' || param =='page'){
 			continue;
 		}
 		url += params[param];
@@ -174,11 +174,9 @@ App.ViewRoute = Ember.Route.extend({
 		}
 	},
 	model: function(params){
-		return {'img_src':'John O Gauntlet 03-0.jpg',
-				'page_id':0,
-				'page_next':1,
-				'page_prev':null
-			}
+		return $.getJSON(jsonIndexPath(params)).then(function(body){
+				return body['data'][params.page];
+			});
 		},
 	renderTemplate: function(cont, mod){
 		this.render('view', {into: 'application'});
@@ -193,7 +191,7 @@ App.ViewController = Ember.Controller.extend({
 	year:null,
 	month:null,
 	issue:null,
-	page:1,
+	page:0,
 	type:'browse',
 	actions:{
 		back:function(){
