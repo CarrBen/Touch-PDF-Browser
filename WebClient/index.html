@@ -203,12 +203,10 @@
 	<script type='text/x-handlebars' id='view'>
 		<img {{bind-attr src=model.img_src}} id='viewImage'></img>
 		{{#if model.next_page}}
-			{{#link-to 'view' (query-params pub=controller.pub year=controller.year month=controller.month issue=controller.issue page=model.next_page_id_) class='pageLink' id='next'}}
-			{{/link-to}}
+			<div {{action 'next'}} class='pageLink' id='next'></div>
 		{{/if}}
 		{{#if model.prev_page}}
-			{{#link-to 'view' (query-params pub=controller.pub year=controller.year month=controller.month issue=controller.issue page=model.prev_page_id_) class='pageLink' id='prev'}}
-			{{/link-to}}
+			<div {{action 'prev'}} class='pageLink' id='prev'></div>
 		{{/if}}
 		{{#if backButton}}
 			{{partial "backButton"}}

@@ -167,6 +167,11 @@ App.IssueController = Ember.ArrayController.extend({
 });
 
 App.ViewRoute = Ember.Route.extend({
+	queryParams: {
+		page: {
+			refreshModel: true
+		}
+	},
 	backButton: true,
 	beforeModel: function(trans){
 		if(!('issue' in trans.queryParams)){
@@ -197,6 +202,16 @@ App.ViewController = Ember.Controller.extend({
 		back:function(){
 			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
 			this.transitionToRoute('issue', {queryParams:queryParams});
+		},
+		next:function(){
+			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
+			queryParams['page'] = this.model['next_page_id_'];
+			this.transitionToRoute('view', {queryParams:queryParams});
+		},
+		prev:function(){
+			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
+			queryParams['page'] = this.model['prev_page_id_'];
+			this.transitionToRoute('view', {queryParams:queryParams});
 		}
 	}
 });

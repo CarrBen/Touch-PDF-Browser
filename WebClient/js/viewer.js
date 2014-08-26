@@ -3,6 +3,11 @@ var viewImageJQ = $('#viewImage')
 var viewImage = viewImageJQ[0]
 viewImage.JQ = viewImageJQ;
 var hammertime = Hammer(viewImage, {})
+var bodyHammertime = new Hammer.Manager(document.body, {
+						recognizers: [
+								[Hammer.Swipe,{ direction: Hammer.DIRECTION_HORIZONTAL}]
+							]
+						});
 
 var winWidth = window.innerWidth;
 var winHeight = window.innerHeight;
@@ -136,4 +141,17 @@ viewImage.pinchmove = function(){
 }
 
 hammertime.on('pinchmove', viewImage.pinchmove());
+
+pageSwipe = function(){
+	return function(ev){
+		if(ev.velocityX > 3){
+			$('#next.pageLink').click();
+		}
+		if(ev.velocityX < -3){
+			$('#prev.pageLink').click();
+		}
+	}
+}
+
+bodyHammertime.on('swipe', pageSwipe());
 } //End of setupViewer function
