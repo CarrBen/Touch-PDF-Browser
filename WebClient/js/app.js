@@ -142,7 +142,7 @@ App.IssueRoute = Ember.Route.extend({
 					this.transitionTo('view', {queryParams: trans.queryParams});
 				}
 				if(trans.router.state.handlerInfos[1].name == 'view' && model.length == 1){
-					trans.queryParams.remove('month');
+					delete trans.queryParams['month']
 					this.transitionTo('month', {queryParams: trans.queryParams});
 				}
 			}
