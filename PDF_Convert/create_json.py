@@ -84,14 +84,18 @@ for path, dir, files in os.walk(JPG_DIR):
                                                 img)
             item_dict['page_id'] = i
             if i < count - 1:
-                item_dict['next_page'] = i + 1
+                item_dict['next_page_id_'] = i + 1
+                item_dict['next_page'] = True
             else:
-                item_dict['next_page'] = None
+                item_dict['next_page_id_'] = None
+                item_dict['next_page'] = False
 
             if i > 0:
-                item_dict['prev_page'] = i - 1
+                item_dict['prev_page_id_'] = i - 1
+                item_dict['prev_page'] = True
             else:
-                item_dict['prev_page'] = None
+                item_dict['prev_page_id_'] = None
+                item_dict['prev_page'] = False
             index_dict['data'].append(item_dict)
                 
         with open(os.path.join(path, 'index.json'), 'w') as f:
