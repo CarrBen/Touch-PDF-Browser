@@ -51,7 +51,12 @@ App.PubRoute = Ember.Route.extend({
 App.PubController = Ember.ArrayController.extend({
 	'backButton':true,
 	queryParams:['type'],
-	type:null
+	type:null,
+	actions:{
+		back:function(){
+			this.transitionToRoute('/')
+		}
+	}
 });
 
 App.YearRoute = Ember.Route.extend({
@@ -77,7 +82,12 @@ App.YearController = Ember.ArrayController.extend({
 	backButton: true,
 	queryParams:['pub', 'type'],
 	pub:null,
-	type:'browse'
+	type:'browse',
+	actions:{
+		back:function(){
+			this.transitionToRoute('pub')
+		}
+	}
 });
 
 App.MonthRoute = Ember.Route.extend({
@@ -105,7 +115,12 @@ App.MonthController = Ember.ArrayController.extend({
 	queryParams:['pub', 'year', 'type'],
 	pub: null,
 	year: null,
-	type: 'browse'
+	type: 'browse',
+	actions:{
+		back:function(){
+			this.transitionToRoute('year')
+		}
+	}
 });
 
 App.IssueRoute = Ember.Route.extend({
@@ -140,7 +155,12 @@ App.IssueController = Ember.ArrayController.extend({
 	pub:null,
 	year:null,
 	month:null,
-	type: 'browse'
+	type: 'browse',
+	actions:{
+		back:function(){
+			this.transitionToRoute('month')
+		}
+	}
 });
 
 App.ViewRoute = Ember.Route.extend({
