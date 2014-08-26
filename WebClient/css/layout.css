@@ -1,7 +1,9 @@
-body{
+html, body{
 	font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif/*rtl:prepend:"Droid Arabic Kufi","Droid Sans", */;
 	margin: 0;
-	padding:0;
+	padding: 0;
+	height: 100%;
+	background-color: rgb(210,210,210);
 }
 
 i.chunkybutton {
@@ -35,8 +37,8 @@ div.chunkybuttontext {
 	font-size: 2.5em;
 }
 
-.ui.row.equal.height > .ui.column > .ui.button{
-	min-height: 95%
+.ui.row.equal.height > .ui.column > a > .ui.button{
+	height: 22vmin;
 }
 
 .ui.row.equal.height > .ui.column{
@@ -79,3 +81,12 @@ div.chunkybuttontext {
 	margin-right: -4.133px;
 }
 
+a.heightButton{
+	text-decoration: none;
+}
+
+#viewImage{
+	position: fixed;
+	visibility: hidden;
+	-webkit-transform: translateZ(0);
+}

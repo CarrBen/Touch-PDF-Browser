@@ -34,7 +34,7 @@
 	</script>
 	
 	<script type="text/x-handlebars" id="_backButton">
-		<div class='ui large purple icon button' id='back'>
+		<div {{action 'back'}} class='ui large purple icon button' id='back'>
 			<i class='big left icon'></i>
 		</div>
 	</script>
@@ -114,6 +114,9 @@
 	</script>
 	
 	<script type='text/x-handlebars' id='year'>
+		{{#if backButton}}
+			{{partial "backButton"}}
+		{{/if}}
 		<div class='ui middle aligned page grid'>
 			<div class='ui center aligned one column row'>
 				<div class='ui column'>
@@ -141,6 +144,9 @@
 	</script>
 	
 	<script type='text/x-handlebars' id='month'>
+		{{#if backButton}}
+			{{partial "backButton"}}
+		{{/if}}
 		<div class='ui middle aligned page grid'>
 			<div class='ui center aligned one column row'>
 				<div class='ui column'>
@@ -168,6 +174,9 @@
 	</script>
 	
 	<script type='text/x-handlebars' id='issue'>
+		{{#if backButton}}
+			{{partial "backButton"}}
+		{{/if}}
 		<div class='ui middle aligned page grid'>
 			<div class='ui center aligned one column row'>
 				<div class='ui column'>
@@ -195,6 +204,9 @@
 	</script>	
 	
 	<script type='text/x-handlebars' id='view'>
+		{{#if backButton}}
+			{{partial "backButton"}}
+		{{/if}}
 		<img {{bind-attr src=model.img_src}} id='viewImage'></img>
 	</script>	
 	
@@ -207,24 +219,7 @@
 
 	<script src='js/libs/hammer.js'></script>
 	<script src='js/viewer.js'></script>
-	
-	<style>
-		html, body{
-			margin: 0;
-			padding: 0;
-			height: 100%;
-			background-color: rgb(210,210,210);
-		}
-		
-		#viewImage{
-			position: fixed;
-			-webkit-transform: translateZ(0);
-		}
-		
-		a.heightButton{
-			min-height:100%;
-		}
-	</style>
+
 	
 	<script src="js/libs/handlebars-v1.3.0.js"></script>
 	<script src="js/libs/ember-1.7.0.js"></script>

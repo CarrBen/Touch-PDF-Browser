@@ -75,8 +75,9 @@ App.YearRoute = Ember.Route.extend({
 
 App.YearController = Ember.ArrayController.extend({
 	backButton: true,
-	queryParams:['pub'],
-	pub:null
+	queryParams:['pub', 'type'],
+	pub:null,
+	type:'browse'
 });
 
 App.MonthRoute = Ember.Route.extend({
@@ -99,9 +100,10 @@ App.MonthRoute = Ember.Route.extend({
 
 App.MonthController = Ember.ArrayController.extend({
 	backButton:true,
-	queryParams:['pub', 'year'],
+	queryParams:['pub', 'year', 'type'],
 	pub: null,
-	year: null
+	year: null,
+	type: 'browse'
 });
 
 App.IssueRoute = Ember.Route.extend({
@@ -119,15 +121,21 @@ App.IssueRoute = Ember.Route.extend({
 				{'issue_id':'2',
 				'name':'23rd'}
 				]
+		},
+	afterModel: function(model, trans, params){
+			if(trans.router.oldState){
+				console.log(trans.router.state.handlerInfos[1].name);
+			}
 		}
 });
 
 App.IssueController = Ember.ArrayController.extend({
 	backButton:true,
-	queryParams:['pub', 'year', 'month'],
+	queryParams:['pub', 'year', 'month', 'type'],
 	pub:null,
 	year:null,
-	month:null
+	month:null,
+	type: 'browse'
 });
 
 App.ViewRoute = Ember.Route.extend({
@@ -152,12 +160,18 @@ App.ViewRoute = Ember.Route.extend({
 
 App.ViewController = Ember.Controller.extend({
 	backButton:true,
-	queryParams:['pub', 'year', 'month', 'issue', 'page'],
+	queryParams:['pub', 'year', 'month', 'issue', 'page', 'type'],
 	pub:null,
 	year:null,
 	month:null,
 	issue:null,
-	page:1
+	page:1,
+	type:'browse',
+	actions:{
+		back:function(){
+			this.transitionToRoute('issue')
+		}
+	}
 });
 
 
@@ -171,5 +185,6 @@ function waitViewerSetup(ev){
 
 function doViewerSetup(ev){
 	setupViewer();
+	$('#viewImage').css('visibility', 'visible');
 }
 
