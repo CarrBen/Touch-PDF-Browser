@@ -40,9 +40,6 @@
 	</script>
 	
 	<script type='text/x-handlebars' id='index'>
-		{{#if backButton}}
-			{{partial "backButton"}}
-		{{/if}}
 		<div class='ui middle aligned stackable page grid'>
 			<div class='ui center aligned row'>
 				<div class='four wide column'>
@@ -75,9 +72,6 @@
 	</script>
 
 	<script type='text/x-handlebars' id='pub'>
-		{{#if backButton}}
-			{{partial "backButton"}}
-		{{/if}}
 		<div class='ui middle aligned stackable page grid'>
 			<div class='ui center aligned one column row'>
 				<div class='ui column'>
@@ -111,12 +105,12 @@
 				</div>  -->
 			</div>
 		</div>
-	</script>
-	
-	<script type='text/x-handlebars' id='year'>
 		{{#if backButton}}
 			{{partial "backButton"}}
 		{{/if}}
+	</script>
+	
+	<script type='text/x-handlebars' id='year'>
 		<div class='ui middle aligned page grid'>
 			<div class='ui center aligned one column row'>
 				<div class='ui column'>
@@ -141,12 +135,12 @@
 				</div>
 			</div>
 		</div>
-	</script>
-	
-	<script type='text/x-handlebars' id='month'>
 		{{#if backButton}}
 			{{partial "backButton"}}
 		{{/if}}
+	</script>
+	
+	<script type='text/x-handlebars' id='month'>
 		<div class='ui middle aligned page grid'>
 			<div class='ui center aligned one column row'>
 				<div class='ui column'>
@@ -171,12 +165,12 @@
 				</div>
 			</div>
 		</div>
-	</script>
-	
-	<script type='text/x-handlebars' id='issue'>
 		{{#if backButton}}
 			{{partial "backButton"}}
 		{{/if}}
+	</script>
+	
+	<script type='text/x-handlebars' id='issue'>
 		<div class='ui middle aligned page grid'>
 			<div class='ui center aligned one column row'>
 				<div class='ui column'>
@@ -201,12 +195,12 @@
 				</div>
 			</div>
 		</div>
-	</script>	
-	
-	<script type='text/x-handlebars' id='view'>
 		{{#if backButton}}
 			{{partial "backButton"}}
 		{{/if}}
+	</script>	
+	
+	<script type='text/x-handlebars' id='view'>
 		<img {{bind-attr src=model.img_src}} id='viewImage'></img>
 		{{#if model.next_page}}
 			{{#link-to 'view' (query-params pub=controller.pub year=controller.year month=controller.month issue=controller.issue page=model.next_page_id_) class='pageLink' id='next'}}
@@ -215,6 +209,9 @@
 		{{#if model.prev_page}}
 			{{#link-to 'view' (query-params pub=controller.pub year=controller.year month=controller.month issue=controller.issue page=model.prev_page_id_) class='pageLink' id='prev'}}
 			{{/link-to}}
+		{{/if}}
+		{{#if backButton}}
+			{{partial "backButton"}}
 		{{/if}}
 	</script>	
 	
