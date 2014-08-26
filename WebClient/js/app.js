@@ -85,7 +85,8 @@ App.YearController = Ember.ArrayController.extend({
 	type:'browse',
 	actions:{
 		back:function(){
-			this.transitionToRoute('pub')
+			var queryParams = {'pub':this.pub, 'type':this.type}
+			this.transitionToRoute('pub', {queryParams:queryParams});
 		}
 	}
 });
@@ -118,7 +119,8 @@ App.MonthController = Ember.ArrayController.extend({
 	type: 'browse',
 	actions:{
 		back:function(){
-			this.transitionToRoute('year')
+			var queryParams = {'pub':this.pub, 'year':this.year, 'type':this.type}
+			this.transitionToRoute('year', {queryParams:queryParams});
 		}
 	}
 });
@@ -158,7 +160,8 @@ App.IssueController = Ember.ArrayController.extend({
 	type: 'browse',
 	actions:{
 		back:function(){
-			this.transitionToRoute('month')
+			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'type':this.type}
+			this.transitionToRoute('month', {queryParams:queryParams});
 		}
 	}
 });
@@ -194,7 +197,8 @@ App.ViewController = Ember.Controller.extend({
 	type:'browse',
 	actions:{
 		back:function(){
-			this.transitionToRoute('issue')
+			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
+			this.transitionToRoute('issue', {queryParams:queryParams});
 		}
 	}
 });
