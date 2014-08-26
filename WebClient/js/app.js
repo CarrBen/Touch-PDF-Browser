@@ -1,6 +1,18 @@
 App = Ember.Application.create();
 
 IMG_ROOT = '../JPGs/'
+jsonIndexPath = function(params){
+	var url = IMG_ROOT;
+	for(param in params){
+		if(param == 'type'){
+			continue;
+		}
+		url += params[param];
+		url += '/';
+	}
+	url += 'index.json';
+	return url;
+}
 
 openInfoModal = function(){
 	$('.modal.info').modal('show');
@@ -51,7 +63,7 @@ App.YearRoute = Ember.Route.extend({
 		}
 	},
 	model: function(params){
-		return $.getJSON(IMG_ROOT+params.pub+'/index.json').then(function(body){
+		return $.getJSON(jsonIndexPath(params)).then(function(body){
 			var data = body['data'];
 			while(data.length % 5 != 0){
 				data.push({'id':0, 'invisible':true})
@@ -76,7 +88,7 @@ App.MonthRoute = Ember.Route.extend({
 		}
 	},
 	model: function(params){
-		return $.getJSON(IMG_ROOT+params.pub+'/'+params.year+'/index.json').then(function(body){
+		return $.getJSON(jsonIndexPath(params)).then(function(body){
 				var data = body['data'].sort(function(a,b){
 					return a.order > b.order;
 				});
@@ -104,7 +116,7 @@ App.IssueRoute = Ember.Route.extend({
 		}
 	},
 	model: function(params){
-		return $.getJSON(IMG_ROOT+params.pub+'/'+params.year+'/'+params.month+'/index.json').then(function(body){
+		return $.getJSON(jsonIndexPath(params)).then(function(body){
 				return body['data'];
 			});
 		},
