@@ -104,17 +104,20 @@ App.IssueRoute = Ember.Route.extend({
 		}
 	},
 	model: function(params){
-		return [{'issue_id':'0',
-				'name':'12th'},
-				{'issue_id':'1',
-				'name':'21st'},
-				{'issue_id':'2',
-				'name':'23rd'}
-				]
+		return $.getJSON(IMG_ROOT+params.pub+'/'+params.year+'/'+params.month+'/index.json').then(function(body){
+				return body['data'];
+			});
 		},
 	afterModel: function(model, trans, params){
 			if(trans.router.oldState){
-				console.log(trans.router.state.handlerInfos[1].name);
+				if(trans.router.state.handlerInfos[1].name == 'month' && model.length == 1){
+					trans.queryParams['issue'] = model[0]['issue_id'];
+					this.transitionTo('view', {queryParams: trans.queryParams});
+				}
+				if(trans.router.state.handlerInfos[1].name == 'view' && model.length == 1){
+					trans.queryParams.remove('month');
+					this.transitionTo('month', {queryParams: trans.queryParams});
+				}
 			}
 		}
 });
