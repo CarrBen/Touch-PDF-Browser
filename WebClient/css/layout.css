@@ -88,7 +88,7 @@ a.heightButton{
 #viewImage{
 	position: fixed;
 	visibility: hidden;
-	-webkit-transform: translateZ(0);
+	/*-webkit-transform: translateZ(0);*/
 }
 
 .ui.month.button{
