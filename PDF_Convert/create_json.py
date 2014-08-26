@@ -15,9 +15,13 @@ for path, dir, files in os.walk(JPG_DIR):
     if len(files) > 0:
         if 'index.json' in files:
             with open(os.path.join(path, 'index.json'), 'r') as f:
-                line = f.readline()
-                if line == '//Auto generated\n':
-                    remove = True
+                data = json.load(f)
+                try:
+                    if data['_auto_generated']:
+                        remove = True
+                except:
+                    pass
+                
             if remove:
                 print('Removing %s' % os.path.join(path, 'index.json'))
                 os.remove(os.path.join(path, 'index.json'))
@@ -49,6 +53,9 @@ for path, dir, files in os.walk(JPG_DIR):
                 
         for d in dir:
             item_dict = {}
+            if 'year' in id:
+                item_dict[id] = int(d)
+                
             if 'month' in id:
                 item_dict[id] = d
                 item_dict['name'] = MONTHS_DICT[d]
@@ -59,7 +66,7 @@ for path, dir, files in os.walk(JPG_DIR):
             index_dict['data'].append(item_dict)
             
         with open(os.path.join(path, 'index.json'), 'w') as f:
-            f.write('//Auto generated\n')
+            index_dict['_auto_generated'] = True
             json.dump(index_dict, f, indent=4)
 
 
