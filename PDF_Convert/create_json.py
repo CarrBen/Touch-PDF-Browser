@@ -5,6 +5,7 @@ import json
 import calendar
 
 JPG_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/JPGs"
+IMG_ROOT = "../JPGs/"
 #This assumes English locale
 MONTHS = calendar.month_name[1:]
 MONTHS_DICT = {mon[:3].lower():mon for mon in MONTHS}
@@ -63,7 +64,7 @@ for path, dir, files in os.walk(JPG_DIR):
                 item_dict['order'] = MONTHS.index(item_dict['name'])
                 
             if 'issue' in id:
-                item_dict[id] = d.split('_')[-1]
+                item_dict[id] = d
                 item_dict['name'] = d.replace('_',' ')
             index_dict['data'].append(item_dict)
             
@@ -78,8 +79,9 @@ for path, dir, files in os.walk(JPG_DIR):
         count = len(files)
         for i, img in enumerate(files):
             item_dict = {}
-            item_dict['src'] = os.path.join(os.path.relpath(path, JPG_DIR),
-                                            img)
+            item_dict['img_src'] = os.path.join(IMG_ROOT,
+                                                os.path.relpath(path, JPG_DIR),
+                                                img)
             item_dict['page_id'] = i
             if i < count - 1:
                 item_dict['next_page'] = i + 1
