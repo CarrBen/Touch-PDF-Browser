@@ -24,33 +24,36 @@ for path, dir, files in PDFs:
         continue
     if 'Image' in os.path.split(path)[1]:
         continue
-    pdf_in = os.path.join(path, files[0])
-    relpath = os.path.relpath(path, INPUT_DIR)
-    issue_name = files[0].replace('.pdf', '')
-    relpath = os.path.join(relpath, issue_name.replace(' ','_'))
-    jpg_out = os.path.join(OUTPUT_DIR, relpath,
-                           '%d.jpg')
+    for file in files:
+        if '.pdf' not in file[-5:]:
+            continue
+        pdf_in = os.path.join(path, file)
+        relpath = os.path.relpath(path, INPUT_DIR)
+        issue_name = file.replace('.pdf', '')
+        relpath = os.path.join(relpath, issue_name.replace(' ','_'))
+        jpg_out = os.path.join(OUTPUT_DIR, relpath,
+                               '%d.jpg')
 
-    #The directory we want to put the JPGs in
-    needed_dir = os.path.join(OUTPUT_DIR, relpath)
-    #The directory we need to create next, this may be above the needed_dir
-    current_needed_dir = needed_dir
-    while not os.path.isdir(needed_dir):
-        try:
-            #Try and make the current_needed_dir and if we manage...
-            os.mkdir(current_needed_dir)
-            #Set the current_needed_dir to the needed_dir and try that
-            current_needed_dir = needed_dir
-        except:
-            #If we fail, its probably a windows error that means we need to
-            #create directories that come above the needed dir
-            current_needed_dir = os.path.split(current_needed_dir)[0]
-            
-    os.chdir(os.path.join(OUTPUT_DIR, relpath))
+        #The directory we want to put the JPGs in
+        needed_dir = os.path.join(OUTPUT_DIR, relpath)
+        #The directory we need to create next, this may be above the needed_dir
+        current_needed_dir = needed_dir
+        while not os.path.isdir(needed_dir):
+            try:
+                #Try and make the current_needed_dir and if we manage...
+                os.mkdir(current_needed_dir)
+                #Set the current_needed_dir to the needed_dir and try that
+                current_needed_dir = needed_dir
+            except:
+                #If we fail, its probably a windows error that means we need to
+                #create directories that come above the needed dir
+                current_needed_dir = os.path.split(current_needed_dir)[0]
+                
+        os.chdir(os.path.join(OUTPUT_DIR, relpath))
 
-    print("Processing %s" % files[0])
-    subprocess.call(CONVERT_CMD % (CONVERT, JPG_QUALITY, pdf_in, jpg_out),
-                    startupinfo=STARTUP_INFO)
-    os.chdir(OUTPUT_DIR)
+        print("Processing %s" % file)
+        subprocess.call(CONVERT_CMD % (CONVERT, JPG_QUALITY, pdf_in, jpg_out),
+                        startupinfo=STARTUP_INFO)
+        os.chdir(OUTPUT_DIR)
 
 print("Done")
