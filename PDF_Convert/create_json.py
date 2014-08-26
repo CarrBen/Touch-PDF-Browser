@@ -67,10 +67,10 @@ for path, dir, files in os.walk(JPG_DIR):
         #We are doing the pages of an issue
         index_dict = {'data':[]}
         count = len(files)
-        for i, img in files:
+        for i, img in enumerate(files):
             item_dict = {}
             item_dict['src'] = os.path.join(os.path.relpath(path, JPG_DIR),
-                                            image)
+                                            img)
             item_dict['page_id'] = i
             if i < count - 1:
                 item_dict['next_page'] = i + 1
@@ -81,6 +81,7 @@ for path, dir, files in os.walk(JPG_DIR):
                 item_dict['prev_page'] = i - 1
             else:
                 item_dict['prev_page'] = None
+            index_dict['data'].append(item_dict)
                 
         with open(os.path.join(path, 'index.json'), 'w') as f:
             f.write('//Auto generated\n')
