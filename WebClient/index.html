@@ -201,24 +201,25 @@
 	</script>	
 	
 	<script type='text/x-handlebars' id='view'>
-		<img {{bind-attr src=model.img_src}} id='viewImage'></img>
-		{{#if model.next_page}}
-			<div {{action 'next'}} class='ui huge purple icon button' id='next'>
-				<i class='ui big forward mail icon'></i>
-			</div>
-		{{/if}}
-		{{#if model.prev_page}}
-			<div {{action 'prev'}} class='ui huge purple icon button' id='prev'>
-				<i class='ui big reply mail icon'></i>
-			</div>
-		{{/if}}
+		<div id='imageStage'>
+		
+		</div>
+	
+		<div {{action 'next'}} class='ui huge purple invisible icon button' id='next'>
+			<i class='ui big forward mail icon'></i>
+		</div>
+
+		<div {{action 'prev'}} class='ui huge purple invisible icon button' id='prev'>
+			<i class='ui big reply mail icon'></i>
+		</div>
+
 		{{#if backButton}}
 			{{partial "backButton"}}
 		{{/if}}
 		<div id='issueInfoWrapper'>
 			<div class='ui inverted purple segment' id='issueInfo'>
 				<div class='ui header'>
-					John O Gauntlet 05
+					{{model.name}}
 				</div>
 			</div>
 		</div>

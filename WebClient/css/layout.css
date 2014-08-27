@@ -118,3 +118,9 @@ a.heightButton{
 	bottom: -6px;
 	width: 100%
 }
+
+#imageStage{
+	position:fixed;
+	width: 100vw;
+	height: 100vh;
+}
