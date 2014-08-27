@@ -94,3 +94,15 @@ a.heightButton{
 .ui.month.button{
 	width: 210px;
 }
+
+.ui.button#next{
+	position: fixed;
+	right: 20px;
+	top: 75%;
+}
+
+.ui.button#prev{
+	position: fixed;
+	left: 20px;
+	top: 75%;
+}

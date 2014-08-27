@@ -203,10 +203,14 @@
 	<script type='text/x-handlebars' id='view'>
 		<img {{bind-attr src=model.img_src}} id='viewImage'></img>
 		{{#if model.next_page}}
-			<div {{action 'next'}} class='pageLink' id='next'></div>
+			<div {{action 'next'}} class='ui huge purple icon button' id='next'>
+				<i class='ui big forward mail icon'></i>
+			</div>
 		{{/if}}
 		{{#if model.prev_page}}
-			<div {{action 'prev'}} class='pageLink' id='prev'></div>
+			<div {{action 'prev'}} class='ui huge purple icon button' id='prev'>
+				<i class='ui big reply mail icon'></i>
+			</div>
 		{{/if}}
 		{{#if backButton}}
 			{{partial "backButton"}}
