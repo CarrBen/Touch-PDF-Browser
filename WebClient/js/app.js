@@ -183,7 +183,7 @@ App.ViewRoute = Ember.Route.extend({
 				return body['data'];
 			});
 		},
-	renderTemplate: function(cont, mod){
+	renderTemplate: function(controller, model){
 		this.render('view', {into: 'application'});
 		setTimeout(startViewerSetup, 250);
 	}

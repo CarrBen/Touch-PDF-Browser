@@ -4,3 +4,6 @@ PDF_Text_Extract/Scripts/
 JPGs/
 PDFs/
 PDFs_Sorted/
+Solr/
+.SyncID
+.SyncIgnore
