@@ -1,11 +1,12 @@
 #Runs on Python 2.7.8, ImageMagick convert.exe on the System PATH
 #and Ghostscript with the bin and lib on the system path
-OUTPUT_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/JPGs"
+#OUTPUT_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/JPGs"
+OUTPUT_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/demo/JPGs"
 INPUT_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/PDFs_Sorted"
 
 IMAGE_MAGICK_PATH = "C:\Program Files\ImageMagick-6.8.9-Q16"
 
-JPG_QUALITY = 95
+JPG_QUALITY = 75
 CONVERT_CMD = "%s -density 300 -quality %d \"%s\" \"%s\""
 
 import subprocess
