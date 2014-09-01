@@ -130,8 +130,8 @@ hammertime.on('pinch', viewImage.pinch());
 viewImage.pinchmove = function(){
 	var that = this;
 	return function(ev){
-		that.pinch()(ev);
 		that.pan()(ev);
+		that.pinch()(ev);
 	}
 }
 
