@@ -5,5 +5,10 @@ JPGs/
 PDFs/
 PDFs_Sorted/
 Solr/
+<<<<<<< HEAD
 .SyncIgnore
 .SyncID
+=======
+.SyncID
+.SyncIgnore
+>>>>>>> 1c85fc684e0deff58e755bce72ccbb4fdd413b1b
