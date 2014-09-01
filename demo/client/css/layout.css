@@ -1,0 +1,120 @@
+html, body{
+	font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif/*rtl:prepend:"Droid Arabic Kufi","Droid Sans", */;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	background-color: rgb(240,240,240);
+}
+
+i.chunkybutton {
+	margin: 0 0 0 0 !important;
+	margin-right: 0 !important;
+	margin-left: 0 !important;
+}
+
+i.chunkybutton.search {
+	padding-left: 0.195em;
+	padding-right: 0.195em;
+}
+
+.ui.jumbo.button {
+	font-size: 3vmin;
+	border-radius: 0.5em;
+}
+
+.ui.huge.button{
+	font-size: 2vmin;
+	border-radius: 0.3em;
+}
+
+.ui.expanding.header{
+	font-size: 6vmin;
+	margin-top: 2em;
+	margin-bottom: 1.5em;
+}
+
+div.chunkybuttontext {
+	font-size: 2.5em;
+}
+
+.ui.row.equal.height > .ui.column > a > .ui.button{
+	height: 22vmin;
+}
+
+.ui.row.equal.height > .ui.column{
+	height: 100%;
+}
+
+.ui.button.massive{
+	margin-bottom: 2em;
+}
+
+.ui.button.invisible{
+	visibility: hidden;
+}
+
+.ui.button#back{
+	position: fixed;
+	top: 16px;
+	left: 16px;
+}
+
+.ui.button#help{
+	position: fixed;
+	bottom: 16px;
+	right: 97px;
+}
+
+.ui.button#help > .question.icon{
+	margin-left: -4.133px;
+	margin-right: -4.133px;
+}
+
+.ui.button#info{
+	position: fixed;
+	bottom: 16px;
+	right: 16px;
+}
+
+.ui.button#info > .info.letter.icon{
+	margin-left: -4.133px;
+	margin-right: -4.133px;
+}
+
+a.heightButton{
+	text-decoration: none;
+}
+
+#viewImage{
+	position: fixed;
+	visibility: hidden;
+	/*-webkit-transform: translateZ(0);*/
+}
+
+.ui.month.button{
+	width: 210px;
+}
+
+.ui.button#next{
+	position: fixed;
+	right: 20px;
+	top: 75%;
+}
+
+.ui.button#prev{
+	position: fixed;
+	left: 20px;
+	top: 75%;
+}
+
+.ui.segment#issueInfo{
+	width: 350px;
+	margin: auto;
+	text-align: center;
+}
+
+#issueInfoWrapper{
+	position: fixed;
+	bottom: -6px;
+	width: 100%
+}
