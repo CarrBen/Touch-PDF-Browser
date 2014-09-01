@@ -1,0 +1,45 @@
+{
+    "data": [
+        {
+            "next_page_id_": 1,
+            "prev_page_id_": null,
+            "next_page": true,
+            "prev_page": false,
+            "page_id": 0,
+            "img_src": "../JPGs/jog\\1965\\dec\\John_O_Gauntlet_11\\0.jpg"
+        },
+        {
+            "next_page_id_": 2,
+            "prev_page_id_": 0,
+            "next_page": true,
+            "prev_page": true,
+            "page_id": 1,
+            "img_src": "../JPGs/jog\\1965\\dec\\John_O_Gauntlet_11\\1.jpg"
+        },
+        {
+            "next_page_id_": 3,
+            "prev_page_id_": 1,
+            "next_page": true,
+            "prev_page": true,
+            "page_id": 2,
+            "img_src": "../JPGs/jog\\1965\\dec\\John_O_Gauntlet_11\\2.jpg"
+        },
+        {
+            "next_page_id_": 4,
+            "prev_page_id_": 2,
+            "next_page": true,
+            "prev_page": true,
+            "page_id": 3,
+            "img_src": "../JPGs/jog\\1965\\dec\\John_O_Gauntlet_11\\3.jpg"
+        },
+        {
+            "next_page_id_": null,
+            "prev_page_id_": 3,
+            "next_page": false,
+            "prev_page": true,
+            "page_id": 4,
+            "img_src": "../JPGs/jog\\1965\\dec\\John_O_Gauntlet_11\\4.jpg"
+        }
+    ],
+    "_auto_generated": true
+}
