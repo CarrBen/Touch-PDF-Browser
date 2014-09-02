@@ -185,7 +185,14 @@ App.ViewRoute = Ember.Route.extend({
 		},
 	renderTemplate: function(controller, model){
 		this.render('view', {into: 'application'});
-		setTimeout(startViewerSetup, 250);
+		DocumentViewer.set_data(model, controller.page);
+	}
+});
+
+//WHYY
+App.ViewView = Ember.View.extend({
+	didInsertElement:function(){
+		DocumentViewer.setup();
 	}
 });
 
@@ -205,28 +212,15 @@ App.ViewController = Ember.Controller.extend({
 		},
 		next:function(){
 			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
-			queryParams['page'] = this.model['next_page_id_'];
+			queryParams['page'] = DocumentViewer.current_page + 1;
 			this.transitionToRoute('view', {queryParams:queryParams});
+			DocumentViewer.next_page();
 		},
 		prev:function(){
 			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
-			queryParams['page'] = this.model['prev_page_id_'];
+			queryParams['page'] = DocumentViewer.current_page - 1;
 			this.transitionToRoute('view', {queryParams:queryParams});
+			DocumentViewer.prev_page();
 		}
 	}
 });
-
-
-function startViewerSetup(ev){
-	window.requestAnimationFrame(waitViewerSetup);
-}
-
-function waitViewerSetup(ev){
-	window.requestAnimationFrame(doViewerSetup);
-}
-
-function doViewerSetup(ev){
-	setupViewer();
-	$('#viewImage').css('visibility', 'visible');
-}
-
