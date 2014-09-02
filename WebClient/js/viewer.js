@@ -44,8 +44,8 @@ DocumentViewer.reset_image_scale = function(index){
 	
 	if(widthRatio >= heightRatio){
 		var ratio = (window.innerWidth - 24)/img.naturalWidth;
-		img.removeAttribute('height');
 		img.width = window.innerWidth - 24;
+		img.height = img.naturalHeight * ratio;
 		
 		img.scale = ratio;
 		img.minScale = ratio;
@@ -58,7 +58,7 @@ DocumentViewer.reset_image_scale = function(index){
 		this.set_image_pos(index, left, top);
 	}else{
 		var ratio = (window.innerHeight - 24)/img.naturalHeight;
-		img.removeAttribute('width');
+		img.width = img.naturalWidth * ratio;
 		img.height = window.innerHeight - 24;
 		
 		img.scale = ratio;
