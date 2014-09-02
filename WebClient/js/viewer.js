@@ -267,40 +267,81 @@ DocumentViewer.setup_mouse = function(){
 	var stage = this.stage[0];
 	
 	stage.addEventListener('wheel', this.mouse_scroll());
+	
+	stage.addEventListener('mousedown', this.mouse_mousedown(), true);
+	stage.addEventListener('mousemove', this.mouse_mousemove(), true);
+	stage.addEventListener('mouseup', this.mouse_mouseup(), true);
 }
 
 DocumentViewer.mouse_mousedown = function(){
 	var that = this;
-	return function(){
-		
+	return function(ev){
+		that.mouse_startX = ev.pageX;
+		that.mouse_startY = ev.pageY;
+
+		that.mouse_ispressed = true;
+		ev.cancelBubble = true;
+		return false;
 	}
 }
 
 DocumentViewer.mouse_mousemove = function(){
 	var that = this;
 	return function(ev){
-	
+		ev.cancelBubble = true;
+		var x = ev.pageX;
+		var y = ev.pageY;
+		var dx = x - that.mouse_startX;
+		var dy = y - that.mouse_startY;
+		if(that.mouse_ispressed && dx*dx + dy*dy > 15 && !(that.mouse_isdragging)){
+			that.mouse_isdragging = true;
+			that.mouse_dragstart()(ev);
+		}
+		if(that.mouse_ispressed && that.mouse_isdragging){
+			that.mouse_drag()(ev);
+		}
+
+		return false;
 	}
 }
 
-DocumentViewer.mouse_mousedown = function(){
+DocumentViewer.mouse_mouseup = function(){
 	var that = this;
 	return function(ev){
-	
+		that.mouse_ispressed = false;
+		that.mouse_isdragging = false;
+		ev.cancelBubble = true;
+		return false;
 	}
 }
 
 DocumentViewer.mouse_dragstart = function(){
 	var that = this;
 	return function(ev){
-		
+		var x = ev.pageX;
+		var y = ev.pageY;
+		var dx = x - that.mouse_startX;
+		var dy = y - that.mouse_startY;
+		obj = {center: {x:x, y:y},
+			deltaX: dx,
+			deltaY: dy
+		}
+		that.hammer_panstart()(obj);
 	}
 }
 
 DocumentViewer.mouse_drag = function(){
 	var that = this;
 	return function(ev){
-		
+		var x = ev.pageX;
+		var y = ev.pageY;
+		var dx = x - that.mouse_startX;
+		var dy = y - that.mouse_startY;
+		obj = {center: {x:x, y:y},
+			deltaX: dx,
+			deltaY: dy
+		}
+		that.hammer_pan()(obj);
 	}
 }
 

@@ -129,4 +129,5 @@ a.heightButton{
 
 img.document_page{
 	position: absolute;
+	-webkit-user-drag: none;
 }
