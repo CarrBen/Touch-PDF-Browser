@@ -11,11 +11,12 @@ DocumentViewer.setup = function(){
 	this.scroller = $('#imageScroller');
 	this.next = $('#next');
 	this.prev = $('#prev');
+	this.change_page_immediate(this.current_page);
 	this.create_images(this.data);
 	this.show_hide_page_buttons();
 	this.scale_animated_page_index = this.current_page;
-	this.change_page(this.current_page);
 	this.setup_hammer();
+	this.setup_mouse();
 }
 
 DocumentViewer.create_images = function(data_model){
@@ -128,6 +129,12 @@ DocumentViewer.change_page = function(new_index){
 	}, 750);
 }
 
+DocumentViewer.change_page_immediate = function(new_index){
+	var that = this;
+	that.show_hide_page_buttons();
+	that.scroller.css('left', -new_index * window.innerWidth);
+}
+
 DocumentViewer.enable_scale_animation = function(index, time){
 	//TODO: Perhaps check if already set?
 	this.scale_animated_page_index = index;
@@ -173,6 +180,7 @@ DocumentViewer.hammer_doubletap = function(){
 		setTimeout(function(){
 			that.disable_scale_animation();
 		}, 750);
+		return false;
 	}
 }
 
@@ -183,6 +191,7 @@ DocumentViewer.hammer_panstart = function(){
 
 		that.startTop = pos.top;
 		that.startLeft = pos.left;
+		return false;
 	}
 }
 
@@ -200,6 +209,7 @@ DocumentViewer.hammer_pan = function(){
 		left = Math.max(left, -img.horizontalLimit + window.innerWidth - img.scale * img.naturalWidth);
 		
 		that.set_image_pos(that.current_page, left, top);
+		return false;
 	}
 }
 
@@ -212,6 +222,7 @@ DocumentViewer.hammer_pinchstart = function(){
 		var pos = that.get_image_pos(that.current_page);
 		that.startTop = pos.top;
 		that.startLeft = pos.left;
+		return false;
 	}
 }
 
@@ -238,6 +249,7 @@ DocumentViewer.hammer_pinch = function(){
 		left = Math.max(left, -img.horizontalLimit + window.innerWidth - img.scale * img.naturalWidth)
 
 		that.set_image_pos(that.current_page, left, top);
+		return false;
 	}
 }
 
@@ -247,5 +259,70 @@ DocumentViewer.hammer_pinchmove = function(){
 	return function(ev){
 		that.hammer_pan()(ev);
 		that.hammer_pinch()(ev);
+		return false;
+	}
+}
+
+DocumentViewer.setup_mouse = function(){
+	var stage = this.stage[0];
+	
+	stage.addEventListener('wheel', this.mouse_scroll());
+}
+
+DocumentViewer.mouse_mousedown = function(){
+	var that = this;
+	return function(){
+		
+	}
+}
+
+DocumentViewer.mouse_mousemove = function(){
+	var that = this;
+	return function(ev){
+	
+	}
+}
+
+DocumentViewer.mouse_mousedown = function(){
+	var that = this;
+	return function(ev){
+	
+	}
+}
+
+DocumentViewer.mouse_dragstart = function(){
+	var that = this;
+	return function(ev){
+		
+	}
+}
+
+DocumentViewer.mouse_drag = function(){
+	var that = this;
+	return function(ev){
+		
+	}
+}
+
+DocumentViewer.mouse_scroll = function(){
+	var that = this;
+	return function(ev){
+		var s = 1;
+		if(ev.wheelDeltaY > 0){
+			s = 1.1;
+		}else{
+			s = 1/1.1;
+		}
+		that.enable_scale_animation(that.current_page, '100ms');
+		that.hammer_pinchstart()(ev);
+		obj = {
+			center:{x:ev.pageX, y:ev.pageY},
+			scale: s
+		}
+		that.hammer_pinch()(obj);
+		setTimeout(function(){
+			that.disable_scale_animation();
+		}, 250);
+		return false;
 	}
 }
