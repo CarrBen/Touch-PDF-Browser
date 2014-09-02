@@ -13,6 +13,7 @@ DocumentViewer.setup = function(){
 	this.prev = $('#prev');
 	this.create_images(this.data);
 	this.show_hide_page_buttons();
+	this.scale_animated_page_index = this.current_page;
 	this.change_page(this.current_page);
 	this.setup_hammer();
 }
@@ -103,14 +104,14 @@ DocumentViewer.show_hide_page_buttons = function(){
 }
 
 DocumentViewer.next_page = function(){
-	this.enable_scale_animation(this.current_page);
+	this.enable_scale_animation(this.current_page, '300ms');
 	this.reset_image_scale(this.current_page);
 	this.current_page += 1;
 	this.change_page(this.current_page);
 }
 
 DocumentViewer.prev_page = function(){
-	this.enable_scale_animation(this.current_page);
+	this.enable_scale_animation(this.current_page, '300ms');
 	this.reset_image_scale(this.current_page);
 	this.current_page -= 1;
 	this.change_page(this.current_page);
@@ -118,21 +119,20 @@ DocumentViewer.prev_page = function(){
 
 DocumentViewer.change_page = function(new_index){
 	var that = this;
+	that.show_hide_page_buttons();
 	setTimeout(function(){
 		that.scroller.css('left', -new_index * window.innerWidth);
 	}, 150);
 	setTimeout(function(){
-		that.show_hide_page_buttons();
 		that.disable_scale_animation();
 	}, 750);
 }
 
-DocumentViewer.enable_scale_animation = function(index){
+DocumentViewer.enable_scale_animation = function(index, time){
 	//TODO: Perhaps check if already set?
-	console.log(this);
 	this.scale_animated_page_index = index;
 	var img = this.pages[index];
-	img.style.webkitTransition = 'left 300ms, top 300ms, width 300ms, height 300ms';
+	img.style.webkitTransition = 'left '+time+', top '+time+', width '+time+', height '+time;
 }
 
 DocumentViewer.disable_scale_animation = function(){
@@ -163,17 +163,16 @@ DocumentViewer.setup_hammer = function(){
 DocumentViewer.hammer_doubletap = function(){
 	var that = this;
 	return function(ev){
+		that.enable_scale_animation(that.current_page, '750ms');
 		that.hammer_pinchstart()(ev);
-		$({n:0}).animate({n:1}, {progress:
-			function(animate, n, ms){
-				obj = {
-					center:{x:ev.center.x, y:ev.center.y},
-					scale: 1 + n
-				}
-				that.hammer_pinch()(obj);
-			},
-		duration: 200,
-		easing: 'linear'});
+		obj = {
+			center:{x:ev.center.x, y:ev.center.y},
+			scale: 2
+		}
+		that.hammer_pinch()(obj);
+		setTimeout(function(){
+			that.disable_scale_animation();
+		}, 750);
 	}
 }
 
