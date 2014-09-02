@@ -103,21 +103,43 @@ DocumentViewer.show_hide_page_buttons = function(){
 }
 
 DocumentViewer.next_page = function(){
+	this.enable_scale_animation(this.current_page);
 	this.reset_image_scale(this.current_page);
 	this.current_page += 1;
-	this.show_hide_page_buttons();
 	this.change_page(this.current_page);
 }
 
 DocumentViewer.prev_page = function(){
+	this.enable_scale_animation(this.current_page);
 	this.reset_image_scale(this.current_page);
 	this.current_page -= 1;
-	this.show_hide_page_buttons();
 	this.change_page(this.current_page);
 }
 
 DocumentViewer.change_page = function(new_index){
-	this.scroller.css('left', -new_index * window.innerWidth);
+	var that = this;
+	setTimeout(function(){
+		that.scroller.css('left', -new_index * window.innerWidth);
+	}, 150);
+	setTimeout(function(){
+		that.show_hide_page_buttons();
+		that.disable_scale_animation();
+	}, 750);
+}
+
+DocumentViewer.enable_scale_animation = function(index){
+	//TODO: Perhaps check if already set?
+	console.log(this);
+	this.scale_animated_page_index = index;
+	var img = this.pages[index];
+	img.style.webkitTransition = 'left 300ms, top 300ms, width 300ms, height 300ms';
+}
+
+DocumentViewer.disable_scale_animation = function(){
+	//TODO: Check if actually set
+	var img = this.pages[this.scale_animated_page_index]
+	img.style.webkitTransition = '';
+	this.scale_animated_page_index = null;
 }
 
 DocumentViewer.setup_hammer = function(){
