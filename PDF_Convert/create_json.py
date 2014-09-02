@@ -1,6 +1,7 @@
 #Runs on Python 2.7.8
 import os
 import os.path
+import posixpath
 import json
 import calendar
 
@@ -81,9 +82,14 @@ for path, dir, files in os.walk(JPG_DIR):
         index_dict['data']['name'] = os.path.split(path)[1].replace('_',' ')
         count = len(files)
         for i, img in enumerate(files):
-            index_dict['data']['pages'].append(os.path.join(IMG_ROOT,
-                                                os.path.relpath(path, JPG_DIR),
-                                                img))
+            #posixpaths are urls like, os.path.join on Windows uses \\, need /
+            index_dict['data']['pages'].append(
+                    posixpath.join(
+                        IMG_ROOT,
+                        os.path.relpath(path, JPG_DIR),
+                        img
+                    ).replace('\\','/')
+                )
                 
         with open(os.path.join(path, 'index.json'), 'w') as f:
             index_dict['_auto_generated'] = True
