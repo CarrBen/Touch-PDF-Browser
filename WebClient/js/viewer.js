@@ -141,14 +141,14 @@ DocumentViewer.setup_hammer = function(){
 DocumentViewer.hammer_doubletap = function(){
 	var that = this;
 	return function(ev){
-		that.pinchstart()(ev);
+		that.hammer_pinchstart()(ev);
 		$({n:0}).animate({n:1}, {progress:
 			function(animate, n, ms){
 				obj = {
 					center:{x:ev.center.x, y:ev.center.y},
 					scale: 1 + n
 				}
-				that.pinch()(obj);
+				that.hammer_pinch()(obj);
 			},
 		duration: 200,
 		easing: 'linear'});
