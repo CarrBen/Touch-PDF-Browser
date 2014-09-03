@@ -208,6 +208,8 @@ DocumentViewer.hammer_pan = function(){
 		left = Math.min(left, img.horizontalLimit);
 		left = Math.max(left, -img.horizontalLimit + window.innerWidth - img.scale * img.naturalWidth);
 		
+		console.log('Pan:');
+		console.log(left, top);
 		that.set_image_pos(that.current_page, left, top);
 		return false;
 	}
@@ -220,8 +222,8 @@ DocumentViewer.hammer_pinchstart = function(){
 		img.startScale = img.scale;
 		
 		var pos = that.get_image_pos(that.current_page);
-		that.startTop = pos.top;
-		that.startLeft = pos.left;
+		that.startPinchTop = pos.top;
+		that.startPinchLeft = pos.left;
 		return false;
 	}
 }
@@ -238,12 +240,12 @@ DocumentViewer.hammer_pinch = function(){
 		img.height = img.scale * img.naturalHeight;
 		img.width = img.scale * img.naturalWidth;
 
-		var topDiff = (ev.center.y - that.startTop) * img.scale / img.startScale;
+		var topDiff = (ev.center.y - that.startPinchTop) * img.scale / img.startScale;
 		var top = ev.center.y - topDiff;
 		top = Math.min(top, img.verticalLimit);
 		top = Math.max(top, -img.verticalLimit + window.innerHeight - img.scale * img.naturalHeight)
 		
-		var leftDiff = (ev.center.x - that.startLeft) * img.scale / img.startScale;
+		var leftDiff = (ev.center.x - that.startPinchLeft) * img.scale / img.startScale;
 		var left = ev.center.x - leftDiff;
 		left = Math.min(left, img.horizontalLimit);
 		left = Math.max(left, -img.horizontalLimit + window.innerWidth - img.scale * img.naturalWidth)
@@ -293,7 +295,7 @@ DocumentViewer.mouse_mousemove = function(){
 		var y = ev.pageY;
 		var dx = x - that.mouse_startX;
 		var dy = y - that.mouse_startY;
-		if(that.mouse_ispressed && dx*dx + dy*dy > 15 && !(that.mouse_isdragging)){
+		if(that.mouse_ispressed && dx*dx + dy*dy > 5 && !(that.mouse_isdragging)){
 			that.mouse_isdragging = true;
 			that.mouse_dragstart()(ev);
 		}
@@ -354,16 +356,19 @@ DocumentViewer.mouse_scroll = function(){
 		}else{
 			s = 1/1.1;
 		}
-		that.enable_scale_animation(that.current_page, '100ms');
-		that.hammer_pinchstart()(ev);
 		obj = {
 			center:{x:ev.pageX, y:ev.pageY},
 			scale: s
 		}
+		that.hammer_pinchstart()(obj);
 		that.hammer_pinch()(obj);
-		setTimeout(function(){
-			that.disable_scale_animation();
-		}, 250);
+		if(that.mouse_isdragging){
+			var img = that.pages[that.current_page];
+			var leftDiff = (that.mouse_startX - that.startLeft) * img.scale / img.startScale;
+			var topDiff = (that.mouse_startY - that.startTop) * img.scale / img.startScale;
+			that.startLeft = that.mouse_startX - leftDiff;
+			that.startTop = that.mouse_startY - topDiff;
+		}
 		return false;
 	}
 }
