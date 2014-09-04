@@ -186,6 +186,11 @@ App.ViewRoute = Ember.Route.extend({
 	renderTemplate: function(controller, model){
 		this.render('view', {into: 'application'});
 		DocumentViewer.set_data(model, controller.page);
+	},
+	resetController: function(controller, exiting, trans){
+		if(exiting){
+			controller.set('page', 0);
+		}
 	}
 });
 
@@ -213,13 +218,13 @@ App.ViewController = Ember.Controller.extend({
 		next:function(){
 			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
 			queryParams['page'] = DocumentViewer.current_page + 1;
-			this.transitionToRoute('view', {queryParams:queryParams});
+			this.replaceWith('view', {queryParams:queryParams});
 			DocumentViewer.next_page();
 		},
 		prev:function(){
 			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
 			queryParams['page'] = DocumentViewer.current_page - 1;
-			this.transitionToRoute('view', {queryParams:queryParams});
+			this.replaceWith('view', {queryParams:queryParams});
 			DocumentViewer.prev_page();
 		}
 	}
