@@ -60,6 +60,19 @@ App.BrowseController = Ember.ArrayController.extend({
 	}
 });
 
+App.SearchRoute = Ember.Route.extend({
+	queryParams:{
+		query:{
+			refreshModel: true
+		}
+	},
+	beforeModel:function(trans){
+		if('query' in trans.queryParams){
+			this.controllerFor('search').set('searchQuery', trans.queryParams['query']);
+		}
+	}
+});
+
 App.SearchController = Ember.Controller.extend({
 	'backButton':true,
 	actions:{
@@ -67,7 +80,32 @@ App.SearchController = Ember.Controller.extend({
 			this.transitionToRoute('/');
 		},
 		doSearch:function(){
-			this.replaceWith('/search/results');
+			if(this.searchQuery != undefined){
+				var queryParams = {'queryParams':{'query':this.searchQuery}};
+				this.transitionToRoute('results', queryParams);
+			}
+		}
+	}
+});
+
+App.ResultsRoute = Ember.Route.extend({
+	queryParams:{
+		query:{
+			refreshModel: true,
+			refreshView: true
+		}
+	},
+	beforeModel:function(trans){
+		if(!('query' in trans.queryParams)){
+			this.transitionTo('/search');
+		}
+	},
+	model:function(params){
+		console.log(params);
+	},
+	resetController: function(controller, exiting, trans){
+		if(exiting){
+			controller.set('query', null);
 		}
 	}
 });
@@ -85,6 +123,11 @@ App.ResultsView = Ember.View.extend({
 			results.style.top = '25vmin';
 		}, 50);
 	}
+});
+
+App.ResultsController = Ember.ArrayController.extend({
+	queryParams:['query'],
+	query:null
 });
 
 App.YearRoute = Ember.Route.extend({
@@ -249,13 +292,13 @@ App.ViewController = Ember.Controller.extend({
 		next:function(){
 			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
 			queryParams['page'] = DocumentViewer.current_page + 1;
-			this.replaceWith('view', {queryParams:queryParams});
+			this.replaceRoute('view', {queryParams:queryParams});
 			DocumentViewer.next_page();
 		},
 		prev:function(){
 			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
 			queryParams['page'] = DocumentViewer.current_page - 1;
-			this.replaceWith('view', {queryParams:queryParams});
+			this.replaceRoute('view', {queryParams:queryParams});
 			DocumentViewer.prev_page();
 		}
 	}
