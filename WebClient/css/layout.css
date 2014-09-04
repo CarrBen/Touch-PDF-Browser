@@ -61,7 +61,7 @@ div.chunkybuttontext {
 
 .ui.button#help{
 	position: fixed;
-	bottom: 16px;
+	top: 16px;
 	right: 97px;
 }
 
@@ -72,7 +72,7 @@ div.chunkybuttontext {
 
 .ui.button#info{
 	position: fixed;
-	bottom: 16px;
+	top: 16px;
 	right: 16px;
 }
 
@@ -85,26 +85,20 @@ a.heightButton{
 	text-decoration: none;
 }
 
-#viewImage{
-	position: fixed;
-	visibility: hidden;
-	/*-webkit-transform: translateZ(0);*/
-}
-
 .ui.month.button{
 	width: 210px;
 }
 
 .ui.button#next{
 	position: fixed;
-	right: 20px;
-	top: 75%;
+	right: 5%;
+	top: 85%;
 }
 
 .ui.button#prev{
 	position: fixed;
-	left: 20px;
-	top: 75%;
+	left: 5%;
+	top: 85%;
 }
 
 .ui.segment#issueInfo{
@@ -117,4 +111,58 @@ a.heightButton{
 	position: fixed;
 	bottom: -6px;
 	width: 100%
+}
+
+#imageStage{
+	position:fixed;
+	width: 100vw;
+	height: 100vh;
+}
+
+#imageScroller{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	-webkit-transform: translateZ(0);
+	-webkit-transition: left 1s;
+}
+
+img.document_page{
+	position: absolute;
+	-webkit-user-drag: none;
+}
+
+.ui.jumbo.action.input{
+	font-size: 3vmin;
+	width: 100%;
+	margin: 0 auto;
+}
+
+.ui.jumbo.action.input > .ui.button > .ui.icon{
+	font-size: 2.5vmin;
+}
+
+#searchBox{
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: rgb(240, 240, 240);
+}
+
+#searchResults{
+	width: 90%;
+	margin-left: 5%;
+	margin-bottom: 5%;
+	position: relative;
+	top: 110vh;
+	-webkit-transition: top 1s;
+}
+
+#logoHeader{
+	-webkit-transition: margin-top 1s, margin-bottom 1s, font-size 1s;
+}
+
+#searchInput{
+	-webkit-transition: font-size 1s;
 }

@@ -1,11 +1,12 @@
 #Runs on Python 2.7.8
 import os
 import os.path
+import posixpath
 import json
 import calendar
 
-#JPG_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/JPGs"
-JPG_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/demo/JPGs"
+JPG_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/JPGs"
+#JPG_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/demo/JPGs"
 IMG_ROOT = "../JPGs/"
 #This assumes English locale
 MONTHS = calendar.month_name[1:]
@@ -76,28 +77,19 @@ for path, dir, files in os.walk(JPG_DIR):
 
     if len(dir) == 0 and len(files) > 0:
         #We are doing the pages of an issue
-        index_dict = {'data':[]}
+        index_dict = {'data':{}}
+        index_dict['data']['pages'] = []
+        index_dict['data']['name'] = os.path.split(path)[1].replace('_',' ')
         count = len(files)
         for i, img in enumerate(files):
-            item_dict = {}
-            item_dict['img_src'] = os.path.join(IMG_ROOT,
-                                                os.path.relpath(path, JPG_DIR),
-                                                img)
-            item_dict['page_id'] = i
-            if i < count - 1:
-                item_dict['next_page_id_'] = i + 1
-                item_dict['next_page'] = True
-            else:
-                item_dict['next_page_id_'] = None
-                item_dict['next_page'] = False
-
-            if i > 0:
-                item_dict['prev_page_id_'] = i - 1
-                item_dict['prev_page'] = True
-            else:
-                item_dict['prev_page_id_'] = None
-                item_dict['prev_page'] = False
-            index_dict['data'].append(item_dict)
+            #posixpaths are urls like, os.path.join on Windows uses \\, need /
+            index_dict['data']['pages'].append(
+                    posixpath.join(
+                        IMG_ROOT,
+                        os.path.relpath(path, JPG_DIR),
+                        img
+                    ).replace('\\','/')
+                )
                 
         with open(os.path.join(path, 'index.json'), 'w') as f:
             index_dict['_auto_generated'] = True
