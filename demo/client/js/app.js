@@ -25,14 +25,17 @@ openHelpModal = function(){
 $(document).on('click', '.ui.button#help', openHelpModal);
 
 App.Router.map(function() {
-	this.resource('pub', {path:'/pub'});
+	this.resource('browse', {path:'/browse'});
+	this.resource('search', {path:'/search'}, function(){
+		this.resource('results', {path:'/results'});
+	});
 	this.resource('year', {path: '/year'});
 	this.resource('month', {path: '/month'});
 	this.resource('issue', {path: '/issue'});
 	this.resource('view', {path: '/view'});
 });
 
-App.PubRoute = Ember.Route.extend({
+App.BrowseRoute = Ember.Route.extend({
 	'backButton':true,
 	model: function(params){
 		return [{
@@ -48,15 +51,82 @@ App.PubRoute = Ember.Route.extend({
 	}
 });
 
-App.PubController = Ember.ArrayController.extend({
+App.BrowseController = Ember.ArrayController.extend({
 	'backButton':true,
-	queryParams:['type'],
-	type:null,
 	actions:{
 		back:function(){
 			this.transitionToRoute('/')
 		}
 	}
+});
+
+App.SearchRoute = Ember.Route.extend({
+	queryParams:{
+		query:{
+			refreshModel: true
+		}
+	},
+	beforeModel:function(trans){
+		if('query' in trans.queryParams){
+			this.controllerFor('search').set('searchQuery', trans.queryParams['query']);
+		}
+	}
+});
+
+App.SearchController = Ember.Controller.extend({
+	'backButton':true,
+	actions:{
+		back:function(){
+			this.transitionToRoute('/');
+		},
+		doSearch:function(){
+			if(this.searchQuery != undefined){
+				var queryParams = {'queryParams':{'query':this.searchQuery}};
+				this.transitionToRoute('results', queryParams);
+			}
+		}
+	}
+});
+
+App.ResultsRoute = Ember.Route.extend({
+	queryParams:{
+		query:{
+			refreshModel: true,
+		}
+	},
+	beforeModel:function(trans){
+		if(!('query' in trans.queryParams)){
+			this.transitionTo('/search');
+		}
+	},
+	model:function(params){
+		console.log(params);
+	},
+	resetController: function(controller, exiting, trans){
+		if(exiting){
+			controller.set('query', null);
+		}
+	}
+});
+
+App.ResultsView = Ember.View.extend({
+	didInsertElement: function(trans, queryparams){
+		var header = document.getElementById('logoHeader');
+		header.style.fontSize = '4vmin';
+		header.style.marginBottom = '1em';
+		header.style.marginTop = '1em';
+		var input = document.getElementById('searchInput');
+		input.style.fontSize = '2vmin';
+		var results = document.getElementById('searchResults');
+		setTimeout(function(){
+			results.style.top = '25vmin';
+		}, 50);
+	}
+});
+
+App.ResultsController = Ember.ArrayController.extend({
+	queryParams:['query'],
+	query:null
 });
 
 App.YearRoute = Ember.Route.extend({
@@ -86,7 +156,7 @@ App.YearController = Ember.ArrayController.extend({
 	actions:{
 		back:function(){
 			var queryParams = {'pub':this.pub, 'type':this.type}
-			this.transitionToRoute('pub', {queryParams:queryParams});
+			this.transitionToRoute('browse');
 		}
 	}
 });
@@ -185,7 +255,22 @@ App.ViewRoute = Ember.Route.extend({
 		},
 	renderTemplate: function(cont, mod){
 		this.render('view', {into: 'application'});
-		setTimeout(startViewerSetup, 250);
+		DocumentViewer.set_data(model, controller.page);
+	},
+	resetController: function(controller, exiting, trans){
+		if(exiting){
+			controller.set('page', 0);
+		}
+	},
+	willDestroy: function(){
+		DocumentViewer.teardown();
+	}
+});
+
+//WHYY
+App.ViewView = Ember.View.extend({
+	didInsertElement:function(){
+		DocumentViewer.setup();
 	}
 });
 
@@ -205,28 +290,15 @@ App.ViewController = Ember.Controller.extend({
 		},
 		next:function(){
 			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
-			queryParams['page'] = this.model['next_page_id_'];
-			this.transitionToRoute('view', {queryParams:queryParams});
+			queryParams['page'] = DocumentViewer.current_page + 1;
+			this.replaceRoute('view', {queryParams:queryParams});
+			DocumentViewer.next_page();
 		},
 		prev:function(){
 			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
-			queryParams['page'] = this.model['prev_page_id_'];
-			this.transitionToRoute('view', {queryParams:queryParams});
+			queryParams['page'] = DocumentViewer.current_page - 1;
+			this.replaceRoute('view', {queryParams:queryParams});
+			DocumentViewer.prev_page();
 		}
 	}
 });
-
-
-function startViewerSetup(ev){
-	window.requestAnimationFrame(waitViewerSetup);
-}
-
-function waitViewerSetup(ev){
-	window.requestAnimationFrame(doViewerSetup);
-}
-
-function doViewerSetup(ev){
-	setupViewer();
-	$('#viewImage').css('visibility', 'visible');
-}
-
