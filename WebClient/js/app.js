@@ -191,6 +191,9 @@ App.ViewRoute = Ember.Route.extend({
 		if(exiting){
 			controller.set('page', 0);
 		}
+	},
+	willDestroy: function(){
+		DocumentViewer.teardown();
 	}
 });
 

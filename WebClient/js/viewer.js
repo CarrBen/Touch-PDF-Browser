@@ -372,3 +372,14 @@ DocumentViewer.mouse_scroll = function(){
 		return false;
 	}
 }
+
+DocumentViewer.teardown = function(){
+	this.stage[0].remove(this.scroller[0]);
+	var n = this.pages.length;
+	for(var i=0; i<n; i++){
+		this.pages[i].src = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=";
+		setTimeout(function(){
+			this.pages[i] = null;
+		},100);
+	}
+}
