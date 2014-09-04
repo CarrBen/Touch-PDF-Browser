@@ -11,11 +11,12 @@ DocumentViewer.setup = function(){
 	this.scroller = $('#imageScroller');
 	this.next = $('#next');
 	this.prev = $('#prev');
+	this.change_page_immediate(this.current_page);
 	this.create_images(this.data);
 	this.show_hide_page_buttons();
 	this.scale_animated_page_index = this.current_page;
-	this.change_page(this.current_page);
 	this.setup_hammer();
+	this.setup_mouse();
 }
 
 DocumentViewer.create_images = function(data_model){
@@ -44,8 +45,8 @@ DocumentViewer.reset_image_scale = function(index){
 	
 	if(widthRatio >= heightRatio){
 		var ratio = (window.innerWidth - 24)/img.naturalWidth;
-		img.removeAttribute('height');
 		img.width = window.innerWidth - 24;
+		img.height = img.naturalHeight * ratio;
 		
 		img.scale = ratio;
 		img.minScale = ratio;
@@ -58,7 +59,7 @@ DocumentViewer.reset_image_scale = function(index){
 		this.set_image_pos(index, left, top);
 	}else{
 		var ratio = (window.innerHeight - 24)/img.naturalHeight;
-		img.removeAttribute('width');
+		img.width = img.naturalWidth * ratio;
 		img.height = window.innerHeight - 24;
 		
 		img.scale = ratio;
@@ -128,6 +129,12 @@ DocumentViewer.change_page = function(new_index){
 	}, 750);
 }
 
+DocumentViewer.change_page_immediate = function(new_index){
+	var that = this;
+	that.show_hide_page_buttons();
+	that.scroller.css('left', -new_index * window.innerWidth);
+}
+
 DocumentViewer.enable_scale_animation = function(index, time){
 	//TODO: Perhaps check if already set?
 	this.scale_animated_page_index = index;
@@ -173,6 +180,7 @@ DocumentViewer.hammer_doubletap = function(){
 		setTimeout(function(){
 			that.disable_scale_animation();
 		}, 750);
+		return false;
 	}
 }
 
@@ -183,6 +191,7 @@ DocumentViewer.hammer_panstart = function(){
 
 		that.startTop = pos.top;
 		that.startLeft = pos.left;
+		return false;
 	}
 }
 
@@ -199,7 +208,10 @@ DocumentViewer.hammer_pan = function(){
 		left = Math.min(left, img.horizontalLimit);
 		left = Math.max(left, -img.horizontalLimit + window.innerWidth - img.scale * img.naturalWidth);
 		
+		console.log('Pan:');
+		console.log(left, top);
 		that.set_image_pos(that.current_page, left, top);
+		return false;
 	}
 }
 
@@ -210,8 +222,9 @@ DocumentViewer.hammer_pinchstart = function(){
 		img.startScale = img.scale;
 		
 		var pos = that.get_image_pos(that.current_page);
-		that.startTop = pos.top;
-		that.startLeft = pos.left;
+		that.startPinchTop = pos.top;
+		that.startPinchLeft = pos.left;
+		return false;
 	}
 }
 
@@ -227,17 +240,18 @@ DocumentViewer.hammer_pinch = function(){
 		img.height = img.scale * img.naturalHeight;
 		img.width = img.scale * img.naturalWidth;
 
-		var topDiff = (ev.center.y - that.startTop) * img.scale / img.startScale;
+		var topDiff = (ev.center.y - that.startPinchTop) * img.scale / img.startScale;
 		var top = ev.center.y - topDiff;
 		top = Math.min(top, img.verticalLimit);
 		top = Math.max(top, -img.verticalLimit + window.innerHeight - img.scale * img.naturalHeight)
 		
-		var leftDiff = (ev.center.x - that.startLeft) * img.scale / img.startScale;
+		var leftDiff = (ev.center.x - that.startPinchLeft) * img.scale / img.startScale;
 		var left = ev.center.x - leftDiff;
 		left = Math.min(left, img.horizontalLimit);
 		left = Math.max(left, -img.horizontalLimit + window.innerWidth - img.scale * img.naturalWidth)
 
 		that.set_image_pos(that.current_page, left, top);
+		return false;
 	}
 }
 
@@ -247,5 +261,125 @@ DocumentViewer.hammer_pinchmove = function(){
 	return function(ev){
 		that.hammer_pan()(ev);
 		that.hammer_pinch()(ev);
+		return false;
+	}
+}
+
+DocumentViewer.setup_mouse = function(){
+	var stage = this.stage[0];
+	
+	stage.addEventListener('wheel', this.mouse_scroll());
+	
+	stage.addEventListener('mousedown', this.mouse_mousedown(), true);
+	stage.addEventListener('mousemove', this.mouse_mousemove(), true);
+	stage.addEventListener('mouseup', this.mouse_mouseup(), true);
+}
+
+DocumentViewer.mouse_mousedown = function(){
+	var that = this;
+	return function(ev){
+		that.mouse_startX = ev.pageX;
+		that.mouse_startY = ev.pageY;
+
+		that.mouse_ispressed = true;
+		ev.cancelBubble = true;
+		return false;
+	}
+}
+
+DocumentViewer.mouse_mousemove = function(){
+	var that = this;
+	return function(ev){
+		ev.cancelBubble = true;
+		var x = ev.pageX;
+		var y = ev.pageY;
+		var dx = x - that.mouse_startX;
+		var dy = y - that.mouse_startY;
+		if(that.mouse_ispressed && dx*dx + dy*dy > 5 && !(that.mouse_isdragging)){
+			that.mouse_isdragging = true;
+			that.mouse_dragstart()(ev);
+		}
+		if(that.mouse_ispressed && that.mouse_isdragging){
+			that.mouse_drag()(ev);
+		}
+
+		return false;
+	}
+}
+
+DocumentViewer.mouse_mouseup = function(){
+	var that = this;
+	return function(ev){
+		that.mouse_ispressed = false;
+		that.mouse_isdragging = false;
+		ev.cancelBubble = true;
+		return false;
+	}
+}
+
+DocumentViewer.mouse_dragstart = function(){
+	var that = this;
+	return function(ev){
+		var x = ev.pageX;
+		var y = ev.pageY;
+		var dx = x - that.mouse_startX;
+		var dy = y - that.mouse_startY;
+		obj = {center: {x:x, y:y},
+			deltaX: dx,
+			deltaY: dy
+		}
+		that.hammer_panstart()(obj);
+	}
+}
+
+DocumentViewer.mouse_drag = function(){
+	var that = this;
+	return function(ev){
+		var x = ev.pageX;
+		var y = ev.pageY;
+		var dx = x - that.mouse_startX;
+		var dy = y - that.mouse_startY;
+		obj = {center: {x:x, y:y},
+			deltaX: dx,
+			deltaY: dy
+		}
+		that.hammer_pan()(obj);
+	}
+}
+
+DocumentViewer.mouse_scroll = function(){
+	var that = this;
+	return function(ev){
+		var s = 1;
+		if(ev.wheelDeltaY > 0){
+			s = 1.1;
+		}else{
+			s = 1/1.1;
+		}
+		obj = {
+			center:{x:ev.pageX, y:ev.pageY},
+			scale: s
+		}
+		that.hammer_pinchstart()(obj);
+		that.hammer_pinch()(obj);
+		if(that.mouse_isdragging){
+			var img = that.pages[that.current_page];
+			var leftDiff = (that.mouse_startX - that.startLeft) * img.scale / img.startScale;
+			var topDiff = (that.mouse_startY - that.startTop) * img.scale / img.startScale;
+			that.startLeft = that.mouse_startX - leftDiff;
+			that.startTop = that.mouse_startY - topDiff;
+		}
+		return false;
+	}
+}
+
+DocumentViewer.teardown = function(){
+	this.stage[0].remove(this.scroller[0]);
+	var n = this.pages.length;
+	for(var i=0; i<n; i++){
+		this.pages[i].src = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=";
+		setTimeout(function(){
+			this.pages[i] = null;
+		},100);
 	}
 }
