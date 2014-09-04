@@ -1,20 +1,20 @@
 {
+    "_auto_generated": true,
     "data": [
         {
-            "name": "December",
             "order": 11,
-            "month_id": "dec"
+            "month_id": "dec",
+            "name": "December"
         },
         {
-            "name": "February",
             "order": 1,
-            "month_id": "feb"
+            "month_id": "feb",
+            "name": "February"
         },
         {
-            "name": "June",
             "order": 5,
-            "month_id": "jun"
+            "month_id": "jun",
+            "name": "June"
         }
-    ],
-    "_auto_generated": true
+    ]
 }

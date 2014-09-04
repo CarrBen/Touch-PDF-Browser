@@ -5,8 +5,8 @@ import posixpath
 import json
 import calendar
 
-JPG_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/JPGs"
-#JPG_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/demo/JPGs"
+#JPG_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/JPGs"
+JPG_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/demo/JPGs"
 IMG_ROOT = "../JPGs/"
 #This assumes English locale
 MONTHS = calendar.month_name[1:]
