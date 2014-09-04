@@ -74,7 +74,8 @@
 	</script>
 	
 	<script type='text/x-handlebars' id='search'>
-		<div class='ui middle aligned page grid'>
+		{{outlet}}
+		<div class='ui middle aligned page grid' id='searchBox'>
 			<div class='ui center aligned row'>
 				<div class='four wide column'>
 				</div>
@@ -95,7 +96,6 @@
 					</div>
 				</div>
 			</div>
-			{{outlet}}
 		</div>
 		{{#if backButton}}
 			{{partial "backButton"}}
@@ -103,9 +103,10 @@
 	</script>
 	
 	<script type='text/x-handlebars' id='results'>
+		<div class='ui middle aligned page grid' id='searchResults'>
 		<div class='ui row'>
 			<div class='ui column'>
-				<table class='ui celled table segment'>
+				<table class='ui large celled table segment'>
 					<tr>
 						<td class='four wide'>
 							Basic info goes right here
@@ -252,6 +253,7 @@
 					</tr>
 				</table>
 			</div>
+		</div>
 		</div>
 	</script>
 

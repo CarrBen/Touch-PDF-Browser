@@ -141,3 +141,19 @@ img.document_page{
 .ui.jumbo.action.input > .ui.button > .ui.icon{
 	font-size: 3vw;
 }
+
+#searchBox{
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: rgb(240, 240, 240);
+}
+
+#searchResults{
+	width: 90%;
+	margin-left: 5%;
+	margin-bottom: 5%;
+	position: relative;
+	top: 50vmin;
+}
