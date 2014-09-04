@@ -92,7 +92,6 @@ App.ResultsRoute = Ember.Route.extend({
 	queryParams:{
 		query:{
 			refreshModel: true,
-			refreshView: true
 		}
 	},
 	beforeModel:function(trans){
