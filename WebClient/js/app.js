@@ -26,7 +26,9 @@ $(document).on('click', '.ui.button#help', openHelpModal);
 
 App.Router.map(function() {
 	this.resource('browse', {path:'/browse'});
-	this.resource('search', {path:'/search'});
+	this.resource('search', {path:'/search'}, function(){
+		this.resource('results', {path:'/results'});
+	});
 	this.resource('year', {path: '/year'});
 	this.resource('month', {path: '/month'});
 	this.resource('issue', {path: '/issue'});
