@@ -25,14 +25,15 @@ openHelpModal = function(){
 $(document).on('click', '.ui.button#help', openHelpModal);
 
 App.Router.map(function() {
-	this.resource('pub', {path:'/pub'});
+	this.resource('browse', {path:'/browse'});
+	this.resource('search', {path:'/search'});
 	this.resource('year', {path: '/year'});
 	this.resource('month', {path: '/month'});
 	this.resource('issue', {path: '/issue'});
 	this.resource('view', {path: '/view'});
 });
 
-App.PubRoute = Ember.Route.extend({
+App.BrowseRoute = Ember.Route.extend({
 	'backButton':true,
 	model: function(params){
 		return [{
@@ -48,13 +49,20 @@ App.PubRoute = Ember.Route.extend({
 	}
 });
 
-App.PubController = Ember.ArrayController.extend({
+App.BrowseController = Ember.ArrayController.extend({
 	'backButton':true,
-	queryParams:['type'],
-	type:null,
 	actions:{
 		back:function(){
 			this.transitionToRoute('/')
+		}
+	}
+});
+
+App.SearchController = Ember.Controller.extend({
+	'backButton':true,
+	actions:{
+		back:function(){
+			this.transitionToRoute('/');
 		}
 	}
 });
@@ -86,7 +94,7 @@ App.YearController = Ember.ArrayController.extend({
 	actions:{
 		back:function(){
 			var queryParams = {'pub':this.pub, 'type':this.type}
-			this.transitionToRoute('pub', {queryParams:queryParams});
+			this.transitionToRoute('browse');
 		}
 	}
 });

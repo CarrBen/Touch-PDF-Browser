@@ -54,7 +54,7 @@
 			</div>
 			<div class='ui center aligned two column row'>
 				<div class='ui column'>
-				{{#link-to 'pub' (query-params type='browse')}}
+				{{#link-to 'browse'}}
 					<div class='ui jumbo purple button'>
 						<i class='massive browser icon chunkybutton'></i>
 						<div class='chunkybuttontext'>Browse</div>
@@ -70,8 +70,37 @@
 			</div>
 		</div>
 	</script>
+	
+	<script type='text/x-handlebars' id='search'>
+		<div class='ui middle center aligned page grid'>
+			<div class='ui center aligned row'>
+				<div class='four wide column'>
+				</div>
+				<div class='eight wide column'>
+					<div class='ui huge purple expanding header'>
+						Logo and title
+					</div>
+				</div>
+				<div class='four wide column'>
+				</div>
+			</div>
+			<div class='ui row'>
+				<div class='ui column'>
+					<div class='ui massive action input'>
+						<input type='text' placeholder='Search...'>
+						</input>
+						<div class='ui purple icon button'><i class='ui big search icon'></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{{#if backButton}}
+			{{partial "backButton"}}
+		{{/if}}
+	</script>
 
-	<script type='text/x-handlebars' id='pub'>
+	<script type='text/x-handlebars' id='browse'>
 		<div class='ui middle aligned stackable page grid'>
 			<div class='ui center aligned one column row'>
 				<div class='ui column'>
