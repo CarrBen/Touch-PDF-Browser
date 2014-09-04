@@ -131,3 +131,13 @@ img.document_page{
 	position: absolute;
 	-webkit-user-drag: none;
 }
+
+.ui.jumbo.action.input{
+	font-size: 3vw;
+	width: 100%;
+	margin: 0 auto;
+}
+
+.ui.jumbo.action.input > .ui.button > .ui.icon{
+	font-size: 4vw;
+}
