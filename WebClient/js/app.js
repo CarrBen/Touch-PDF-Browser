@@ -67,8 +67,23 @@ App.SearchController = Ember.Controller.extend({
 			this.transitionToRoute('/');
 		},
 		doSearch:function(){
-			console.log(this.searchQuery);
+			this.replaceWith('/search/results');
 		}
+	}
+});
+
+App.ResultsView = Ember.View.extend({
+	didInsertElement: function(trans, queryparams){
+		var header = document.getElementById('logoHeader');
+		header.style.fontSize = '4vmin';
+		header.style.marginBottom = '1em';
+		header.style.marginTop = '1em';
+		var input = document.getElementById('searchInput');
+		input.style.fontSize = '2vmin';
+		var results = document.getElementById('searchResults');
+		setTimeout(function(){
+			results.style.top = '25vmin';
+		}, 50);
 	}
 });
 

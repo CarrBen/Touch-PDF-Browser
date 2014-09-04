@@ -133,13 +133,13 @@ img.document_page{
 }
 
 .ui.jumbo.action.input{
-	font-size: 3vw;
+	font-size: 3vmin;
 	width: 100%;
 	margin: 0 auto;
 }
 
 .ui.jumbo.action.input > .ui.button > .ui.icon{
-	font-size: 3vw;
+	font-size: 2.5vmin;
 }
 
 #searchBox{
@@ -155,5 +155,14 @@ img.document_page{
 	margin-left: 5%;
 	margin-bottom: 5%;
 	position: relative;
-	top: 50vmin;
+	top: 110vh;
+	-webkit-transition: top 1s;
+}
+
+#logoHeader{
+	-webkit-transition: margin-top 1s, margin-bottom 1s, font-size 1s;
+}
+
+#searchInput{
+	-webkit-transition: font-size 1s;
 }
