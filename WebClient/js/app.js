@@ -63,6 +63,9 @@ App.SearchController = Ember.Controller.extend({
 	actions:{
 		back:function(){
 			this.transitionToRoute('/');
+		},
+		doSearch:function(){
+			console.log(this.searchQuery);
 		}
 	}
 });

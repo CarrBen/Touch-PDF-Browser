@@ -89,9 +89,8 @@
 			<div class='ui row'>
 				<div class='ui column'>
 					<div class='ui jumbo action input'>
-						<input type='text' placeholder='Search...'>
-						</input>
-						<div class='ui purple icon button'><i class='ui big search icon'></i>
+						{{input placeholder='Search...' value=searchQuery}}
+						<div {{action 'doSearch'}} class='ui purple icon button'><i class='ui big search icon'></i>
 						</div>
 					</div>
 				</div>
@@ -122,18 +121,6 @@
 				{{/link-to}}
 				</div>
 			{{/each}}
-				<!-- <div class='ui column'>
-					<div class='ui purple fluid huge disabled button'>
-						<i class='huge bookmark icon chunkybutton'></i>
-						<div class='chunkybuttontext'>Carolynne</div>
-					</div>
-				</div>
-				<div class='ui column'>
-					<div class='ui purple fluid huge disabled button'>
-						<i class='huge bookmark icon chunkybutton'></i>
-						<div class='chunkybuttontext'>STEPS</div>
-					</div>
-				</div>  -->
 			</div>
 		</div>
 		{{#if backButton}}
