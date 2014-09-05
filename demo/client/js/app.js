@@ -250,10 +250,10 @@ App.ViewRoute = Ember.Route.extend({
 	},
 	model: function(params){
 		return $.getJSON(jsonIndexPath(params)).then(function(body){
-				return body['data'][params.page];
+				return body['data'];
 			});
 		},
-	renderTemplate: function(cont, mod){
+	renderTemplate: function(controller, model){
 		this.render('view', {into: 'application'});
 		DocumentViewer.set_data(model, controller.page);
 	},
