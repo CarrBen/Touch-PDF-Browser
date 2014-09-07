@@ -1,4 +1,4 @@
-#Runs on Python 2.7.8
+#Runs on Python 3.4.1, may run on 2.7.8
 import os
 import os.path
 import posixpath
