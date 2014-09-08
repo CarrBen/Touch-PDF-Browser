@@ -133,13 +133,22 @@ img.document_page{
 }
 
 .ui.jumbo.action.input{
-	font-size: 3vmin;
 	width: 100%;
 	margin: 0 auto;
 }
 
+.ui.jumbo.action.input > input{
+	font-size: 4vmin;
+	-webkit-transition: font-size 1s;
+}
+
+.ui.jumbo.action.input > .ui.button{
+	padding: 2vmin;
+}
+
 .ui.jumbo.action.input > .ui.button > .ui.icon{
-	font-size: 2.5vmin;
+	font-size: 6vmin;
+	-webkit-transition: font-size 1s;
 }
 
 #searchBox{

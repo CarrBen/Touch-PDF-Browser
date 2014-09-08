@@ -115,11 +115,13 @@ App.ResultsView = Ember.View.extend({
 		header.style.fontSize = '4vmin';
 		header.style.marginBottom = '1em';
 		header.style.marginTop = '1em';
-		var input = document.getElementById('searchInput');
-		input.style.fontSize = '2vmin';
+		var input = document.getElementById('searchInput').getElementsByTagName('input')[0];
+		input.style.fontSize = '3vmin';
+		var button = document.getElementById('searchInput').getElementsByTagName('i')[0];
+		button.style.fontSize = '3vmin';
 		var results = document.getElementById('searchResults');
 		setTimeout(function(){
-			results.style.top = '25vmin';
+			results.style.top = '28vmin';
 		}, 50);
 	}
 });
