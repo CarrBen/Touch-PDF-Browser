@@ -101,23 +101,8 @@ App.ResultsRoute = Ember.Route.extend({
 		}
 	},
 	model:function(params){
+		//This needs Cross Origin Resource Sharing or a proxy on the same domain
 		/*$.getJSON(SOLR_ROOT + '/select?q=' + encodeURIComponent(params.query) + '&wt=json&indent=true&hl=true').then(function(data){
-			results = data['response']['docs']
-			highlights = data['highlighting']
-			for(var i in highlights){
-				console.log(highlights[i]);
-			}
-		});*/
-		$.ajax({
-			url: SOLR_ROOT + '/select',
-			data: {q:encodeURIComponent(params.query), 
-				wt:'json', 
-				indent:true, 
-				hl:true,
-				fl:'page,issue_name,score,issue_id,year,month,pub_id'},
-			dataType: 'jsonp',
-			jsonp: 'json.wrf'
-		}).then(function(data){
 			results = data['response']['docs']
 			highlights = data['highlighting']
 			for(var i in highlights){
@@ -127,7 +112,27 @@ App.ResultsRoute = Ember.Route.extend({
 					}
 				}
 			}
-			console.log(results);
+		});*/
+		return $.ajax({
+			url: SOLR_ROOT + '/select',
+			data: {q:encodeURIComponent(params.query), 
+				wt:'json', 
+				indent:true, 
+				hl:true,
+				fl:'page,issue_name,score,issue_id,year,month,pub_id'},
+			dataType: 'jsonp',
+			jsonp: 'json.wrf'
+		}).then(function(data){
+			var results = data['response']['docs']
+			var highlights = data['highlighting']
+			for(var i in highlights){
+				for(var j=0; j<results.length; j++){
+					if(results[j]['issue_id'] == i){
+						results[j]['highlights'] = highlights[i];
+					}
+				}
+			}
+			return results;
 		});
 	},
 	resetController: function(controller, exiting, trans){
@@ -145,8 +150,6 @@ App.ResultsView = Ember.View.extend({
 		header.style.marginTop = '1em';
 		var input = document.getElementById('searchInput').getElementsByTagName('input')[0];
 		input.style.fontSize = '3vmin';
-		var button = document.getElementById('searchInput').getElementsByTagName('i')[0];
-		button.style.fontSize = '3vmin';
 		var results = document.getElementById('searchResults');
 		setTimeout(function(){
 			results.style.top = '28vmin';

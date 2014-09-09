@@ -147,8 +147,7 @@ img.document_page{
 }
 
 .ui.jumbo.action.input > .ui.button > .ui.icon{
-	font-size: 6vmin;
-	-webkit-transition: font-size 1s;
+	font-size: 3vmin;
 }
 
 #searchBox{
