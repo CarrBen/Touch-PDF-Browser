@@ -84,7 +84,7 @@
 			<div class='ui row'>
 				<div class='ui column'>
 					<div class='ui jumbo action input' id='searchInput'>
-						{{input placeholder='Search...' value=controller.searchQuery}}
+						{{input placeholder='Search...' value=controller.searchQuery action='doSearch' on="enter"}}
 						<div {{action 'doSearch'}} class='ui purple icon button'><i class='ui big search icon'></i>
 						</div>
 					</div>

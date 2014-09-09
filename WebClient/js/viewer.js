@@ -208,8 +208,6 @@ DocumentViewer.hammer_pan = function(){
 		left = Math.min(left, img.horizontalLimit);
 		left = Math.max(left, -img.horizontalLimit + window.innerWidth - img.scale * img.naturalWidth);
 		
-		console.log('Pan:');
-		console.log(left, top);
 		that.set_image_pos(that.current_page, left, top);
 		return false;
 	}
