@@ -39,19 +39,23 @@
 		</div>
 	</script>
 	
-	<script type='text/x-handlebars' id='index'>
-		<div class='ui middle aligned stackable page grid'>
-			<div class='ui center aligned row'>
-				<div class='four wide column'>
-				</div>
-				<div class='eight wide column'>
-					<div class='ui huge purple expanding header'>
-						Logo and title
-					</div>
-				</div>
-				<div class='four wide column'>
+	<script type="text/x-handlebars" id="_logoTitle">
+		<div class='ui center aligned row'>
+			<div class='four wide column'>
+			</div>
+			<div class='eight wide column'>
+				<div class='ui huge purple expanding header'>
+					Logo and title
 				</div>
 			</div>
+			<div class='four wide column'>
+			</div>
+		</div>	
+	</script>
+	
+	<script type='text/x-handlebars' id='index'>
+		<div class='ui middle aligned stackable page grid'>
+			{{partial "logoTitle"}}
 			<div class='ui center aligned two column row'>
 				<div class='ui column'>
 				{{#link-to 'browse'}}
@@ -76,17 +80,7 @@
 	<script type='text/x-handlebars' id='search'>
 		{{outlet}}
 		<div class='ui middle aligned page grid' id='searchBox'>
-			<div class='ui center aligned row'>
-				<div class='four wide column'>
-				</div>
-				<div class='eight wide column'>
-					<div class='ui huge purple expanding header' id='logoHeader'>
-						Logo and title
-					</div>
-				</div>
-				<div class='four wide column'>
-				</div>
-			</div>
+			{{partial "logoTitle"}}
 			<div class='ui row'>
 				<div class='ui column'>
 					<div class='ui jumbo action input' id='searchInput'>
@@ -286,13 +280,7 @@
 	
 	<script type='text/x-handlebars' id='year'>
 		<div class='ui middle aligned page grid'>
-			<div class='ui center aligned one column row'>
-				<div class='ui column'>
-					<div class='ui huge purple expanding header'>
-						Logo and title
-					</div>
-				</div>
-			</div>
+			{{partial "logoTitle"}}
 			<div class='ui center aligned one column row'>
 				<div class='ui five column doubling grid'>
 					<div class='ui center middle aligned five column row'>
@@ -316,13 +304,7 @@
 	
 	<script type='text/x-handlebars' id='month'>
 		<div class='ui middle aligned page grid'>
-			<div class='ui center aligned one column row'>
-				<div class='ui column'>
-					<div class='ui huge purple expanding header'>
-						Logo and title
-					</div>
-				</div>
-			</div>
+			{{partial "logoTitle"}}
 			<div class='ui center aligned one column row'>
 				<div class='ui five column doubling grid'>
 					<div class='ui center middle aligned five column row'>
@@ -346,13 +328,7 @@
 	
 	<script type='text/x-handlebars' id='issue'>
 		<div class='ui middle aligned page grid'>
-			<div class='ui center aligned one column row'>
-				<div class='ui column'>
-					<div class='ui huge purple expanding header'>
-						Logo and title
-					</div>
-				</div>
-			</div>
+			{{partial "logoTitle"}}
 			<div class='ui center aligned one column row'>
 				<div class='ui five column doubling grid'>
 					<div class='ui center middle aligned five column row'>
