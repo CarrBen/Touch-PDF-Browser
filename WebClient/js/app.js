@@ -1,6 +1,7 @@
 App = Ember.Application.create();
 
 IMG_ROOT = '../JPGs/'
+SOLR_ROOT = 'http://127.0.0.1:8983/solr'
 jsonIndexPath = function(params){
 	var url = IMG_ROOT;
 	for(param in params){
@@ -100,7 +101,34 @@ App.ResultsRoute = Ember.Route.extend({
 		}
 	},
 	model:function(params){
-		console.log(params);
+		/*$.getJSON(SOLR_ROOT + '/select?q=' + encodeURIComponent(params.query) + '&wt=json&indent=true&hl=true').then(function(data){
+			results = data['response']['docs']
+			highlights = data['highlighting']
+			for(var i in highlights){
+				console.log(highlights[i]);
+			}
+		});*/
+		$.ajax({
+			url: SOLR_ROOT + '/select',
+			data: {q:encodeURIComponent(params.query), 
+				wt:'json', 
+				indent:true, 
+				hl:true,
+				fl:'page,issue_name,score,issue_id,year,month,pub_id'},
+			dataType: 'jsonp',
+			jsonp: 'json.wrf'
+		}).then(function(data){
+			results = data['response']['docs']
+			highlights = data['highlighting']
+			for(var i in highlights){
+				for(var j=0; j<results.length; j++){
+					if(results[j]['issue_id'] == i){
+						results[j]['highlights'] = highlights[i];
+					}
+				}
+			}
+			console.log(results);
+		});
 	},
 	resetController: function(controller, exiting, trans){
 		if(exiting){
