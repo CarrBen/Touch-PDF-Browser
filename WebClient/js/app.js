@@ -7,7 +7,7 @@ MONTH_MAP = {'jan':'January', 'feb':'February', 'mar':'March', 'apr':'April', 'm
 jsonIndexPath = function(params){
 	var url = IMG_ROOT;
 	for(param in params){
-		if(param == 'type' || param =='page'){
+		if(param == 'type' || param =='page' || param == 'query'){
 			continue;
 		}
 		url += params[param];
@@ -138,7 +138,6 @@ App.ResultsRoute = Ember.Route.extend({
 					}
 				}
 			}
-			console.log(results);
 			return results;
 		});
 	},
@@ -169,11 +168,13 @@ App.ResultsController = Ember.ArrayController.extend({
 	query:null,
 	actions:{
 		viewResult:function(params){
-		var queryParams = {queryParams:{pub:params['pub_id'],
+			var queryParams = {queryParams:{pub:params['pub_id'],
 										issue:params['issue_name_'],
 										year:params['year'],
 										month:params['month'],
-										page:params['page']}}
+										page:params['page'],
+										type:'search',
+										query:this.query}}
 			this.transitionToRoute('view', queryParams);
 		}
 	}
@@ -326,17 +327,25 @@ App.ViewView = Ember.View.extend({
 
 App.ViewController = Ember.Controller.extend({
 	backButton:true,
-	queryParams:['pub', 'year', 'month', 'issue', 'page', 'type'],
+	queryParams:['pub', 'year', 'month', 'issue', 'page', 'type', 'query'],
 	pub:null,
 	year:null,
 	month:null,
 	issue:null,
 	page:0,
 	type:'browse',
+	query:null,
 	actions:{
 		back:function(){
-			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
-			this.transitionToRoute('issue', {queryParams:queryParams});
+			if(this.type == 'browse'){
+				var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type};
+				this.transitionToRoute('issue', {queryParams:queryParams});
+			}
+			if(this.type == 'search'){
+				var queryParams = {query:this.query};
+				console.log(queryParams);
+				this.transitionToRoute('results', {queryParams:queryParams});
+			}
 		},
 		next:function(){
 			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
