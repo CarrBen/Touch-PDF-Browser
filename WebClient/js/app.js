@@ -131,12 +131,14 @@ App.ResultsRoute = Ember.Route.extend({
 			for(var i in highlights){
 				for(var j=0; j<results.length; j++){
 					if(results[j]['issue_id'] == i){
-						results[j]['month'] = MONTH_MAP[results[j]['month']];
+						results[j]['display_month'] = MONTH_MAP[results[j]['month']];
 						results[j]['display_page'] = results[j]['page'] + 1;
+						results[j]['issue_name_'] = results[j]['issue_name'].replace(new RegExp(' ', 'g'),'_');
 						results[j]['highlights'] = highlights[i];
 					}
 				}
 			}
+			console.log(results);
 			return results;
 		});
 	},

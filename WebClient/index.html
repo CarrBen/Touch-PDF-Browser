@@ -103,17 +103,21 @@
 				<table class='ui large celled table segment'>
 				<tbody>
 					{{#each}}
+					
 					<tr>
 						<td class='four wide'>
+							{{#link-to 'view' (query-params pub_id=pub_id month=month year=year issue=issue_name_)}}
 							{{issue_name}}<br>
-							{{month}}<br>
+							{{display_month}}<br>
 							{{year}}<br>
 							Page {{display_page}}
+							{{/link-to}}
 						</td>
 						<td class='twelve wide'>
 							{{{highlights.text}}}
 						</td>
 					</tr>
+					
 					{{/each}}
 				</tbody>
 				</table>
