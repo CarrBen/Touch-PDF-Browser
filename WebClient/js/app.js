@@ -166,7 +166,12 @@ App.ResultsView = Ember.View.extend({
 
 App.ResultsController = Ember.ArrayController.extend({
 	queryParams:['query'],
-	query:null
+	query:null,
+	actions:{
+		viewResult:function(params){
+			console.log(params);
+		}
+	}
 });
 
 App.YearRoute = Ember.Route.extend({
