@@ -119,7 +119,8 @@ App.ResultsRoute = Ember.Route.extend({
 				wt:'json', 
 				indent:true, 
 				hl:true,
-				fl:'page,issue_name,score,issue_id,year,month,pub_id'},
+				fl:'page,issue_name,score,issue_id,year,month,pub_id',
+				'hl.fragsize':200},
 			dataType: 'jsonp',
 			jsonp: 'json.wrf'
 		}).then(function(data){
