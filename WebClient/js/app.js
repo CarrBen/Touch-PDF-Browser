@@ -2,6 +2,8 @@ App = Ember.Application.create();
 
 IMG_ROOT = '../JPGs/'
 SOLR_ROOT = 'http://127.0.0.1:8983/solr'
+MONTH_MAP = {'jan':'January', 'feb':'February', 'mar':'March', 'apr':'April', 'may':'May', 'jun':'June',
+	'jul':'July', 'aug':'August', 'sep':'September', 'oct':'October', 'nov':'November', 'dec':'December'}
 jsonIndexPath = function(params){
 	var url = IMG_ROOT;
 	for(param in params){
@@ -129,6 +131,8 @@ App.ResultsRoute = Ember.Route.extend({
 			for(var i in highlights){
 				for(var j=0; j<results.length; j++){
 					if(results[j]['issue_id'] == i){
+						results[j]['month'] = MONTH_MAP[results[j]['month']];
+						results[j]['display_page'] = results[j]['page'] + 1;
 						results[j]['highlights'] = highlights[i];
 					}
 				}
