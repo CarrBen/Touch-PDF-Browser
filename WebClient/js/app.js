@@ -169,7 +169,12 @@ App.ResultsController = Ember.ArrayController.extend({
 	query:null,
 	actions:{
 		viewResult:function(params){
-			console.log(params);
+		var queryParams = {queryParams:{pub:params['pub_id'],
+										issue:params['issue_name_'],
+										year:params['year'],
+										month:params['month'],
+										page:params['page']}}
+			this.transitionToRoute('view', queryParams);
 		}
 	}
 });
