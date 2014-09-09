@@ -32,20 +32,34 @@ def extract_page(pdf_path, pageno):
         return
     return text.decode()
 
-PDF = 'D:\\Touch_PDF_Browser\\PDFs_Sorted\\jog\\1966\\feb\\John O Gauntlet 13.pdf'
-#PDF = 'C:\\RealDocs\\Web\\Touch_PDF_Browser\\PDFs_Sorted\\jog\\1966\\feb\\John O Gauntlet 13.pdf'
-p = count_pages(PDF)
-for page in p:
-    record = {}
-    record['pub_id'] = 'jog'
-    record['issue_name'] = os.path.split(PDF)[1].replace('.pdf','')
-    record['issue_id'] = record['issue_name'] + "-%d" % page
-    record['year'] = 1966
-    record['month'] = 'feb'
-    record['page'] = page
-    record['text'] = extract_page(PDF, page+1)
-    post_json = json.dumps([record]).encode()
-    print(post_json[:500])
-    post_url = SOLR_UPDATE_ROOT + "/json?commit=true"
-    post_req = urllib.request.Request(post_url, post_json, {'Content-type':'text/json'})
-    urllib.request.urlopen(post_req)
+def process_pdf(PDF):
+    p = count_pages(PDF)
+    split_path = PDF
+    split_path, issue_name = os.path.split(split_path)
+    issue_name = issue_name.replace('.pdf','')
+    split_path, month = os.path.split(split_path)
+    split_path, year = os.path.split(split_path)
+    split_path, pub = os.path.split(split_path)
+    print(issue_name,month,year,pub)
+    return
+    for page in p:
+        record = {}
+        record['pub_id'] = pub
+        record['issue_name'] = issue_name
+        record['issue_id'] = record['issue_name'] + "-%d" % page
+        record['year'] = int(year)
+        record['month'] = month
+        record['page'] = page
+        record['text'] = extract_page(PDF, page+1)
+        print(record)
+        post_json = json.dumps([record]).encode()
+        print(post_json[:500])
+        post_url = SOLR_UPDATE_ROOT + "/json?commit=true"
+        post_req = urllib.request.Request(post_url, post_json, {'Content-type':'text/json'})
+        urllib.request.urlopen(post_req)
+
+pdf_dirs = os.walk(PDF_PATH)
+for path, dirs, files in pdf_dirs:
+    for file in files:
+        if '.json' not in file:
+            process_pdf(os.path.join(os.path.abspath(path), file))
