@@ -17,6 +17,8 @@ jsonIndexPath = function(params){
 	return url;
 }
 
+App.resultsLastCount = 0;
+
 openInfoModal = function(){
 	$('.modal.info').modal('show');
 };
@@ -95,6 +97,9 @@ App.ResultsRoute = Ember.Route.extend({
 	queryParams:{
 		query:{
 			refreshModel: true,
+		},
+		start:{
+			refreshModel: true,
 		}
 	},
 	beforeModel:function(trans){
@@ -115,6 +120,7 @@ App.ResultsRoute = Ember.Route.extend({
 				}
 			}
 		});*/
+		var that = this;
 		return $.ajax({
 			url: SOLR_ROOT + '/select',
 			data: {q:encodeURIComponent(params.query), 
@@ -122,6 +128,7 @@ App.ResultsRoute = Ember.Route.extend({
 				indent:true, 
 				hl:true,
 				fl:'page,issue_name,score,issue_id,year,month,pub_id',
+				start:params.start,
 				'hl.fragsize':200},
 			dataType: 'jsonp',
 			jsonp: 'json.wrf'
@@ -138,12 +145,14 @@ App.ResultsRoute = Ember.Route.extend({
 					}
 				}
 			}
+			App.resultsLastCount = results.length;
 			return results;
 		});
 	},
 	resetController: function(controller, exiting, trans){
 		if(exiting){
 			controller.set('query', null);
+			controller.set('start', 0);
 		}
 	}
 });
@@ -164,8 +173,9 @@ App.ResultsView = Ember.View.extend({
 });
 
 App.ResultsController = Ember.ArrayController.extend({
-	queryParams:['query'],
+	queryParams:['query', 'start'],
 	query:null,
+	start:0,
 	actions:{
 		viewResult:function(params){
 			var queryParams = {queryParams:{pub:params['pub_id'],
@@ -176,6 +186,14 @@ App.ResultsController = Ember.ArrayController.extend({
 										type:'search',
 										query:this.query}}
 			this.transitionToRoute('view', queryParams);
+		},
+		nextResults:function(){
+			this.start += 10;
+			this.replaceRoute('results', {queryParams:{start:this.start, query:this.query}});
+		},
+		prevResults:function(){
+			this.start -= 10;
+			this.replaceRoute('results', {queryParams:{start:this.start, query:this.query}});
 		}
 	}
 });
