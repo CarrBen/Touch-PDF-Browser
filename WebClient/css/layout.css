@@ -173,6 +173,17 @@ img.document_page{
 
 #searchInput{
 	-webkit-transition: font-size 1s;
+	border-bottom: 5px solid rgba(0,0,0,0.15);
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+#searchInput > input{
+	border-bottom-left-radius: 0;
+}
+
+#searchInput > div.button{
+	border-bottom-right-radius: 0;
 }
 
 span.highlight{
