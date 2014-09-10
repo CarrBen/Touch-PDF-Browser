@@ -126,18 +126,14 @@
 		</div>
 		<div class='ui center aligned row'>
 			<div class='ui eight wide column'>
-				{{#if controller.prevButton}}
-					<div class='ui large purple icon button' {{action 'prevResults'}}>
-						<i class='ui reply mail icon'></i>
-					</div>
-				{{/if}}
+				<div class='ui large purple icon button' id='prevResults' {{action 'prevResults'}}>
+					<i class='ui reply mail icon'></i>
+				</div>
 			</div>
 			<div class='ui eight wide column'>
-				{{#if controller.nextButton}}
-					<div class='ui large purple icon button' {{action 'nextResults'}}>
-						<i class='ui forward mail icon'></i>
-					</div>
-				{{/if}}
+				<div class='ui large purple icon button' id='nextResults' {{action 'nextResults'}}>
+					<i class='ui forward mail icon'></i>
+				</div>
 			</div>
 		</div>
 		</div>

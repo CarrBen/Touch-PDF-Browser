@@ -146,10 +146,6 @@ App.ResultsRoute = Ember.Route.extend({
 			return results;
 		});
 	},
-	setupController:function(controller, model){
-		controller.set('model', model);
-		controller.send('checkResultsButtons');
-	},
 	resetController: function(controller, exiting, trans){
 		if(exiting){
 			controller.set('query', null);
@@ -170,6 +166,7 @@ App.ResultsView = Ember.View.extend({
 		setTimeout(function(){
 			results.style.top = '28vmin';
 		}, 50);
+		this.controller.send('checkResultsButtons');
 	}
 });
 
@@ -191,16 +188,32 @@ App.ResultsController = Ember.ArrayController.extend({
 		nextResults:function(){
 			this.start += 10;
 			this.replaceRoute('results', {queryParams:{start:this.start, query:this.query}});
-			this.send('checkResultsButtons');
+			document.body.scrollTop = 0;
+			var that = this;
+			setTimeout(function(){
+				that.send('checkResultsButtons');
+			}, 250);
 		},
 		prevResults:function(){
 			this.start -= 10;
 			this.replaceRoute('results', {queryParams:{start:this.start, query:this.query}});
-			this.send('checkResultsButtons');
+			document.body.scrollTop = 0;
+			var that = this;
+			setTimeout(function(){
+				that.send('checkResultsButtons');
+			}, 250);
 		},
 		checkResultsButtons:function(){
-			this.prevButton = !(this.start == 0)
-			this.nextButton = !!(this.get('model').length == 10);
+			if(this.start == 0){
+				document.getElementById('prevResults').style.visibility = 'hidden';
+			}else{
+				document.getElementById('prevResults').style.visibility = 'visible';
+			}
+			if(this.get('model').length == 10){
+				document.getElementById('nextResults').style.visibility = 'visible';
+			}else{
+				document.getElementById('nextResults').style.visibility = 'hidden';
+			}
 			return false;
 		}
 	}
