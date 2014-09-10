@@ -64,14 +64,14 @@ App.BrowseController = Ember.ArrayController.extend({
 });
 
 App.SearchRoute = Ember.Route.extend({
-	queryParams:{
-		query:{
-			refreshModel: true
-		}
-	},
 	beforeModel:function(trans){
 		if('query' in trans.queryParams){
 			this.controllerFor('search').set('searchQuery', trans.queryParams['query']);
+		}
+	},
+	resetController: function(controller, exiting, trans){
+		if(exiting){
+			controller.set('searchQuery', null);
 		}
 	}
 });
@@ -149,6 +149,7 @@ App.ResultsRoute = Ember.Route.extend({
 	resetController: function(controller, exiting, trans){
 		if(exiting){
 			controller.set('query', null);
+			this.controllerFor('search').set('searchQuery', null);
 			controller.set('start', 0);
 		}
 	}
@@ -164,7 +165,7 @@ App.ResultsView = Ember.View.extend({
 		input.style.fontSize = '3vmin';
 		var results = document.getElementById('searchResults');
 		setTimeout(function(){
-			results.style.top = '28vmin';
+			results.style.top = '32vmin';
 		}, 50);
 		this.controller.send('checkResultsButtons');
 	}
@@ -172,7 +173,7 @@ App.ResultsView = Ember.View.extend({
 
 App.ResultsController = Ember.ArrayController.extend({
 	queryParams:['query', 'start'],
-	query:null,
+	query: null,
 	start:0,
 	actions:{
 		viewResult:function(params){
@@ -182,7 +183,8 @@ App.ResultsController = Ember.ArrayController.extend({
 										month:params['month'],
 										page:params['page'],
 										type:'search',
-										query:this.query}}
+										query:this.query,
+										start:this.start}}
 			this.transitionToRoute('view', queryParams);
 		},
 		nextResults:function(){
@@ -366,7 +368,7 @@ App.ViewView = Ember.View.extend({
 
 App.ViewController = Ember.Controller.extend({
 	backButton:true,
-	queryParams:['pub', 'year', 'month', 'issue', 'page', 'type', 'query'],
+	queryParams:['pub', 'year', 'month', 'issue', 'page', 'type', 'query', 'start'],
 	pub:null,
 	year:null,
 	month:null,
@@ -374,6 +376,7 @@ App.ViewController = Ember.Controller.extend({
 	page:0,
 	type:'browse',
 	query:null,
+	start:0,
 	actions:{
 		back:function(){
 			if(this.type == 'browse'){
@@ -381,8 +384,7 @@ App.ViewController = Ember.Controller.extend({
 				this.transitionToRoute('issue', {queryParams:queryParams});
 			}
 			if(this.type == 'search'){
-				var queryParams = {query:this.query};
-				console.log(queryParams);
+				var queryParams = {query:this.query, start:this.start};
 				this.transitionToRoute('results', {queryParams:queryParams});
 			}
 		},
