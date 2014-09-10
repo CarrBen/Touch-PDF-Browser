@@ -1,10 +1,13 @@
 App = Ember.Application.create();
 
 IMG_ROOT = '../JPGs/'
+SOLR_ROOT = 'http://127.0.0.1:8983/solr'
+MONTH_MAP = {'jan':'January', 'feb':'February', 'mar':'March', 'apr':'April', 'may':'May', 'jun':'June',
+	'jul':'July', 'aug':'August', 'sep':'September', 'oct':'October', 'nov':'November', 'dec':'December'}
 jsonIndexPath = function(params){
 	var url = IMG_ROOT;
 	for(param in params){
-		if(param == 'type' || param =='page'){
+		if(param == 'type' || param =='page' || param == 'query'){
 			continue;
 		}
 		url += params[param];
@@ -25,14 +28,17 @@ openHelpModal = function(){
 $(document).on('click', '.ui.button#help', openHelpModal);
 
 App.Router.map(function() {
-	this.resource('pub', {path:'/pub'});
+	this.resource('browse', {path:'/browse'});
+	this.resource('search', {path:'/search'}, function(){
+		this.resource('results', {path:'/results'});
+	});
 	this.resource('year', {path: '/year'});
 	this.resource('month', {path: '/month'});
 	this.resource('issue', {path: '/issue'});
 	this.resource('view', {path: '/view'});
 });
 
-App.PubRoute = Ember.Route.extend({
+App.BrowseRoute = Ember.Route.extend({
 	'backButton':true,
 	model: function(params){
 		return [{
@@ -48,13 +54,169 @@ App.PubRoute = Ember.Route.extend({
 	}
 });
 
-App.PubController = Ember.ArrayController.extend({
+App.BrowseController = Ember.ArrayController.extend({
 	'backButton':true,
-	queryParams:['type'],
-	type:null,
 	actions:{
 		back:function(){
 			this.transitionToRoute('/')
+		}
+	}
+});
+
+App.SearchRoute = Ember.Route.extend({
+	beforeModel:function(trans){
+		if('query' in trans.queryParams){
+			this.controllerFor('search').set('searchQuery', trans.queryParams['query']);
+		}
+	},
+	resetController: function(controller, exiting, trans){
+		if(exiting){
+			controller.set('searchQuery', null);
+		}
+	}
+});
+
+App.SearchController = Ember.Controller.extend({
+	'backButton':true,
+	actions:{
+		back:function(){
+			this.transitionToRoute('/');
+		},
+		doSearch:function(){
+			if(this.searchQuery != undefined){
+				var queryParams = {'queryParams':{'query':this.searchQuery}};
+				this.transitionToRoute('results', queryParams);
+			}
+		}
+	}
+});
+
+App.ResultsRoute = Ember.Route.extend({
+	queryParams:{
+		query:{
+			refreshModel: true,
+		},
+		start:{
+			refreshModel: true,
+		}
+	},
+	beforeModel:function(trans){
+		if(!('query' in trans.queryParams)){
+			this.transitionTo('/search');
+		}
+	},
+	model:function(params){
+		//This needs Cross Origin Resource Sharing or a proxy on the same domain
+		/*$.getJSON(SOLR_ROOT + '/select?q=' + encodeURIComponent(params.query) + '&wt=json&indent=true&hl=true').then(function(data){
+			results = data['response']['docs']
+			highlights = data['highlighting']
+			for(var i in highlights){
+				for(var j=0; j<results.length; j++){
+					if(results[j]['issue_id'] == i){
+						results[j]['highlights'] = highlights[i];
+					}
+				}
+			}
+		});*/
+		var that = this;
+		return $.ajax({
+			url: SOLR_ROOT + '/select',
+			data: {q:encodeURIComponent(params.query), 
+				wt:'json', 
+				indent:true, 
+				hl:true,
+				fl:'page,issue_name,score,issue_id,year,month,pub_id',
+				start:params.start,
+				'hl.fragsize':200},
+			dataType: 'jsonp',
+			jsonp: 'json.wrf'
+		}).then(function(data){
+			var results = data['response']['docs']
+			var highlights = data['highlighting']
+			for(var i in highlights){
+				for(var j=0; j<results.length; j++){
+					if(results[j]['issue_id'] == i){
+						results[j]['display_month'] = MONTH_MAP[results[j]['month']];
+						results[j]['display_page'] = results[j]['page'] + 1;
+						results[j]['issue_name_'] = results[j]['issue_name'].replace(new RegExp(' ', 'g'),'_');
+						results[j]['highlights'] = highlights[i];
+					}
+				}
+			}
+			return results;
+		});
+	},
+	resetController: function(controller, exiting, trans){
+		if(exiting){
+			controller.set('query', null);
+			this.controllerFor('search').set('searchQuery', null);
+			controller.set('start', 0);
+		}
+	}
+});
+
+App.ResultsView = Ember.View.extend({
+	didInsertElement: function(trans, queryparams){
+		var header = document.getElementById('logoHeader');
+		header.style.fontSize = '4vmin';
+		header.style.marginBottom = '1em';
+		header.style.marginTop = '1em';
+		var input = document.getElementById('searchInput').getElementsByTagName('input')[0];
+		input.style.fontSize = '3vmin';
+		var results = document.getElementById('searchResults');
+		setTimeout(function(){
+			results.style.top = '32vmin';
+		}, 50);
+		this.controller.send('checkResultsButtons');
+	}
+});
+
+App.ResultsController = Ember.ArrayController.extend({
+	queryParams:['query', 'start'],
+	query: null,
+	start:0,
+	actions:{
+		viewResult:function(params){
+			var queryParams = {queryParams:{pub:params['pub_id'],
+										issue:params['issue_name_'],
+										year:params['year'],
+										month:params['month'],
+										page:params['page'],
+										type:'search',
+										query:this.query,
+										start:this.start}}
+			this.transitionToRoute('view', queryParams);
+		},
+		nextResults:function(){
+			this.start += 10;
+			this.replaceRoute('results', {queryParams:{start:this.start, query:this.query}});
+			document.body.scrollTop = 0;
+			var that = this;
+			setTimeout(function(){
+				that.send('checkResultsButtons');
+			}, 250);
+		},
+		prevResults:function(){
+			this.start -= 10;
+			this.replaceRoute('results', {queryParams:{start:this.start, query:this.query}});
+			document.body.scrollTop = 0;
+			var that = this;
+			setTimeout(function(){
+				that.send('checkResultsButtons');
+			}, 250);
+		},
+		checkResultsButtons:function(){
+			if(this.start == 0){
+				document.getElementById('prevResults').style.visibility = 'hidden';
+			}else{
+				document.getElementById('prevResults').style.visibility = 'visible';
+			}
+			if(this.get('model').length == 10){
+				document.getElementById('nextResults').style.visibility = 'visible';
+			}else{
+				document.getElementById('nextResults').style.visibility = 'hidden';
+			}
+			return false;
 		}
 	}
 });
@@ -86,7 +248,7 @@ App.YearController = Ember.ArrayController.extend({
 	actions:{
 		back:function(){
 			var queryParams = {'pub':this.pub, 'type':this.type}
-			this.transitionToRoute('pub', {queryParams:queryParams});
+			this.transitionToRoute('browse');
 		}
 	}
 });
@@ -206,28 +368,36 @@ App.ViewView = Ember.View.extend({
 
 App.ViewController = Ember.Controller.extend({
 	backButton:true,
-	queryParams:['pub', 'year', 'month', 'issue', 'page', 'type'],
+	queryParams:['pub', 'year', 'month', 'issue', 'page', 'type', 'query', 'start'],
 	pub:null,
 	year:null,
 	month:null,
 	issue:null,
 	page:0,
 	type:'browse',
+	query:null,
+	start:0,
 	actions:{
 		back:function(){
-			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
-			this.transitionToRoute('issue', {queryParams:queryParams});
+			if(this.type == 'browse'){
+				var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type};
+				this.transitionToRoute('issue', {queryParams:queryParams});
+			}
+			if(this.type == 'search'){
+				var queryParams = {query:this.query, start:this.start};
+				this.transitionToRoute('results', {queryParams:queryParams});
+			}
 		},
 		next:function(){
 			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
 			queryParams['page'] = DocumentViewer.current_page + 1;
-			this.replaceWith('view', {queryParams:queryParams});
+			this.replaceRoute('view', {queryParams:queryParams});
 			DocumentViewer.next_page();
 		},
 		prev:function(){
 			var queryParams = {'pub':this.pub, 'year':this.year, 'month':this.month, 'issue':this.issue, 'page':this.page, 'type':this.type}
 			queryParams['page'] = DocumentViewer.current_page - 1;
-			this.replaceWith('view', {queryParams:queryParams});
+			this.replaceRoute('view', {queryParams:queryParams});
 			DocumentViewer.prev_page();
 		}
 	}

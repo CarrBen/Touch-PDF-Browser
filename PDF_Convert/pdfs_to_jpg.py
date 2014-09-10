@@ -1,4 +1,5 @@
-#Runs on Python 2.7.8, ImageMagick convert.exe on the System PATH
+#Runs on Python 3.4.1, may run on 2.7.8,
+#ImageMagick convert.exe on the System PATH
 #and Ghostscript with the bin and lib on the system path
 #OUTPUT_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/JPGs"
 OUTPUT_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/demo/JPGs"
