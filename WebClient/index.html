@@ -41,14 +41,10 @@
 	
 	<script type="text/x-handlebars" id="_logoTitle">
 		<div class='ui center aligned row'>
-			<div class='four wide column'>
-			</div>
-			<div class='eight wide column'>
+			<div class='ui column'>
 				<div class='ui huge purple expanding header' id='logoHeader'>
-					Logo and title
+					Lancaster <img src='images/Lancaster 50 Logo.png' id='logo50' /> Digital Archive
 				</div>
-			</div>
-			<div class='four wide column'>
 			</div>
 		</div>	
 	</script>
@@ -141,13 +137,7 @@
 
 	<script type='text/x-handlebars' id='browse'>
 		<div class='ui middle aligned stackable page grid'>
-			<div class='ui center aligned one column row'>
-				<div class='ui column'>
-					<div class='ui huge purple expanding header'>
-						Logo and title
-					</div>
-				</div>
-			</div>
+			{{partial "logoTitle"}}
 			<div class='ui center aligned equal height three column row' style='height:30vmin'>
 			{{#each}}
 				<div class='ui column'>
