@@ -21,12 +21,23 @@ DocumentViewer.setup = function(){
 
 DocumentViewer.create_images = function(data_model){
 	this.pages = {};
-	for(var i = 0; i < data_model.pages.length; i ++){
-		var img = document.createElement('img');
-		img.src = data_model['pages'][i];
-		img.className = 'document_page';
-		img.onload = this.image_loaded(i);
-		this.pages[i] = img;
+	for(var i = 0; i < data_model.pages.length; i++){
+		var j = this.current_page + i;
+		if(j < data_model.pages.length){
+			var img = document.createElement('img');
+			img.src = data_model['pages'][j];
+			img.className = 'document_page';
+			img.onload = this.image_loaded(j);
+			this.pages[j] = img;
+		}
+		var j = this.current_page - i;
+		if(j >= 0 && i > 0){
+			var img = document.createElement('img');
+			img.src = data_model['pages'][j];
+			img.className = 'document_page';
+			img.onload = this.image_loaded(j);
+			this.pages[j] = img;
+		}
 	}
 }
 

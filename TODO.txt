@@ -1,0 +1,18 @@
+	insert logo and title
+	load more search results
+	viewer page load order
+thumbnails for publications and search results
+sort new pdfs
+process pool jpg generator
+generate jpgs for new images
+automate generation of browsing publication page
+index new images to json
+add to solr
+make it work with firefox
+
+write help
+write info
+setup pc
+open kiosk
+make text extraction better
+doubleclick to zoom
