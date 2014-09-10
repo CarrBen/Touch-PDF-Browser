@@ -16,19 +16,22 @@
  limitations under the License.
 -->
 
-<schema name="example" version="1.5">
+<schema name="LancasterArchive" version="1.5">
 <fields>
+		<field name="_version_" type="long" indexed="true" stored="true"/>
         <field name="pub_id" type="string" indexed="true" stored="false" required="true" multiValued="false" />
         <field name="issue_name" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+		<field name="issue_id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
         <field name="year" type="int" indexed="true" stored="true" required="true" multiValued="false" />
         <field name="month" type="string" indexed="true" stored="true" required="true" multiValued="false" />
         <field name="page" type="int" indexed="true" stored="true" required="true" multiValued="false" />
-        <field name="content" type="text_en" indexed="true" stored="true" required="true" multiValued="false" />
+        <field name="text" type="text_en" indexed="true" stored="true" required="true" multiValued="false" />
     </fields>
-    <uniqueKey>issue_name</uniqueKey>
+    <uniqueKey>issue_id</uniqueKey>
     <types>
         <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
         <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
+		<fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
 		<fieldType name="text_en" class="solr.TextField" positionIncrementGap="100">
 			<analyzer type="index">
 				<tokenizer class="solr.StandardTokenizerFactory"/>

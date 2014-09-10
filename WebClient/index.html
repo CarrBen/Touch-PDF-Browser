@@ -39,19 +39,23 @@
 		</div>
 	</script>
 	
-	<script type='text/x-handlebars' id='index'>
-		<div class='ui middle aligned stackable page grid'>
-			<div class='ui center aligned row'>
-				<div class='four wide column'>
-				</div>
-				<div class='eight wide column'>
-					<div class='ui huge purple expanding header'>
-						Logo and title
-					</div>
-				</div>
-				<div class='four wide column'>
+	<script type="text/x-handlebars" id="_logoTitle">
+		<div class='ui center aligned row'>
+			<div class='four wide column'>
+			</div>
+			<div class='eight wide column'>
+				<div class='ui huge purple expanding header' id='logoHeader'>
+					Logo and title
 				</div>
 			</div>
+			<div class='four wide column'>
+			</div>
+		</div>	
+	</script>
+	
+	<script type='text/x-handlebars' id='index'>
+		<div class='ui middle aligned stackable page grid'>
+			{{partial "logoTitle"}}
 			<div class='ui center aligned two column row'>
 				<div class='ui column'>
 				{{#link-to 'browse'}}
@@ -76,21 +80,11 @@
 	<script type='text/x-handlebars' id='search'>
 		{{outlet}}
 		<div class='ui middle aligned page grid' id='searchBox'>
-			<div class='ui center aligned row'>
-				<div class='four wide column'>
-				</div>
-				<div class='eight wide column'>
-					<div class='ui huge purple expanding header' id='logoHeader'>
-						Logo and title
-					</div>
-				</div>
-				<div class='four wide column'>
-				</div>
-			</div>
+			{{partial "logoTitle"}}
 			<div class='ui row'>
 				<div class='ui column'>
 					<div class='ui jumbo action input' id='searchInput'>
-						{{input placeholder='Search...' value=controller.searchQuery}}
+						{{input placeholder='Search...' value=controller.searchQuery action='doSearch' on="enter"}}
 						<div {{action 'doSearch'}} class='ui purple icon button'><i class='ui big search icon'></i>
 						</div>
 					</div>
@@ -107,151 +101,39 @@
 		<div class='ui row'>
 			<div class='ui column'>
 				<table class='ui large celled table segment'>
-					<tr>
+				<tbody>
+					{{#each}}
+					<tr {{action 'viewResult' this}}>
 						<td class='four wide'>
-							Basic info goes right here
+							{{issue_name}}<br>
+							{{display_month}}<br>
+							{{year}}<br>
+							Page {{display_page}}
 						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
+						<td class='eleven wide'>
+							{{{highlights.text}}}
+						</td>
+						<td class='one wide'>
+							<div class='ui large purple icon button'>
+								<i class='ui forward mail icon'></i>
+							</div>
 						</td>
 					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
-										<tr>
-						<td class='four wide'>
-							Basic info goes right here
-						</td>
-						<td class='twelve wide'>
-							Hit highlighted result text goes here
-						</td>
-					</tr>
+					{{/each}}
+				</tbody>
 				</table>
+			</div>
+		</div>
+		<div class='ui center aligned row'>
+			<div class='ui eight wide column'>
+				<div class='ui large purple icon button' id='prevResults' {{action 'prevResults'}}>
+					<i class='ui reply mail icon'></i>
+				</div>
+			</div>
+			<div class='ui eight wide column'>
+				<div class='ui large purple icon button' id='nextResults' {{action 'nextResults'}}>
+					<i class='ui forward mail icon'></i>
+				</div>
 			</div>
 		</div>
 		</div>
@@ -286,13 +168,7 @@
 	
 	<script type='text/x-handlebars' id='year'>
 		<div class='ui middle aligned page grid'>
-			<div class='ui center aligned one column row'>
-				<div class='ui column'>
-					<div class='ui huge purple expanding header'>
-						Logo and title
-					</div>
-				</div>
-			</div>
+			{{partial "logoTitle"}}
 			<div class='ui center aligned one column row'>
 				<div class='ui five column doubling grid'>
 					<div class='ui center middle aligned five column row'>
@@ -316,13 +192,7 @@
 	
 	<script type='text/x-handlebars' id='month'>
 		<div class='ui middle aligned page grid'>
-			<div class='ui center aligned one column row'>
-				<div class='ui column'>
-					<div class='ui huge purple expanding header'>
-						Logo and title
-					</div>
-				</div>
-			</div>
+			{{partial "logoTitle"}}
 			<div class='ui center aligned one column row'>
 				<div class='ui five column doubling grid'>
 					<div class='ui center middle aligned five column row'>
@@ -346,13 +216,7 @@
 	
 	<script type='text/x-handlebars' id='issue'>
 		<div class='ui middle aligned page grid'>
-			<div class='ui center aligned one column row'>
-				<div class='ui column'>
-					<div class='ui huge purple expanding header'>
-						Logo and title
-					</div>
-				</div>
-			</div>
+			{{partial "logoTitle"}}
 			<div class='ui center aligned one column row'>
 				<div class='ui five column doubling grid'>
 					<div class='ui center middle aligned five column row'>
