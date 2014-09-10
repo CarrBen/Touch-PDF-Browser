@@ -161,7 +161,7 @@ img.document_page{
 #searchResults{
 	width: 90%;
 	margin-left: 5%;
-	margin-bottom: 5%;
+	margin-bottom: 2%;
 	position: relative;
 	top: 110vh;
 	-webkit-transition: top 1s;

@@ -17,8 +17,6 @@ jsonIndexPath = function(params){
 	return url;
 }
 
-App.resultsLastCount = 0;
-
 openInfoModal = function(){
 	$('.modal.info').modal('show');
 };
@@ -145,9 +143,12 @@ App.ResultsRoute = Ember.Route.extend({
 					}
 				}
 			}
-			App.resultsLastCount = results.length;
 			return results;
 		});
+	},
+	setupController:function(controller, model){
+		controller.set('model', model);
+		controller.send('checkResultsButtons');
 	},
 	resetController: function(controller, exiting, trans){
 		if(exiting){
@@ -190,10 +191,17 @@ App.ResultsController = Ember.ArrayController.extend({
 		nextResults:function(){
 			this.start += 10;
 			this.replaceRoute('results', {queryParams:{start:this.start, query:this.query}});
+			this.send('checkResultsButtons');
 		},
 		prevResults:function(){
 			this.start -= 10;
 			this.replaceRoute('results', {queryParams:{start:this.start, query:this.query}});
+			this.send('checkResultsButtons');
+		},
+		checkResultsButtons:function(){
+			this.prevButton = !(this.start == 0)
+			this.nextButton = !!(this.get('model').length == 10);
+			return false;
 		}
 	}
 });
