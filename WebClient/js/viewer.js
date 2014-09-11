@@ -173,6 +173,7 @@ DocumentViewer.setup_hammer = function(){
 	
 	this.stage_hammer.on('pinchstart', this.hammer_pinchstart());
 	this.stage_hammer.on('pinch', this.hammer_pinch());
+	this.stage_hammer.on('pinchend', this.hammer_pinchend());
 	
 	//NOT TESTED
 	this.stage_hammer.on('pinchmove', this.hammer_pinchmove());
@@ -209,6 +210,9 @@ DocumentViewer.hammer_panstart = function(){
 DocumentViewer.hammer_pan = function(){
 	var that = this;
 	return function(ev){
+		if(that.is_pinching){
+			return false;
+		}
 		var img = that.pages[that.current_page];
 
 		var top = that.startTop + ev.deltaY;
@@ -218,7 +222,6 @@ DocumentViewer.hammer_pan = function(){
 		var left = that.startLeft + ev.deltaX;
 		left = Math.min(left, img.horizontalLimit);
 		left = Math.max(left, -img.horizontalLimit + window.innerWidth - img.scale * img.naturalWidth);
-		
 		that.set_image_pos(that.current_page, left, top);
 		return false;
 	}
@@ -227,6 +230,7 @@ DocumentViewer.hammer_pan = function(){
 DocumentViewer.hammer_pinchstart = function(){
 	var that = this;
 	return function(ev){
+		that.is_pinching = true;
 		var img = that.pages[that.current_page];
 		img.startScale = img.scale;
 		
@@ -240,6 +244,7 @@ DocumentViewer.hammer_pinchstart = function(){
 DocumentViewer.hammer_pinch = function(){
 	var that = this;
 	return function(ev){
+		console.log('pinch');
 		var img = that.pages[that.current_page];
 		img.scale = img.startScale * ev.scale;
 		
@@ -249,12 +254,12 @@ DocumentViewer.hammer_pinch = function(){
 		img.height = img.scale * img.naturalHeight;
 		img.width = img.scale * img.naturalWidth;
 
-		var topDiff = (ev.center.y - that.startPinchTop) * img.scale / img.startScale;
+		var topDiff = (ev.center.y - ev.deltaY - that.startPinchTop) * img.scale / img.startScale;
 		var top = ev.center.y - topDiff;
 		top = Math.min(top, img.verticalLimit);
 		top = Math.max(top, -img.verticalLimit + window.innerHeight - img.scale * img.naturalHeight)
 		
-		var leftDiff = (ev.center.x - that.startPinchLeft) * img.scale / img.startScale;
+		var leftDiff = (ev.center.x - ev.deltaX - that.startPinchLeft) * img.scale / img.startScale;
 		var left = ev.center.x - leftDiff;
 		left = Math.min(left, img.horizontalLimit);
 		left = Math.max(left, -img.horizontalLimit + window.innerWidth - img.scale * img.naturalWidth)
@@ -264,12 +269,20 @@ DocumentViewer.hammer_pinch = function(){
 	}
 }
 
+DocumentViewer.hammer_pinchend = function(){
+	var that = this;
+	return function(ev){
+		that.is_pinching = false;
+	}
+}
+
 //NOT TESTED
 DocumentViewer.hammer_pinchmove = function(){
 	var that = this;
 	return function(ev){
-		that.hammer_pan()(ev);
-		that.hammer_pinch()(ev);
+		//console.log('pinchmove');
+		//that.hammer_pan()(ev);
+		//that.hammer_pinch()(ev);
 		return false;
 	}
 }
