@@ -142,13 +142,15 @@ a.heightButton{
 	position: relative;
 	width: 100%;
 	height: 100%;
-	-webkit-transform: translateZ(0);
 	-webkit-transition: left 1s;
+	-moz-transition: left 1s;
+	transition: left 1s;
 }
 
 img.document_page{
 	position: absolute;
 	-webkit-user-drag: none;
+	pointer-events: none;
 }
 
 .ui.jumbo.action.input{
@@ -159,6 +161,8 @@ img.document_page{
 .ui.jumbo.action.input > input{
 	font-size: 4vmin;
 	-webkit-transition: font-size 1s;
+	-moz-transition: font-size 1s;
+	transition: font-size 1s;
 }
 
 .ui.jumbo.action.input > .ui.button{
@@ -184,14 +188,20 @@ img.document_page{
 	position: relative;
 	top: 110vh;
 	-webkit-transition: top 1s;
+	-moz-transition: top 1s;
+	transition: top 1s;
 }
 
 #logoHeader{
 	-webkit-transition: margin-top 1s, margin-bottom 1s, font-size 1s;
+	-moz-transition: margin-top 1s, margin-bottom 1s, font-size 1s;
+	transition: margin-top 1s, margin-bottom 1s, font-size 1s;
 }
 
 #searchInput{
 	-webkit-transition: font-size 1s;
+	-moz-transition: font-size 1s;
+	transition: font-size 1s;
 	border-bottom: 5px solid rgba(0,0,0,0.15);
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
