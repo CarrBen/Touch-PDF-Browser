@@ -99,6 +99,7 @@
 		<div class='ui middle aligned page grid' id='searchResults'>
 		<div class='ui row'>
 			<div class='ui column'>
+			{{#unless controller.noResults}}
 				<table class='ui large celled table segment'>
 				<tbody>
 					{{#each}}
@@ -121,6 +122,12 @@
 					{{/each}}
 				</tbody>
 				</table>
+			{{else}}
+				<div class='ui purple center aligned segment'>
+					<div class='ui purple header'>Sorry, there are no entries for that query.
+					</div>
+				</div>
+			{{/unless}}
 			</div>
 		</div>
 		<div class='ui center aligned row'>

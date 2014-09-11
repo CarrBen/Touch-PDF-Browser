@@ -244,7 +244,6 @@ DocumentViewer.hammer_pinchstart = function(){
 DocumentViewer.hammer_pinch = function(){
 	var that = this;
 	return function(ev){
-		console.log('pinch');
 		var img = that.pages[that.current_page];
 		img.scale = img.startScale * ev.scale;
 		

@@ -87,7 +87,11 @@ App.SearchController = Ember.Controller.extend({
 		},
 		doSearch:function(){
 			if(this.searchQuery != undefined){
-				var queryParams = {'queryParams':{'query':this.searchQuery}};
+				var queryParams = {'queryParams':{'query':this.searchQuery, 'start': 0}};
+				var that = this.controllerFor('results');
+				setTimeout(function(){
+					that.send('checkResultsButtons');
+				}, 250);
 				this.transitionToRoute('results', queryParams);
 			}
 		}
@@ -108,7 +112,7 @@ App.ResultsRoute = Ember.Route.extend({
 			this.transitionTo('/search');
 		}
 	},
-	model:function(params){
+	model:function(params, trans, queryParams){
 		//This needs Cross Origin Resource Sharing or a proxy on the same domain
 		/*$.getJSON(SOLR_ROOT + '/select?q=' + encodeURIComponent(params.query) + '&wt=json&indent=true&hl=true').then(function(data){
 			results = data['response']['docs']
@@ -122,9 +126,13 @@ App.ResultsRoute = Ember.Route.extend({
 			}
 		});*/
 		var that = this;
+		var q = params.query;
+		if(q.search(':') == -1){
+			q = 'text:"' + q + '"';
+		}
 		return $.ajax({
 			url: SOLR_ROOT + '/select',
-			data: {q:encodeURIComponent(params.query), 
+			data: {q:q, 
 				wt:'json', 
 				indent:true, 
 				hl:true,
@@ -134,8 +142,13 @@ App.ResultsRoute = Ember.Route.extend({
 			dataType: 'jsonp',
 			jsonp: 'json.wrf'
 		}).then(function(data){
-			var results = data['response']['docs']
-			var highlights = data['highlighting']
+			var results = data['response']['docs'];
+			var highlights = data['highlighting'];
+			if(results.length == 0){
+				that.controllerFor('results').set('noResults', true);
+			}else{
+				that.controllerFor('results').set('noResults', false);
+			}
 			for(var i in highlights){
 				for(var j=0; j<results.length; j++){
 					if(results[j]['issue_id'] == i){

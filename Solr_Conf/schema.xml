@@ -20,7 +20,7 @@
 <fields>
 		<field name="_version_" type="long" indexed="true" stored="true"/>
         <field name="pub_id" type="string" indexed="true" stored="false" required="true" multiValued="false" />
-        <field name="issue_name" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+        <field name="issue_name" type="text_en" indexed="true" stored="true" required="true" multiValued="false" />
 		<field name="issue_id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
         <field name="year" type="int" indexed="true" stored="true" required="true" multiValued="false" />
         <field name="month" type="string" indexed="true" stored="true" required="true" multiValued="false" />
