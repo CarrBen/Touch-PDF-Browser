@@ -7,7 +7,7 @@ MONTH_MAP = {'jan':'January', 'feb':'February', 'mar':'March', 'apr':'April', 'm
 jsonIndexPath = function(params){
 	var url = IMG_ROOT;
 	for(param in params){
-		if(param == 'type' || param =='page' || param == 'query'){
+		if(param == 'type' || param =='page' || param == 'query' || param == 'start'){
 			continue;
 		}
 		url += params[param];

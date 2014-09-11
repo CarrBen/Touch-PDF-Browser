@@ -2,12 +2,14 @@
 #ImageMagick convert.exe on the System PATH
 #and Ghostscript with the bin and lib on the system path
 #OUTPUT_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/JPGs"
-OUTPUT_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/demo/JPGs"
-INPUT_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/PDFs_Sorted"
+OUTPUT_DIR = "D:/Touch_PDF_Browser/JPGs"
+#OUTPUT_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/demo/JPGs"
+#INPUT_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/PDFs_Sorted/carol"
+INPUT_DIR = "D:/Touch_PDF_Browser/PDFs_Sorted/carol"
 
 IMAGE_MAGICK_PATH = "C:\Program Files\ImageMagick-6.8.9-Q16"
 
-JPG_QUALITY = 75
+JPG_QUALITY = 95
 CONVERT_CMD = "%s -density 300 -quality %d \"%s\" \"%s\""
 
 import subprocess
@@ -21,14 +23,19 @@ STARTUP_INFO.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 PDFs = os.walk(INPUT_DIR)
 os.chdir(OUTPUT_DIR)
 
+PDF_List = []
 for path, dir, files in PDFs:
+    PDF_List.append((path, dir, files))
+
+def convert_pdf(triplet):
+    path, dir, files = triplet
     if len(files) == 0:
-        continue
+        return
     if 'Image' in os.path.split(path)[1]:
-        continue
+        return
     for file in files:
         if '.pdf' not in file[-5:]:
-            continue
+            return
         pdf_in = os.path.join(path, file)
         relpath = os.path.relpath(path, INPUT_DIR)
         issue_name = file.replace('.pdf', '')
@@ -58,4 +65,7 @@ for path, dir, files in PDFs:
                         startupinfo=STARTUP_INFO)
         os.chdir(OUTPUT_DIR)
 
-print("Done")
+if __name__ == '__main__':
+    from multiprocessing import Pool
+    p = Pool(8)
+    p.map(convert_pdf, PDF_List)
