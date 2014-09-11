@@ -1830,6 +1830,9 @@
   <!-- example of registering a query parser -->
   <!--
      <queryParser name="myparser" class="com.mycompany.MyQParserPlugin"/>
+	 
+	 <queryParser name="dismax"
+	 class="org.apache.solr.search.DisMaxQParserPlugin"/>
     -->
 
   <!-- Function Parsers

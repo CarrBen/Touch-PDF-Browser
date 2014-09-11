@@ -138,7 +138,9 @@ App.ResultsRoute = Ember.Route.extend({
 				hl:true,
 				fl:'page,issue_name,score,issue_id,year,month,pub_id',
 				start:params.start,
-				'hl.fragsize':200},
+				'hl.fragsize':200,
+				'defType':'dismax',
+				'pf':'text^3.0'},
 			dataType: 'jsonp',
 			jsonp: 'json.wrf'
 		}).then(function(data){
