@@ -57,7 +57,7 @@
 			{{partial "logoTitle"}}
 			<div class='ui center aligned two column row'>
 				<div class='ui column'>
-				{{#link-to 'browse'}}
+				{{#link-to 'browse' (query-params type='browse')}}
 					<div class='ui jumbo purple button'>
 						<i class='massive browser icon chunkybutton'></i>
 						<div class='chunkybuttontext'>Browse</div>
@@ -193,7 +193,7 @@
 					<div class='ui center middle aligned five column row'>
 					{{#each}}
 						<div class='ui column'>
-						{{#link-to 'issue' (query-params pub=controller.pub year=controller.year month=month_id)}}
+						{{#link-to 'issue' (query-params pub=controller.pub year=controller.year month=month_id type='browse')}}
 							<div {{bind-attr class=':ui :purple :massive invisible :month :button'}}>
 								{{name}}
 							</div>
@@ -217,7 +217,7 @@
 					<div class='ui center middle aligned five column row'>
 					{{#each}}
 						<div class='ui column'>
-						{{#link-to 'view' (query-params pub=controller.pub year=controller.year month=controller.month issue=issue_id)}}
+						{{#link-to 'view' (query-params pub=controller.pub year=controller.year month=controller.month issue=issue_id type='browse')}}
 							<div {{bind-attr class=':ui :purple :massive invisible :button'}}>
 								{{name}}
 							</div>

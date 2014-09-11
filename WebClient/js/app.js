@@ -74,6 +74,7 @@ App.SearchRoute = Ember.Route.extend({
 	resetController: function(controller, exiting, trans){
 		if(exiting){
 			controller.set('searchQuery', null);
+			controller.set('type', 'browse');
 		}
 	}
 });
