@@ -58,12 +58,28 @@ div.chunkybuttontext {
 	position: fixed;
 	top: 16px;
 	left: 16px;
+	width: 65px;
+	height:65px;
 }
 
 .ui.button#help{
 	position: fixed;
 	top: 16px;
 	right: 97px;
+	width: 65px;
+	height:65px;
+}
+
+.ui.button#home{
+	position: fixed;
+	top: 16px;
+	right: 178px;
+	width: 65px;
+	height:65px;
+}
+
+.ui.button#home > i.ui.icon.home{
+	width:36px;
 }
 
 .ui.button#help > .question.icon{

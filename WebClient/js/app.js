@@ -27,6 +27,14 @@ openHelpModal = function(){
 }
 $(document).on('click', '.ui.button#help', openHelpModal);
 
+App.ApplicationRoute = Ember.Route.extend({
+	actions:{
+		home:function(){
+			this.replaceWith('/');
+		}
+	}
+});
+
 App.Router.map(function() {
 	this.resource('browse', {path:'/browse'});
 	this.resource('search', {path:'/search'}, function(){
