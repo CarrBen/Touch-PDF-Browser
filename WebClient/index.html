@@ -138,17 +138,19 @@
 	<script type='text/x-handlebars' id='browse'>
 		<div class='ui middle aligned stackable page grid'>
 			{{partial "logoTitle"}}
-			<div class='ui center aligned equal height three column row' style='height:30vmin'>
-			{{#each}}
-				<div class='ui column'>
-				{{#link-to 'year' (query-params pub=pub_id) class='heightButton'}}
-					<div class='ui purple fluid huge button'>
-						<i class='huge bookmark icon chunkybutton'></i>
-						<div class='chunkybuttontext'>{{name}}</div>
+			<div class='ui center aligned one column row'>
+				<div class='ui center aligned equal height three column row' style='height:30vmin'>
+					<div class='ui center middle aligned five column row'>
+					{{#each}}
+					{{#link-to 'year' (query-params pub=pub_id) class='heightButton'}}
+						<div class='ui purple huge button'>
+							<i class='huge bookmark icon chunkybutton'></i>
+							<div class='chunkybuttontext'>{{name}}</div>
+						</div>
+					{{/link-to}}
+					{{/each}}
 					</div>
-				{{/link-to}}
 				</div>
-			{{/each}}
 			</div>
 		</div>
 		{{#if backButton}}

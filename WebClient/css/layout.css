@@ -39,6 +39,7 @@ div.chunkybuttontext {
 
 .ui.row.equal.height > .ui.column > a > .ui.button{
 	height: 22vmin;
+	width:45vmin;
 }
 
 .ui.row.equal.height > .ui.column{
@@ -83,6 +84,8 @@ div.chunkybuttontext {
 
 a.heightButton{
 	text-decoration: none;
+	display:inline-block;
+	margin: 1em 1.5em;
 }
 
 .ui.month.button{

@@ -41,16 +41,10 @@ App.Router.map(function() {
 App.BrowseRoute = Ember.Route.extend({
 	'backButton':true,
 	model: function(params){
-		return [{
-			'name':'John O Gauntlet',
-			'pub_id':'jog'
-			},{
-			'name':'Carolynne',
-			'pub_id':'carol'
-			},{
-			'name':'STEPS',
-			'pub_id':'steps'
-			}]
+		return $.getJSON(jsonIndexPath(params)).then(function(body){
+			data = body['data'];
+			return data;
+		});
 	}
 });
 
