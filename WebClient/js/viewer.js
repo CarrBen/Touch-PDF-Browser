@@ -266,6 +266,9 @@ DocumentViewer.hammer_pinch = function(){
 		var left = ev.center.x - leftDiff;
 		left = Math.min(left, img.horizontalLimit);
 		left = Math.max(left, -img.horizontalLimit + window.innerWidth - img.scale * img.naturalWidth)
+		
+		that.startLeft = left;
+		that.startTop = top;
 
 		that.set_image_pos(that.current_page, left, top);
 		return false;
