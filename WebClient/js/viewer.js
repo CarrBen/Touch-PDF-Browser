@@ -28,6 +28,7 @@ DocumentViewer.create_images = function(data_model){
 			img.src = data_model['pages'][j];
 			img.className = 'document_page';
 			img.onload = this.image_loaded(j);
+			img.ondragstart = function(){return false};
 			this.pages[j] = img;
 		}
 		var j = this.current_page - i;
@@ -36,6 +37,7 @@ DocumentViewer.create_images = function(data_model){
 			img.src = data_model['pages'][j];
 			img.className = 'document_page';
 			img.onload = this.image_loaded(j);
+			img.ondragstart = function(){return false};
 			this.pages[j] = img;
 		}
 	}
@@ -186,6 +188,8 @@ DocumentViewer.hammer_doubletap = function(){
 		that.hammer_pinchstart()(ev);
 		obj = {
 			center:{x:ev.center.x, y:ev.center.y},
+			deltaX:0,
+			deltaY:0,
 			scale: 2
 		}
 		that.hammer_pinch()(obj);

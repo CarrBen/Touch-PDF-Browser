@@ -23,7 +23,7 @@ i.chunkybutton.search {
 }
 
 .ui.huge.button{
-	font-size: 2vmin;
+	font-size: 1.5vmin;
 	border-radius: 0.3em;
 }
 
@@ -38,8 +38,8 @@ div.chunkybuttontext {
 }
 
 .ui.row.equal.height > .ui.column > a > .ui.button{
-	height: 22vmin;
-	width:45vmin;
+	height: 16vmin;
+	width:32vmin;
 }
 
 .ui.row.equal.height > .ui.column{

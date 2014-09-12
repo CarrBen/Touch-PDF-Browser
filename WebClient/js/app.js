@@ -4,6 +4,9 @@ IMG_ROOT = '../JPGs/'
 SOLR_ROOT = 'http://127.0.0.1:8983/solr'
 MONTH_MAP = {'jan':'January', 'feb':'February', 'mar':'March', 'apr':'April', 'may':'May', 'jun':'June',
 	'jul':'July', 'aug':'August', 'sep':'September', 'oct':'October', 'nov':'November', 'dec':'December'}
+	
+window.oncontextmenu = function(){return false};
+	
 jsonIndexPath = function(params){
 	var url = IMG_ROOT;
 	for(param in params){
@@ -126,13 +129,9 @@ App.ResultsRoute = Ember.Route.extend({
 			}
 		});*/
 		var that = this;
-		var q = params.query;
-		if(q.search(':') == -1){
-			q = 'text:"' + q + '"';
-		}
 		return $.ajax({
 			url: SOLR_ROOT + '/select',
-			data: {q:q, 
+			data: {q:params.query, 
 				wt:'json', 
 				indent:true, 
 				hl:true,
