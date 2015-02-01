@@ -21,12 +21,25 @@ DocumentViewer.setup = function(){
 
 DocumentViewer.create_images = function(data_model){
 	this.pages = {};
-	for(var i = 0; i < data_model.pages.length; i ++){
-		var img = document.createElement('img');
-		img.src = data_model['pages'][i];
-		img.className = 'document_page';
-		img.onload = this.image_loaded(i);
-		this.pages[i] = img;
+	for(var i = 0; i < data_model.pages.length; i++){
+		var j = this.current_page + i;
+		if(j < data_model.pages.length){
+			var img = document.createElement('img');
+			img.src = data_model['pages'][j];
+			img.className = 'document_page';
+			img.onload = this.image_loaded(j);
+			img.ondragstart = function(){return false};
+			this.pages[j] = img;
+		}
+		var j = this.current_page - i;
+		if(j >= 0 && i > 0){
+			var img = document.createElement('img');
+			img.src = data_model['pages'][j];
+			img.className = 'document_page';
+			img.onload = this.image_loaded(j);
+			img.ondragstart = function(){return false};
+			this.pages[j] = img;
+		}
 	}
 }
 
@@ -162,6 +175,7 @@ DocumentViewer.setup_hammer = function(){
 	
 	this.stage_hammer.on('pinchstart', this.hammer_pinchstart());
 	this.stage_hammer.on('pinch', this.hammer_pinch());
+	this.stage_hammer.on('pinchend', this.hammer_pinchend());
 	
 	//NOT TESTED
 	this.stage_hammer.on('pinchmove', this.hammer_pinchmove());
@@ -174,6 +188,8 @@ DocumentViewer.hammer_doubletap = function(){
 		that.hammer_pinchstart()(ev);
 		obj = {
 			center:{x:ev.center.x, y:ev.center.y},
+			deltaX:0,
+			deltaY:0,
 			scale: 2
 		}
 		that.hammer_pinch()(obj);
@@ -198,6 +214,9 @@ DocumentViewer.hammer_panstart = function(){
 DocumentViewer.hammer_pan = function(){
 	var that = this;
 	return function(ev){
+		if(that.is_pinching){
+			return false;
+		}
 		var img = that.pages[that.current_page];
 
 		var top = that.startTop + ev.deltaY;
@@ -207,9 +226,6 @@ DocumentViewer.hammer_pan = function(){
 		var left = that.startLeft + ev.deltaX;
 		left = Math.min(left, img.horizontalLimit);
 		left = Math.max(left, -img.horizontalLimit + window.innerWidth - img.scale * img.naturalWidth);
-		
-		console.log('Pan:');
-		console.log(left, top);
 		that.set_image_pos(that.current_page, left, top);
 		return false;
 	}
@@ -218,6 +234,7 @@ DocumentViewer.hammer_pan = function(){
 DocumentViewer.hammer_pinchstart = function(){
 	var that = this;
 	return function(ev){
+		that.is_pinching = true;
 		var img = that.pages[that.current_page];
 		img.startScale = img.scale;
 		
@@ -240,18 +257,28 @@ DocumentViewer.hammer_pinch = function(){
 		img.height = img.scale * img.naturalHeight;
 		img.width = img.scale * img.naturalWidth;
 
-		var topDiff = (ev.center.y - that.startPinchTop) * img.scale / img.startScale;
+		var topDiff = (ev.center.y - ev.deltaY - that.startPinchTop) * img.scale / img.startScale;
 		var top = ev.center.y - topDiff;
 		top = Math.min(top, img.verticalLimit);
 		top = Math.max(top, -img.verticalLimit + window.innerHeight - img.scale * img.naturalHeight)
 		
-		var leftDiff = (ev.center.x - that.startPinchLeft) * img.scale / img.startScale;
+		var leftDiff = (ev.center.x - ev.deltaX - that.startPinchLeft) * img.scale / img.startScale;
 		var left = ev.center.x - leftDiff;
 		left = Math.min(left, img.horizontalLimit);
 		left = Math.max(left, -img.horizontalLimit + window.innerWidth - img.scale * img.naturalWidth)
+		
+		that.startLeft = left;
+		that.startTop = top;
 
 		that.set_image_pos(that.current_page, left, top);
 		return false;
+	}
+}
+
+DocumentViewer.hammer_pinchend = function(){
+	var that = this;
+	return function(ev){
+		that.is_pinching = false;
 	}
 }
 
@@ -259,8 +286,9 @@ DocumentViewer.hammer_pinch = function(){
 DocumentViewer.hammer_pinchmove = function(){
 	var that = this;
 	return function(ev){
-		that.hammer_pan()(ev);
-		that.hammer_pinch()(ev);
+		//console.log('pinchmove');
+		//that.hammer_pan()(ev);
+		//that.hammer_pinch()(ev);
 		return false;
 	}
 }

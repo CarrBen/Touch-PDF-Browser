@@ -1,4 +1,4 @@
-#Runs on Python 2.7.8
+#Runs on Python 3.4.1, may run on 2.7.8
 import os
 import os.path
 import posixpath
@@ -6,7 +6,8 @@ import json
 import calendar
 
 #JPG_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/JPGs"
-JPG_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/demo/JPGs"
+#JPG_DIR = "C:/RealDocs/Web/Touch_PDF_Browser/demo/JPGs"
+JPG_DIR = "D:/Touch_PDF_Browser/JPGs"
 IMG_ROOT = "../JPGs/"
 #This assumes English locale
 MONTHS = calendar.month_name[1:]
