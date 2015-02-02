@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Touch Publication Viewer by Ben</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700' rel='stylesheet' type='text/css'>
+	<link rel='stylesheet' type='text/css' href='css/semantic.css' />
+	<link rel='stylesheet' type='text/css' href='css/layout.css' />
+</head>
+<body>
+	<script type="text/x-handlebars">
+		{{outlet}}
+		<div class='ui modal info'>
+			<i class='ui close icon'></i>
+			<div class='ui purple header'><i class='ui info icon'></i>Information</div>
+			<div class='content'>
+				This is a selection of early student publications - Carolynne, John O' Gauntlet, the Alumni magazines STEPS and The Graduate, Newsletters and Yearbooks from the archives held at the University. 
+				<br>
+				<br>
+				Please contact the Alumni stuff if you require any further information.
+			</div>
+		</div>
+		<div class='ui modal help'>
+			<i class='ui close icon'></i>
+			<div class='ui purple header'><i class='ui help icon'></i>Help</div>
+			<div class='content'>
+				<ul>
+					<li>To navigate around, tap the button you want to press.
+					<li>To go back use the back button in the top right.
+					<li>To start from the beginning use the home button.
+				</ul>
+				<ul>
+					<li>When searching tap in the space at the left or right to hide the keyboard.
+				</ul>
+				<ul>
+					<li>When viewing documents the image can be moved by dragging it with a single finger.
+					<li>Double tapping will zoom in on the location that was tapped.
+					<li>The image can also be stretched or squeezed with two fingers to zoom in or out.
+				</ul>
+			</div>
+		</div>
+		<div class='ui large circular purple icon button' id='info'>
+			<i class='big info letter icon'></i>
+		</div>
+		<div class='ui large circular purple icon button' id='help'>
+			<i class='big question icon'></i>
+		</div>
+	</script>
+	
+	<script type="text/x-handlebars" id="_backButton">
+		<div {{action 'back'}} class='ui large purple icon button' id='back'>
+			<i class='ui big left icon'></i>
+		</div>
+		<div {{action 'home'}} class='ui large circular purple icon button' id='home'>
+			<i class='ui big home icon'></i>
+		</div>
+	</script>
+	
+	<script type="text/x-handlebars" id="_logoTitle">
+		<div class='ui center aligned row'>
+			<div class='ui column'>
+				<div class='ui huge purple expanding header' id='logoHeader'>
+					Lancaster <img src='images/Lancaster 50 Logo.png' id='logo50' /> Digital Archive
+				</div>
+			</div>
+		</div>	
+	</script>
+	
+	<script type='text/x-handlebars' id='index'>
+		<div class='ui middle aligned stackable page grid'>
+			{{partial "logoTitle"}}
+			<div class='ui center aligned two column row'>
+				<div class='ui column'>
+				{{#link-to 'browse' (query-params type='browse')}}
+					<div class='ui jumbo purple button'>
+						<i class='massive browser icon chunkybutton'></i>
+						<div class='chunkybuttontext'>Browse</div>
+					</div>
+				{{/link-to}}
+				</div>
+				<div class='ui column'>
+				{{#link-to 'search'}}
+					<div class='ui jumbo purple button'>
+						<i class='massive search icon chunkybutton'></i>
+						<div class='chunkybuttontext'>Search</div>
+					</div>
+				{{/link-to}}
+				</div>
+			</div>
+		</div>
+	</script>
+	
+	<script type='text/x-handlebars' id='search'>
+		{{outlet}}
+		<div class='ui middle aligned page grid' id='searchBox'>
+			{{partial "logoTitle"}}
+			<div class='ui row'>
+				<div class='ui column'>
+					<div class='ui jumbo action input' id='searchInput'>
+						{{input placeholder='Search...' value=controller.searchQuery action='doSearch' on="enter"}}
+						<div {{action 'doSearch'}} class='ui purple icon button'><i class='ui big search icon'></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{{#if backButton}}
+			{{partial "backButton"}}
+		{{/if}}
+	</script>
+	
+	<script type='text/x-handlebars' id='results'>
+		<div class='ui middle aligned page grid' id='searchResults'>
+		<div class='ui row'>
+			<div class='ui column'>
+			{{#unless controller.noResults}}
+				<table class='ui large celled table segment'>
+				<tbody>
+					{{#each}}
+					<tr {{action 'viewResult' this}}>
+						<td class='four wide'>
+							{{issue_name}}<br>
+							{{display_month}}<br>
+							{{year}}<br>
+							Page {{display_page}}
+						</td>
+						<td class='eleven wide'>
+							{{{highlights.text}}}
+						</td>
+						<td class='one wide'>
+							<div class='ui large purple icon button'>
+								<i class='ui forward mail icon'></i>
+							</div>
+						</td>
+					</tr>
+					{{/each}}
+				</tbody>
+				</table>
+			{{else}}
+				<div class='ui purple center aligned segment'>
+					<div class='ui purple header'>Sorry, there are no entries for that query.
+					</div>
+				</div>
+			{{/unless}}
+			</div>
+		</div>
+		<div class='ui center aligned row'>
+			<div class='ui eight wide column'>
+				<div class='ui large purple icon button' id='prevResults' {{action 'prevResults'}}>
+					<i class='ui reply mail icon'></i>
+				</div>
+			</div>
+			<div class='ui eight wide column'>
+				<div class='ui large purple icon button' id='nextResults' {{action 'nextResults'}}>
+					<i class='ui forward mail icon'></i>
+				</div>
+			</div>
+		</div>
+		</div>
+	</script>
+
+	<script type='text/x-handlebars' id='browse'>
+		<div class='ui middle aligned stackable page grid'>
+			{{partial "logoTitle"}}
+			<div class='ui center aligned one column row'>
+				<div class='ui center aligned equal height three column row' style='height:30vmin'>
+					<div class='ui center middle aligned five column row'>
+					{{#each}}
+					{{#link-to 'year' (query-params pub=pub_id) class='heightButton'}}
+						<div class='ui purple huge button'>
+							<i class='huge bookmark icon chunkybutton'></i>
+							<div class='chunkybuttontext'>{{name}}</div>
+						</div>
+					{{/link-to}}
+					{{/each}}
+					</div>
+				</div>
+			</div>
+		</div>
+		{{#if backButton}}
+			{{partial "backButton"}}
+		{{/if}}
+	</script>
+	
+	<script type='text/x-handlebars' id='year'>
+		<div class='ui middle aligned page grid'>
+			{{partial "logoTitle"}}
+			<div class='ui center aligned one column row'>
+				<div class='ui five column doubling grid'>
+					<div class='ui center middle aligned five column row'>
+					{{#each}}
+						<div class='ui column'>
+						{{#link-to 'month' (query-params pub=controller.pub year=year_id)}}
+							<div {{bind-attr class=':ui :purple :massive invisible :button'}}>
+								{{year_id}}
+							</div>
+						{{/link-to}}
+						</div>
+					{{/each}}
+					</div>
+				</div>
+			</div>
+		</div>
+		{{#if backButton}}
+			{{partial "backButton"}}
+		{{/if}}
+	</script>
+	
+	<script type='text/x-handlebars' id='month'>
+		<div class='ui middle aligned page grid'>
+			{{partial "logoTitle"}}
+			<div class='ui center aligned one column row'>
+				<div class='ui five column doubling grid'>
+					<div class='ui center middle aligned five column row'>
+					{{#each}}
+						<div class='ui column'>
+						{{#link-to 'issue' (query-params pub=controller.pub year=controller.year month=month_id type='browse')}}
+							<div {{bind-attr class=':ui :purple :massive invisible :month :button'}}>
+								{{name}}
+							</div>
+						{{/link-to}}
+						</div>
+					{{/each}}
+					</div>
+				</div>
+			</div>
+		</div>
+		{{#if backButton}}
+			{{partial "backButton"}}
+		{{/if}}
+	</script>
+	
+	<script type='text/x-handlebars' id='issue'>
+		<div class='ui middle aligned page grid'>
+			{{partial "logoTitle"}}
+			<div class='ui center aligned one column row'>
+				<div class='ui five column doubling grid'>
+					<div class='ui center middle aligned five column row'>
+					{{#each}}
+						<div class='ui column'>
+						{{#link-to 'view' (query-params pub=controller.pub year=controller.year month=controller.month issue=issue_id type='browse')}}
+							<div {{bind-attr class=':ui :purple :massive invisible :button'}}>
+								{{name}}
+							</div>
+						{{/link-to}}
+						</div>
+					{{/each}}
+					</div>
+				</div>
+			</div>
+		</div>
+		{{#if backButton}}
+			{{partial "backButton"}}
+		{{/if}}
+	</script>	
+	
+	<script type='text/x-handlebars' id='view'>
+		<div id='imageStage'>
+			<div id='imageScroller'>
+			
+			</div>		
+		</div>
+	
+		<div {{action 'next'}} class='ui huge purple invisible icon button' id='next'>
+			<i class='ui big forward mail icon'></i>
+		</div>
+
+		<div {{action 'prev'}} class='ui huge purple invisible icon button' id='prev'>
+			<i class='ui big reply mail icon'></i>
+		</div>
+
+		{{#if backButton}}
+			{{partial "backButton"}}
+		{{/if}}
+		<div id='issueInfoWrapper'>
+			<div class='ui inverted purple segment' id='issueInfo'>
+				<div class='ui header'>
+					{{model.name}}
+				</div>
+			</div>
+		</div>
+	</script>	
+	
+	<script src='js/libs/touch-emulator.js'></script>
+	<script> //TouchEmulator(); </script>
+	
+	<script src="js/libs/jquery-1.10.2.js"></script>
+	
+	<script src='js/libs/semantic.js'></script>
+
+	<script src='js/libs/hammer.js'></script>
+	<script src='js/viewer.js'></script>
+	
+	<script src="js/libs/handlebars-v1.3.0.js"></script>
+	<script src="js/libs/ember-1.7.0.js"></script>
+	<script src="js/app.js"></script>
+	<!-- to activate the test runner, add the "?test" query string parameter -->
+	<script src="tests/runner.js"></script>
+</body>
+</html>
